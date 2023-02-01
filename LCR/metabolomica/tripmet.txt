@@ -1,0 +1,44 @@
+L-Citrulline
+C0 (Carn)
+Trigonelline
+C2:0 (Carn)
+2-Picolinic acid
+Nicotinic acid
+C3:0  (Carn)
+C5-DC (Carn)
+C5-OH (Carn)
+Kynurenine
+Serotonin
+3-Hydroxyanthranilic
+C4:0 (Carn)
+C5-M-DC/C6-DC (Carn)
+Tryptophan
+C5:1 (Carn)
+C5:0 (Carn)
+Anthranilic
+5-Hydroxyindole-3-acetic
+C6:0 (Carn)
+N-Acetyl-5-hydroxytryptamine
+Kynurenic acid
+C8:1 (Carn)
+Indole-3-acetic
+Indole-3-propionic
+C8:0 (Carn)
+C10:1 (Carn)
+Cortisol
+C10:0 (Carn)
+C12:0-OH (Carn)
+C12:1 (Carn)
+Androstenedione
+C14:2 (Carn)
+C12:0 (Carn)
+Testosterone
+C14:0-OH (Carn)
+C14:1 (Carn)
+C14:0 (Carn)
+C16:1 (Carn)
+Progesterone
+C18:2 (Carn)
+C16:0 (Carn)
+C18:1 (Carn)
+C18:0 (Carn)
