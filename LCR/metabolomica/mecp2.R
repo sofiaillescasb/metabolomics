@@ -12,6 +12,9 @@ library(geneplotter)
 library(limma)
 library(factoextra)
 library(rgoslin)
+library(reshape2)
+library(ggpubr)
+library(rstatix)
 
 pdf("clustering_MeCP2_lip.pdf")
 
@@ -115,9 +118,11 @@ log_df <- melt(df_norm_lab,id = "Label")
 log_df$Label <- as.factor(log_df$Label)
 
 maxim_val <- apply(df_norm_lab[,-1], 2, max)
+log_df$Class <- sapply(log_df$variable, function(x) substring(x,1,3))
+log_df$Class <- gsub("-","-O",log_df$Class)
 
 stat.test <- log_df %>%
-  group_by(variable) %>%
+  group_by(Class,variable) %>%
   wilcox_test(value ~ Label) %>%
   adjust_pvalue(method="fdr") %>%
   add_significance("p.adj") %>%
@@ -125,12 +130,18 @@ stat.test <- log_df %>%
 stat.test
 
 
-p <- ggplot(log_df, aes(x = variable, y = value, color = as.factor(Label))) +  # ggplot function
+log_df$Label <- sub(1,"Control",log_df$Label)
+log_df$Label <- sub(2,"Rett",log_df$Label)
+Group <- as.factor(log_df$Label)
+
+p <- ggplot(log_df, aes(x = variable, y = value, color = Group)) +  # ggplot function
   geom_boxplot() + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 7),legend.position = c(10, 0.7)) +
+  facet_wrap(~Class,scales = "free") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 7),legend.position = "bottom") +
   stat_pvalue_manual(stat.test, x="variable",size = 3)
 
 p 
+
 
 
 library(ropls)

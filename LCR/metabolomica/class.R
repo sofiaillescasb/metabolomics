@@ -12,8 +12,11 @@ library(geneplotter)
 library(limma)
 library(factoextra)
 library(rgoslin)
+library(reshape2)
+library(ggpubr)
+library(rstatix)
 
-pdf("clustering_MeCP2_class.pdf")
+# pdf("clustering_MeCP2_class.pdf")
 
 metdat <- read.csv("metadata.csv", header=TRUE, row.names = 1)
 
@@ -83,21 +86,17 @@ df_all <- data.frame(df_all,row.names = 1)
 df_all_log <- log2(df_all)
 colnames(df_all_log) <- gsub("F.","F ",colnames(df_all_log))
 
-df_all_log2 <- normalizeMedianAbsValues(df_all_log)
-df_all_log2 <- data.frame(df_all_log2)
-colnames(df_all_log2) <- gsub("F.","F ",colnames(df_all_log2))
+# df_all_log2 <- normalizeMedianAbsValues(df_all_log)
+# df_all_log2 <- data.frame(df_all_log2)
+# colnames(df_all_log2) <- gsub("F.","F ",colnames(df_all_log2))
 
 hist(t(df_all_log[,mec]),
      xlab="log 2", legend=NULL, main="Rett after log2 transformation", las=1)
 
-hist(t(df_all_log2[,mec]),
-     xlab="log 2", legend=NULL, main="Rett after log2 transformation", las=1)
 
 hist(t(df_all_log[,ctrl]),
      xlab="log 2", legend=NULL, main="Control after log2 transformation", las=1)
 
-hist(t(df_all_log2[,ctrl]),
-     xlab="log 2", legend=NULL, main="Control after log2 transformation", las=1)
 
 ##Univariate Analysis
 
@@ -208,4 +207,4 @@ tsne(t(df_norm_lab[,-1]),perplex = perpo+1,labels=as.factor(df_norm_lab$Label))
 
 umap(t(df_norm_lab[,-1]),labels=as.factor(df_norm_lab$Label))
 
-dev.off()
+# dev.off()

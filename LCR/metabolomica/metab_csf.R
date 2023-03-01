@@ -11,6 +11,9 @@ library(geneplotter)
 library(limma)
 library(caret)
 library(factoextra)
+library(reshape2)
+library(ggpubr)
+library(rstatix)
 
 #Making metdat file with genes and patient codes
 df_w_genes <- read_excel("P21145_Results.xlsx", col_names=TRUE)

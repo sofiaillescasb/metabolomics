@@ -12,6 +12,9 @@ library(geneplotter)
 library(limma)
 library(factoextra)
 library(rgoslin)
+library(reshape2)
+library(ggpubr)
+library(rstatix)
 
 pdf("gcms_met_rett.pdf")
 
