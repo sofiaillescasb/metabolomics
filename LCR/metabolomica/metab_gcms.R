@@ -13,14 +13,14 @@ library(limma)
 library(factoextra)
 library(rgoslin)
 
-pdf("clustering_MeCP2_lip.pdf")
+pdf("gcms_met_rett.pdf")
 
 metdat <- read.csv("metadata.csv", header=TRUE, row.names = 1)
 
 #Importing excel file with one sheet per analysis (e.g. lipids I, )
 df_list <- map(set_names(excel_sheets("P21145_Results_final.xlsx")),
                read_excel, path = "P21145_Results_final.xlsx",
-               )
+)
 
 
 df_list <- lapply(df_list,t)
@@ -30,17 +30,12 @@ df_list <- lapply(df_list,data.frame)
 df_csf <- df_list[names(df_list) %in% "Plasma_GCMS" == FALSE]
 #Removing plasma samples form remaining results columns
 df_csf <- lapply(df_csf,function(x) x[,1:43])
-df_csf <- lapply(df_csf,function(x) x[-c(1:3),])
+df_csf <- lapply(df_csf,function(x) x[-c(1:2),])
 
-df_all <- rbind(df_csf$`Lip-I`,df_csf$`Lip-II`)
+df_all <- df_csf$CSF_GCMS
 rownames(df_all) <- df_all$X1
 df_all <- df_all[,-1]
 colnames(df_all) <- metdat$COS.Code
-
-
-rownames(df_all) <- gsub("ChoE","CE",rownames(df_all))
-
-
 
 mec <- unlist(metdat[metdat$Gene=="MeCP2",1])
 ctrl <- unlist(metdat[metdat$Gene=="Control",1])
@@ -54,25 +49,14 @@ df_all_num <- apply(df_all, c(1,2), function(x) as.numeric(x))
 df_all <- na.omit(df_all_num)
 df_all <- data.frame(df_all)
 df_all <- cbind(df_all,rownames(df_all))
-colnames(df_all)[length(colnames(df_all))] <- "Species"
-df_all$Species <- gsub("-sn1","",rownames(df_all))
-df_all$Species <- gsub("-sn2","",df_all$Species)
-df_all$Species <- gsub("-iso1","",df_all$Species)
-df_all$Species <- gsub("-iso2","",df_all$Species)
-df_all$Species <- gsub("-iso3","",df_all$Species)
-df_all$Species <- gsub("GCDCA","ST 24:1;O4;G",df_all$Species)
-df_all$Species <- gsub("CDCA","ST 24:1;O4",df_all$Species)
-df_all$Species <- gsub("GCA","ST 24:1;O5;G",df_all$Species)
-df_all$Species <- gsub("LCA-S","ST 24:1;O3",df_all$Species)
-df_all$Species <- gsub("TCA","ST 24:1;O5;T",df_all$Species)
-df_all$Species[df_all$Species=="9(s)-HODE"] <- "FA 18:2;O"
+colnames(df_all)[length(colnames(df_all))] <- "Metabolite"
 
 
-sapply(df_all$Species,isValidLipidName)
-
-df_all <- aggregate(.~Species,data=df_all,sum)
+df_all <- aggregate(.~Metabolite,data=df_all,sum)
 colnames(df_all) <- gsub("F.","F ",colnames(df_all))
 df_all <- data.frame(df_all,row.names = 1)
+
+
 ##Normalization
 
 #Median normalization
@@ -82,9 +66,6 @@ colnames(df_all_log) <- gsub("F.","F ",colnames(df_all_log))
 
 hist(t(df_all_log[,mec]),
      xlab="log 2", legend=NULL, main="Rett after log2 transformation", las=1)
-
-# hist(t(df_all_log[,ctrl[-which(ctrl%in%c("CSF 30","CSF 42"))]]),
-#      xlab="log 2", legend=NULL, main="Control after log2 transformation", las=1)
 
 hist(t(df_all_log[,ctrl]),
      xlab="log 2", legend=NULL, main="Control after log2 transformation", las=1)
@@ -127,30 +108,31 @@ stat.test
 
 p <- ggplot(log_df, aes(x = variable, y = value, color = as.factor(Label))) +  # ggplot function
   geom_boxplot() + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 7),legend.position = c(10, 0.7)) +
-  stat_pvalue_manual(stat.test, x="variable",size = 3)
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 7)) +
+  stat_pvalue_manual(stat.test, x="variable")
 
-p 
+p
 
+
+#oPLS-DA to find most important features that separate patients from controls
 
 library(ropls)
 
-
-pd_m <- opls(df_norm_lab[,-1],df_norm_lab$Label,predI = 1,orthoI = 2)
+pd_m <- opls(df_norm_lab[,-1],df_norm_lab$Label,predI = 1,orthoI = 1)
 plot(pd_m,typeVc ="x-score",)
 vip_m <- data.frame(getVipVn(pd_m))
 colnames(vip_m) <- "VIP"
-vip_m$"Species" <- rownames(vip_m)
+vip_m$"Metabolite" <- rownames(vip_m)
 vip_m_o <- vip_m[order(vip_m$VIP,decreasing = TRUE),]
 
-#lollipop plot with VIP scores
+
 vip_m_o %>%
   filter(!is.na(VIP)) %>%
   arrange(VIP) %>%
   tail(20) %>%
-  mutate(Species=factor(Species, Species)) %>%
-  ggplot( aes(x=Species, y=VIP) ) +
-  geom_segment( aes(x= Species,xend=Species, y=0, yend=VIP), color="grey") +
+  mutate(Metabolite=factor(Metabolite, Metabolite)) %>%
+  ggplot( aes(x=Metabolite, y=VIP) ) +
+  geom_segment( aes(x= Metabolite,xend=Metabolite, y=0, yend=VIP), color="grey") +
   geom_point(size=3, color="#69b3a2") +
   coord_flip() +
   theme(
@@ -159,21 +141,23 @@ vip_m_o %>%
     legend.position="none"
   ) +
   xlab("") +
-  ylab("VIP scores lipids")
+  ylab("VIP scores GCMS")
 
-var_m <- vip_m$Species[which(vip_m$VIP>1)]
+
+
+var_m <- vip_m$Metabolite[which(vip_m$VIP>1)]
 
 interst <- rownames(vip_m_o)[rownames(vip_m_o)%in%m_int_w]
 
 ##Classification and clustering using selected variables
-#Random Forest 
+#Random Forest #Very bad, no good results
 
 library(randomForest)
 
-train <- sample(nrow(df_norm_lab), 0.7*nrow(df_norm_lab), replace = TRUE)
+train <- sample(nrow(df_norm_lab), 0.7*nrow(df_norm_lab), replace = FALSE )
 TrainSet <- df_norm_lab[train,]
 ValidSet <- df_norm_lab[-train,]
-modelmec2 <- randomForest(TrainSet[,-1],as.factor(TrainSet[,1]), data=TrainSet, ntree = 5000, mtry=10,importance = TRUE)
+modelmec2 <- randomForest(TrainSet[,-1],as.factor(TrainSet[,1]), data=TrainSet, ntree = 5000, mtry=8,importance = TRUE)
 modelmec2
 pred_val <- predict(modelmec2,ValidSet[,-1])
 table(pred_val,ValidSet[,1])
@@ -181,7 +165,7 @@ varImpPlot(modelmec2)
 
 
 #PCA
-pca_m <- prcomp(df_norm_lab[,-1], center = TRUE, scale = TRUE)
+pca_m <- prcomp(df_norm_lab[,-1])
 ggbiplot(pca_m,var.axes=FALSE, groups=metdat[metdat$Gene%in%c("MeCP2","Control"),]$Gene, ellipse=FALSE)
 pca_m <- opls(df_norm_lab[,-1], predI = 2)
 plot(pca_m,typeVc ="x-score",parAsColFcVn =df_norm_lab[,1])
@@ -201,6 +185,7 @@ tsne(t(df_norm_lab[,-1]),perplex = perpo+1,labels=as.factor(df_norm_lab$Label))
 #umap
 
 umap(t(df_norm_lab[,-1]),labels=as.factor(df_norm_lab$Label))
+
 
 
 dev.off()

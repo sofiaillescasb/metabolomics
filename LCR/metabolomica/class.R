@@ -13,14 +13,14 @@ library(limma)
 library(factoextra)
 library(rgoslin)
 
-pdf("clustering_MeCP2_lip.pdf")
+pdf("clustering_MeCP2_class.pdf")
 
 metdat <- read.csv("metadata.csv", header=TRUE, row.names = 1)
 
 #Importing excel file with one sheet per analysis (e.g. lipids I, )
 df_list <- map(set_names(excel_sheets("P21145_Results_final.xlsx")),
                read_excel, path = "P21145_Results_final.xlsx",
-               )
+)
 
 
 df_list <- lapply(df_list,t)
@@ -41,7 +41,6 @@ colnames(df_all) <- metdat$COS.Code
 rownames(df_all) <- gsub("ChoE","CE",rownames(df_all))
 
 
-
 mec <- unlist(metdat[metdat$Gene=="MeCP2",1])
 ctrl <- unlist(metdat[metdat$Gene=="Control",1])
 
@@ -54,47 +53,59 @@ df_all_num <- apply(df_all, c(1,2), function(x) as.numeric(x))
 df_all <- na.omit(df_all_num)
 df_all <- data.frame(df_all)
 df_all <- cbind(df_all,rownames(df_all))
-colnames(df_all)[length(colnames(df_all))] <- "Species"
-df_all$Species <- gsub("-sn1","",rownames(df_all))
-df_all$Species <- gsub("-sn2","",df_all$Species)
-df_all$Species <- gsub("-iso1","",df_all$Species)
-df_all$Species <- gsub("-iso2","",df_all$Species)
-df_all$Species <- gsub("-iso3","",df_all$Species)
-df_all$Species <- gsub("GCDCA","ST 24:1;O4;G",df_all$Species)
-df_all$Species <- gsub("CDCA","ST 24:1;O4",df_all$Species)
-df_all$Species <- gsub("GCA","ST 24:1;O5;G",df_all$Species)
-df_all$Species <- gsub("LCA-S","ST 24:1;O3",df_all$Species)
-df_all$Species <- gsub("TCA","ST 24:1;O5;T",df_all$Species)
-df_all$Species[df_all$Species=="9(s)-HODE"] <- "FA 18:2;O"
+colnames(df_all)[length(colnames(df_all))] <- "Class"
+df_all$Class <- gsub("-sn1","",rownames(df_all))
+df_all$Class <- gsub("-sn2","",df_all$Class)
+df_all$Class <- gsub("-iso1","",df_all$Class)
+df_all$Class <- gsub("-iso2","",df_all$Class)
+df_all$Class <- gsub("-iso3","",df_all$Class)
+df_all$Class <- gsub("GCDCA","ST 24:1;O4;G",df_all$Class)
+df_all$Class <- gsub("CDCA","ST 24:1;O4",df_all$Class)
+df_all$Class <- gsub("GCA","ST 24:1;O5;G",df_all$Class)
+df_all$Class <- gsub("LCA-S","ST 24:1;O3",df_all$Class)
+df_all$Class <- gsub("TCA","ST 24:1;O5;T",df_all$Class)
+df_all$Class[df_all$Class=="9(s)-HODE"] <- "FA 18:2;O"
 
 
-sapply(df_all$Species,isValidLipidName)
+sapply(df_all$Class,isValidLipidName)
 
-df_all <- aggregate(.~Species,data=df_all,sum)
+df_all$Class <- sapply(df_all$Class, function(x) substring(x,1,3))
+df_all$Class <- gsub("PC-","PC-O",df_all$Class)
+df_all$Class <- gsub("PE-","PE-O",df_all$Class)
+df_all <- aggregate(.~Class,data=df_all,sum)
+
+
 colnames(df_all) <- gsub("F.","F ",colnames(df_all))
 df_all <- data.frame(df_all,row.names = 1)
-##Normalization
 
 #Median normalization
 #Log transformation
 df_all_log <- log2(df_all)
 colnames(df_all_log) <- gsub("F.","F ",colnames(df_all_log))
 
+df_all_log2 <- normalizeMedianAbsValues(df_all_log)
+df_all_log2 <- data.frame(df_all_log2)
+colnames(df_all_log2) <- gsub("F.","F ",colnames(df_all_log2))
+
 hist(t(df_all_log[,mec]),
      xlab="log 2", legend=NULL, main="Rett after log2 transformation", las=1)
 
-# hist(t(df_all_log[,ctrl[-which(ctrl%in%c("CSF 30","CSF 42"))]]),
-#      xlab="log 2", legend=NULL, main="Control after log2 transformation", las=1)
+hist(t(df_all_log2[,mec]),
+     xlab="log 2", legend=NULL, main="Rett after log2 transformation", las=1)
 
 hist(t(df_all_log[,ctrl]),
      xlab="log 2", legend=NULL, main="Control after log2 transformation", las=1)
+
+hist(t(df_all_log2[,ctrl]),
+     xlab="log 2", legend=NULL, main="Control after log2 transformation", las=1)
+
 ##Univariate Analysis
 
-#Wilcoxon rank sum test
+#non parametric test
+
 
 ctrl.only <- df_all_log[,colnames(df_all_log)%in%ctrl]
 mec.only <- df_all_log[,colnames(df_all_log)%in%mec]
-
 
 m_w <- list()
 
@@ -127,20 +138,21 @@ stat.test
 
 p <- ggplot(log_df, aes(x = variable, y = value, color = as.factor(Label))) +  # ggplot function
   geom_boxplot() + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 7),legend.position = c(10, 0.7)) +
-  stat_pvalue_manual(stat.test, x="variable",size = 3)
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  stat_pvalue_manual(stat.test, x="variable")
 
-p 
+p
 
+
+#oPLS-DA to find most important features that separate patients from controls
 
 library(ropls)
 
-
-pd_m <- opls(df_norm_lab[,-1],df_norm_lab$Label,predI = 1,orthoI = 2)
+pd_m <- opls(df_norm_lab[,-1],df_norm_lab$Label,predI = 1,orthoI = 1)
 plot(pd_m,typeVc ="x-score",)
 vip_m <- data.frame(getVipVn(pd_m))
 colnames(vip_m) <- "VIP"
-vip_m$"Species" <- rownames(vip_m)
+vip_m$"Class" <- rownames(vip_m)
 vip_m_o <- vip_m[order(vip_m$VIP,decreasing = TRUE),]
 
 #lollipop plot with VIP scores
@@ -148,9 +160,9 @@ vip_m_o %>%
   filter(!is.na(VIP)) %>%
   arrange(VIP) %>%
   tail(20) %>%
-  mutate(Species=factor(Species, Species)) %>%
-  ggplot( aes(x=Species, y=VIP) ) +
-  geom_segment( aes(x= Species,xend=Species, y=0, yend=VIP), color="grey") +
+  mutate(Class=factor(Class, Class)) %>%
+  ggplot( aes(x=Class, y=VIP) ) +
+  geom_segment( aes(x= Class,xend=Class, y=0, yend=VIP), color="grey") +
   geom_point(size=3, color="#69b3a2") +
   coord_flip() +
   theme(
@@ -161,23 +173,17 @@ vip_m_o %>%
   xlab("") +
   ylab("VIP scores lipids")
 
-var_m <- vip_m$Species[which(vip_m$VIP>1)]
+var_m <- vip_m$Class[which(vip_m$VIP>1)]
 
 interst <- rownames(vip_m_o)[rownames(vip_m_o)%in%m_int_w]
 
 ##Classification and clustering using selected variables
-#Random Forest 
+#Random Forest #Very bad, no good results
 
 library(randomForest)
-
-train <- sample(nrow(df_norm_lab), 0.7*nrow(df_norm_lab), replace = TRUE)
-TrainSet <- df_norm_lab[train,]
-ValidSet <- df_norm_lab[-train,]
-modelmec2 <- randomForest(TrainSet[,-1],as.factor(TrainSet[,1]), data=TrainSet, ntree = 5000, mtry=10,importance = TRUE)
-modelmec2
-pred_val <- predict(modelmec2,ValidSet[,-1])
-table(pred_val,ValidSet[,1])
-varImpPlot(modelmec2)
+modelmec <- randomForest(df_norm_lab[,-1],as.factor(df_norm_lab[,1]), ntree = 1000, mtry=9,importance = TRUE)
+modelmec
+predict(modelmec)
 
 
 #PCA
@@ -202,7 +208,4 @@ tsne(t(df_norm_lab[,-1]),perplex = perpo+1,labels=as.factor(df_norm_lab$Label))
 
 umap(t(df_norm_lab[,-1]),labels=as.factor(df_norm_lab$Label))
 
-
 dev.off()
-
-
