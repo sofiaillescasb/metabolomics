@@ -180,9 +180,17 @@ interst <- rownames(vip_m_o)[rownames(vip_m_o)%in%m_int_w]
 #Random Forest #Very bad, no good results
 
 library(randomForest)
-modelmec <- randomForest(df_norm_lab[,-1],as.factor(df_norm_lab[,1]), ntree = 1000, mtry=9,importance = TRUE)
-modelmec
-predict(modelmec)
+
+set.seed(230)
+train <- sample(nrow(df_norm_lab[df_norm_lab$Label==2,]), 0.7*nrow(df_norm_lab[df_norm_lab$Label==2,]), replace = FALSE)
+train <- append(train,sample(nrow(df_norm_lab[df_norm_lab$Label==1,]), 0.7*nrow(df_norm_lab[df_norm_lab$Label==1,]), replace = FALSE))
+TrainSet <- df_norm_lab[train,]
+ValidSet <- df_norm_lab[-train,]
+modelrett2 <- randomForest(TrainSet[,-1],as.factor(TrainSet[,1]), data=TrainSet, ntree = 5000, mtry=7,importance = TRUE)
+modelrett2
+pred_val <- predict(modelrett2,ValidSet[,-1])
+table(pred_val,ValidSet[,1])
+varImpPlot(modelrett2)
 
 
 #PCA

@@ -16,7 +16,8 @@ library(reshape2)
 library(ggpubr)
 library(rstatix)
 
-pdf("gcms_met_rett.pdf")
+
+# pdf("gcms_met_rett.pdf")
 
 metdat <- read.csv("metadata.csv", header=TRUE, row.names = 1)
 
@@ -45,9 +46,10 @@ ctrl <- unlist(metdat[metdat$Gene=="Control",1])
 
 df_all <- df_all[colnames(df_all)%in%mec|colnames(df_all)%in%ctrl]
 
-#Removing all features with NAs
+#Removing features with more NAs than real values and using multiple imputation on the rest in the rest 
+library(mice)
 
-df_all <- df_all[rowSums(is.na(df_all)) != ncol(df_all), ]
+df_all <- df_all[rowSums(is.na(df_all)) < ncol(df_all)-rowSums(is.na(df_all)),]
 df_all_num <- apply(df_all, c(1,2), function(x) as.numeric(x))
 df_all <- na.omit(df_all_num)
 df_all <- data.frame(df_all)
@@ -91,6 +93,8 @@ mw_p <- lapply(m_w, function(x) x$p.value)
 mw_p_adj <- p.adjust(unlist(mw_p),method="fdr")
 m_int_w <- names(mw_p_adj[which(mw_p_adj<0.05)])
 
+saveRDS(data.frame(mw_p_adj),file="pv_gc")
+
 df_norm <- df_all_log
 df_norm_lab <- data.frame(cbind(as.factor(metdat$Gene[metdat$COS.Code %in% c(mec,ctrl)]), t(df_norm)))
 colnames(df_norm_lab)[1] <- "Label"
@@ -117,9 +121,21 @@ p <- ggplot(log_df, aes(x = variable, y = value, color = as.factor(Label))) +  #
 p
 
 
-#oPLS-DA to find most important features that separate patients from controls
+####Multivariate analysis
 
 library(ropls)
+
+#PCA
+pca_m <- prcomp(df_norm_lab[,-1])
+ggbiplot(pca_m,var.axes=FALSE, groups=metdat[metdat$Gene%in%c("MeCP2","Control"),]$Gene, ellipse=FALSE)
+pca_m <- opls(df_norm_lab[,-1], predI = 2)
+plot(pca_m,typeVc ="x-score",parAsColFcVn =df_norm_lab[,1])
+plot(pca_m,typeVc ="x-loading",parAsColFcVn =df_norm_lab[,1])
+l_df <- abs(getLoadingMN(pca_m))
+
+
+
+#oPLS-DA to find most important features that separate patients from controls
 
 pd_m <- opls(df_norm_lab[,-1],df_norm_lab$Label,predI = 1,orthoI = 1)
 plot(pd_m,typeVc ="x-score",)
@@ -147,33 +163,39 @@ vip_m_o %>%
   ylab("VIP scores GCMS")
 
 
-
 var_m <- vip_m$Metabolite[which(vip_m$VIP>1)]
 
-interst <- rownames(vip_m_o)[rownames(vip_m_o)%in%m_int_w]
+interst <- var_m[var_m%in%m_int_w]
+saveRDS(interst, file="int_gcms")
+saveRDS(vip_m[which(vip_m$VIP>1),])
 
-##Classification and clustering using selected variables
-#Random Forest #Very bad, no good results
+#Random Forest
 
 library(randomForest)
+library(pROC)
+library(vivid)
 
-train <- sample(nrow(df_norm_lab), 0.7*nrow(df_norm_lab), replace = FALSE )
+set.seed(223)
+train <- sample(nrow(df_norm_lab[df_norm_lab$Label==2,]), 0.7*nrow(df_norm_lab[df_norm_lab$Label==2,]), replace = FALSE)
+train <- append(train,sample(nrow(df_norm_lab[df_norm_lab$Label==1,]), 0.7*nrow(df_norm_lab[df_norm_lab$Label==1,]), replace = FALSE))
 TrainSet <- df_norm_lab[train,]
 ValidSet <- df_norm_lab[-train,]
-modelmec2 <- randomForest(TrainSet[,-1],as.factor(TrainSet[,1]), data=TrainSet, ntree = 5000, mtry=8,importance = TRUE)
+modelmec2 <- randomForest(TrainSet[,-1],as.factor(TrainSet[,1]), data=TrainSet, ntree = 10000, mtry=7,importance = TRUE)
 modelmec2
 pred_val <- predict(modelmec2,ValidSet[,-1])
-table(pred_val,ValidSet[,1])
+roc(ValidSet[,1],as.numeric(pred_val),plot=TRUE,auc.polygon=TRUE,grid=TRUE,print.auc=TRUE)
 varImpPlot(modelmec2)
 
-
-#PCA
-pca_m <- prcomp(df_norm_lab[,-1])
-ggbiplot(pca_m,var.axes=FALSE, groups=metdat[metdat$Gene%in%c("MeCP2","Control"),]$Gene, ellipse=FALSE)
-pca_m <- opls(df_norm_lab[,-1], predI = 2)
-plot(pca_m,typeVc ="x-score",parAsColFcVn =df_norm_lab[,1])
-plot(pca_m,typeVc ="x-loading",parAsColFcVn =df_norm_lab[,1])
-l_df <- abs(getLoadingMN(pca_m))
+rf_fit <- vivi(fit = modelmec2, 
+               data = df_norm_lab, 
+               response = "Label",
+               gridSize = 10,
+               importanceType = "MeanDecreaseGini",
+               nmax = 100,
+               reorder = TRUE,
+               class = 1,
+               predictFun = NULL,
+)
 
 #tsne
 
@@ -191,6 +213,6 @@ umap(t(df_norm_lab[,-1]),labels=as.factor(df_norm_lab$Label))
 
 
 
-dev.off()
+# dev.off()
 
 
