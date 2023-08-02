@@ -1,0 +1,115 @@
+---
+title: "Network Analysis"
+author: "Sofia Illescas"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_knit$set(root.dir = 'C:/Users/killescas/Documents/GitHub/metabolomics/LCR/metabolomica')
+knitr::opts_chunk$set(message = FALSE)
+```
+
+
+```{r, include=FALSE}
+library(purrr)
+library(readxl)
+library(tidyverse)
+library(imputeTS)
+library(reshape2)
+library(ggpubr)
+library(rstatix)
+library(ggplot2)
+library(ggbiplot)
+library(ropls)
+library(knitr)
+library(factoextra)
+```
+
+```{r message=FALSE}
+
+metdat <- read.csv("C:/Users/killescas/Desktop/TESIS/LCR/metabolomica/metdat.csv", header=TRUE, row.names = 1)
+
+df_list <- map(set_names(excel_sheets("C:/Users/killescas/Desktop/TESIS/LCR/metabolomica/P21145_Results_final.xlsx")),
+               read_excel, path = "C:/Users/killescas/Desktop/TESIS/LCR/metabolomica/P21145_Results_final.xlsx",
+)
+
+
+df_list <- lapply(df_list,t)
+df_list <- lapply(df_list,data.frame)
+
+df_csf <- df_list[names(df_list) %in% "Plasma_GCMS" == FALSE]
+df_csf <- lapply(df_csf,function(x) x[,1:43])
+df_csf <- lapply(df_csf,function(x) x[-c(1:2),])
+
+```
+
+
+```{r}
+
+df_all <- lapply(df_csf, 'rownames<-', NULL)
+df_all <- lapply(df_all, function(x) column_to_rownames(x, var="X1"))
+df_all <- lapply(df_all, 'colnames<-', metdat$COS.Code)
+df_all <- lapply(df_all, function(x) x[rowSums(is.na(x))!=ncol(x),])
+df_all_num <- lapply(df_all, function(x) apply(x, c(1,2), as.numeric))
+
+mins <- lapply(df_all_num, function(x) apply(x,2,min,na.rm=TRUE))
+
+df_all2 <- lapply(df_all_num,function(x) na_replace(x))
+df_all <- lapply(df_all2, data.frame)
+df_all <- lapply(names(df_all),function(x) df_all[[x]]+(mins[[x]]/2))
+names(df_all) <- names(df_all2)
+
+df_all <- lapply(df_all, function(x) setNames(x, sub("F.", "F ", names(x))))
+df_all_log <- lapply(df_all, function(x) log2(x))
+
+```
+
+```{r}
+df_norm <- df_all_log
+metdat$Label <- as.factor(metdat$Gene)
+df_norm_lab <- lapply(df_norm, function(x) data.frame(cbind(as.factor(metdat$Gene), t(x))))
+df_norm_lab <- lapply(df_norm_lab, function(x) {colnames(x)[1] <- "Label"; x})
+df_norm_lab <- lapply(df_norm_lab,subset,Label%in%c(3,8,10,12,2))
+met <- cbind(df_norm_lab$`Tryptophan & metabolites`,df_norm_lab$CSF_GCMS[,-1])
+lip <- cbind(df_norm_lab$`Lip-I`,df_norm_lab$`Lip-II`[,-1])
+df_norm_lab <- list(met,lip)
+names(df_norm_lab) <- c("Metabolomics","Lipidomics")
+
+```
+
+
+
+# Correlation Network
+
+Building a correlation network using Spearman's correlation in order to visualize the interaction between metabolites/lipids
+
+
+```{r}
+library(igraph)
+library(RCy3)
+library(corrr)
+
+gs <- lapply(df_norm_lab, function(x) split(x, f=x$Label))
+
+names_mets <- read.csv("C:/Users/killescas/Desktop/TESIS/LCR/metabolomica/all_mets_w_kegg.csv")
+names_mets$HMDB[names_mets$Query=="Xylonic acid"] <- "HMDB59750"
+names_mets$Match[names_mets$Query=="Xylonic acid"] <- "D-Xylonic acid"
+names_mets$Query <- make.names(names_mets$Query)
+
+met_id <- c(rownames(df_all_log$`Tryptophan & metabolites`),rownames(df_all_log$CSF_GCMS))
+lip_id <- c(df_all_log$`Lip-I`,df_all_log$`Lip-II`[,-1])
+
+corr_matrix_met <- lapply(gs$Metabolomics, function(x) correlate(x[,-1],method = "spearman"))
+corr_matrix_met <- lapply(corr_matrix_met, function(x) {x$term<-met_id[make.names(met_id)%in%x$term];x})
+corr_matrix_met <- lapply(corr_matrix_met, function(x) {colnames(x)<-c("term",met_id[make.names(met_id)%in%colnames(x)]);x})
+adj_matrix_met <- lapply(corr_matrix_met,as_matrix)
+adj_matrix_met <- lapply(adj_matrix_met, function(x) {x[abs(x)<0.8] <- 0;x})
+
+network <- lapply(adj_matrix_met, function(x) graph.adjacency(x,weighted = TRUE, mode = "undirected"))
+lapply(names(network), function(x) createNetworkFromIgraph(network[[x]], title = x, collection="Neurodevelopmental metabolomics"))
+
+
+```

@@ -1,0 +1,916 @@
+---
+title: Metabolomic characterization of neurodevelopmental disorders with neurotransition
+  components
+author: "Sofia Illescas"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_knit$set(root.dir = 'C:/Users/killescas/Documents/GitHub/metabolomics/LCR/metabolomica')
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r include=FALSE}
+library(purrr)
+
+library(imputeTS)
+library(reshape2)
+library(ggpubr)
+library(rstatix)
+library(ggplot2)
+library(ggbiplot)
+library(ropls)
+library(knitr)
+library(factoextra)
+library(ggrepel)
+library(janitor)
+library(patchwork)
+library(ggplotify)
+library(tidyverse)
+```
+
+
+
+```{r fig_1}
+df_norm_lab <- readRDS("//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/data_processed/wide_format_df.rds")
+log_df <- readRDS("//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/data_processed/long_format_df.rds")
+
+metdat <- read.csv("//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/metadata/metdat.csv", header=TRUE,row.names = 1,sep=";")
+
+
+
+```
+
+
+
+```{r}
+lcp <- c("#95C65C","#808B96","#F19743", "#C70E7B","#0ab2fa")
+names(lcp) <- c("1","2","8","10","12")
+lcps <- lcp[c("1","2","8","10","12")]
+df_norm_lab_s <- df_norm_lab
+pca_m1 <- prcomp(df_norm_lab_s[,-1], scale. = TRUE, center = TRUE)
+
+# Get the maximum x-axis limit among all the plots
+max_x_limit <- max(abs(pca_m1$x[, 1]))+2
+
+# Create a list to store the modified plots
+modified_plots <- list()
+
+p1 <- ggbiplot(pca_m1,
+                choices = c(1,2),
+                obs.scale = 1,
+                var.scale = 1,
+                var.axes = FALSE,
+                circle = TRUE,
+                ellipse = FALSE,
+                groups = df_norm_lab_s$Label,
+                fill = TRUE) +
+    theme_light(base_size = 10) +
+    labs(colour = "Mutated gene") +
+    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 4) +
+    scale_color_manual(values = lcps, labels = c("Control", "MeCP2","STXBP1","CDKL5","GRIN")) +
+    xlim(-max_x_limit, max_x_limit)  +
+  ylim(-6,6) 
+
+
+p1 <- wrap_elements(as.grob(p1))
+
+```
+
+```{r}
+names(lcp) <- c("1","2","8","10","12")
+lcps <- lcp[c("1","2","10")]
+df_norm_lab_s <- subset(df_norm_lab, Label%in%c("2","10","1"))
+pca_m2 <- prcomp(df_norm_lab_s[,-1], scale. = TRUE, center = TRUE)
+
+# Get the maximum x-axis limit among all the plots
+max_x_limit <- max(abs(pca_m2$x[, 1]))+2
+
+# Create a list to store the modified plots
+modified_plots <- list()
+
+p2 <- ggbiplot(pca_m2,
+                choices = c(1,2),
+                obs.scale = 1,
+                var.scale = 1,
+                var.axes = FALSE,
+                circle = TRUE,
+                ellipse = FALSE,
+                groups = as.factor(df_norm_lab_s$Label),
+                fill = TRUE) +
+    theme_light(base_size = 10) +
+    labs(colour = "Mutated gene") +
+    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 4) +
+    scale_color_manual(values = lcps, labels = NULL) +
+    xlim(-max_x_limit, max_x_limit) +
+  ylim(-6,6) +
+    theme(legend.position="none") 
+
+p2 <- wrap_elements(as.grob(p2))
+
+```
+
+
+```{r}
+df_norm_lab_s <- subset(df_norm_lab, Label%in%c("12","8","1"))
+pca_m3 <- prcomp(df_norm_lab_s[,-1], scale. = TRUE, center = TRUE)
+lcps <- lcp[c("1","8","12")]
+# Get the maximum x-axis limit among all the plots
+max_x_limit <- max(abs(pca_m3$x[, 1]))+2
+
+# Create a list to store the modified plots
+modified_plots <- list()
+
+p3 <- ggbiplot(pca_m3,
+                choices = c(1,2),
+                obs.scale = 1,
+                var.scale = 1,
+                var.axes = FALSE,
+                circle = TRUE,
+                ellipse = FALSE,
+                groups = as.factor(df_norm_lab_s$Label),
+                fill = TRUE) +
+    theme_light(base_size = 10) +
+    labs(colour = "Mutated gene") +
+    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 4) +
+    scale_color_manual(values = lcps, labels = c("Control","STXBP1","GRIN")) +
+    xlim(-max_x_limit, max_x_limit)  +
+    ylim(-6,6) +
+  theme(legend.position="none")
+
+p3 <- wrap_elements(as.grob(p3))
+```
+
+
+```{r}
+library(ggbiplot)
+df_norm_lab4 <- df_norm_lab
+df_norm_lab4$Label <- ifelse(df_norm_lab4$Label==2,10,df_norm_lab4$Label)
+df_norm_lab4$Label <- ifelse(df_norm_lab4$Label==12,8,df_norm_lab4$Label)
+
+lcp3 <- c("#95C65C","#FF3F38","#B25D91")
+pca_m <- prcomp(df_norm_lab4[,-1], scale. = TRUE, center = TRUE)
+
+# Get the maximum x-axis limit among all the plots
+max_x_limit <- max(abs(pca_m$x[, 1]))+2
+
+# Create a list to store the modified plots
+
+# library(imager)
+# neurons <- load.image("/Users/sofiaillescas/Desktop/LAB/LCR/metabolomica/neuronas.jpg")
+# 
+# nr <- ggplot() +
+#   background_image(neurons) 
+
+
+
+
+```
+
+
+```{r}
+df_meta <- df_norm_lab
+# df_metg <- subset(df_metg,Label%in%c(1,10,2,12,8))
+df_meta <- data.frame(t(df_meta),check.names = FALSE)
+mat_alla <- as.matrix(df_meta)
+laba <- data.frame(as.factor(mat_alla[1,]))
+laba$as.factor.mat_alla.1.... <- gsub(12,"STXBP1  ",laba$as.factor.mat_alla.1....)
+laba$as.factor.mat_alla.1.... <- gsub(2,"CDKL5  ",laba$as.factor.mat_alla.1....)
+laba$as.factor.mat_alla.1.... <- gsub(10,"MeCP2  ",laba$as.factor.mat_alla.1....)
+laba$as.factor.mat_alla.1.... <- gsub(1,"Control  ",laba$as.factor.mat_alla.1....)
+laba$as.factor.mat_alla.1.... <- gsub(8,"GRIN  ",laba$as.factor.mat_alla.1....)
+laba$as.factor.mat_alla.1.... <- gsub("STXBPControl    ","STXBP1  ",laba$as.factor.mat_alla.1....)
+colnames(laba)<-"Label"
+laba$Label<- factor(laba$Label,levels = c("Control  ","MeCP2  ","CDKL5  ", "STXBP1  ", "GRIN  "),ordered = TRUE)
+
+mat_alla <- apply(mat_alla[-1,],c(1,2),as.numeric)
+
+library(viridis)
+library(pheatmap)
+
+lc <- c("#95C65C","#C70E7B","#808B96","#46dbf2","#F19743")
+names(lc) <-  levels(laba$Label)
+lc <- list(Label = lc)
+
+
+pheatmap(mat_alla, annotation = laba,clustering_method = "ward.D2",fontsize = 8,show_colnames = TRUE,show_rownames = FALSE,main = "Comparing patients to controls", border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row")
+```
+
+```{r fig.width = 5, fig.height = 4, fig.show = "hold", out.height="50%",out.width="50%",  results='asis'}
+df_metr <- df_norm_lab
+df_metr <- subset(df_metr,Label%in%c(1,10,2))
+rownames(df_metr) <- subset(metdat,metdat$COS.Code%in%rownames(df_metr))$Gene.ID
+df_metr <- data.frame(t(df_metr),check.names = FALSE)
+mat_allr <- as.matrix(df_metr)
+conds <- c("Hypoglutamatergic","Control")
+labr <- data.frame(as.factor(mat_allr[1,]))
+
+# rownames(labr) <- m
+labr$as.factor.mat_allr.1.... <- gsub(2,"CDKL5  ",labr$as.factor.mat_allr.1....)
+labr$as.factor.mat_allr.1.... <- gsub(10,"MeCP2  ",labr$as.factor.mat_allr.1....)
+labr$as.factor.mat_allr.1.... <- gsub(1,"Control  ",labr$as.factor.mat_allr.1....)
+colnames(labr)<-"Label"
+labr$Label<- factor(labr$Label,levels = c("Control  ","MeCP2  ","CDKL5  "),ordered = TRUE)
+
+mat_allr <- apply(mat_allr[-1,],c(1,2),as.numeric)
+
+library(viridis)
+library(pheatmap)
+
+lc <- c("#95C65C","#C70E7B","#808B96")
+names(lc) <-  levels(labr$Label)
+lc <- list(Label = lc)
+
+# colnames(mat_allr) <- subset(metdat,metdat$COS.Code%in%colnames(mat_allr))$Gene.ID
+
+
+pheatmap(mat_allr, annotation = labr,clustering_method = "ward.D2",fontsize = 8,show_colnames = TRUE,show_rownames = FALSE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",annotation_legend = TRUE)
+
+```
+
+
+```{r fig.width = 5, fig.height = 4}
+df_metg <- df_norm_lab 
+df_metg <- subset(df_metg,Label%in%c(1,8,12))
+rownames(df_metg) <- subset(metdat,metdat$COS.Code%in%rownames(df_metg))$Gene.ID
+df_metg <- data.frame(t(df_metg),check.names = FALSE)
+mat_allg <- as.matrix(df_metg)
+conds <- c("GRIN","Control")
+lab <- data.frame(as.factor(mat_allg[1,]))
+lab$as.factor.mat_allg.1.... <- gsub(8,"GRIN",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub(12,"STXBP1",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub(1,"Control",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub("STXBPControl","STXBP1  ",lab$as.factor.mat_allg.1....)
+colnames(lab)<-"Label"
+lab$Label<- factor(lab$Label,levels = c("Control","STXBP1  ","GRIN"),ordered = TRUE)
+
+mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
+
+lc <- c("#95C65C","#46dbf2","#F19743")
+names(lc) <-  levels(lab$Label)
+lc <- list(Label = lc)
+
+p5 <- pheatmap(mat_allg, annotation = lab,clustering_method = "ward.D2",fontsize = 8,show_colnames = TRUE,show_rownames = FALSE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = TRUE, annotation_legend = TRUE)
+
+p5 <- wrap_elements(as.grob(p5))
+
+
+# (nr|(p1/(p2+p3)/(p4+p5))+plot_layout(heights = c(1,2,2)))+plot_layout(guides = "collect")+plot_annotation(tag_levels = 'A') 
+```
+
+# Study design
+
+## Univariate Analysis
+
+```{r table_3, results = 'asis'}
+lcp3 <- c("#FF3F38","#B25D91","#95C65C")
+df_norm_lab4 <- df_norm_lab
+df_norm_lab4$Label <- ifelse(df_norm_lab4$Label==2,10,df_norm_lab4$Label)
+df_norm_lab4$Label <- ifelse(df_norm_lab4$Label==12,8,df_norm_lab4$Label)
+
+df_norm_lab4 <- rownames_to_column(df_norm_lab4)
+log_df1 <- melt(df_norm_lab4, id.vars=c("rowname","Label"))
+ex_df1 <- log_df1
+ex_df1$value <- exp(ex_df1$value)
+ex_df1$value <-as.numeric(format(ex_df1$value, scientific = FALSE))
+ex_df1$Label <- factor(ex_df1$Label)
+# 
+# sam_stat <- log_df %>%
+#   group_by(Label,variable) %>%
+#   get_summary_stats(value, type = "median_iqr")
+
+stat.test <-
+    log_df1 %>%
+    group_by(variable) %>%
+    wilcox_test(value ~ Label) %>%
+    adjust_pvalue(method="fdr") %>%
+    add_significance("p.adj")
+
+
+sta_lst_sig <- stat.test
+ 
+
+```
+
+
+## Multivariate Analysis
+
+```{r }
+
+pd_g <- list()
+vip_g <- list()
+var_g <- list()
+
+
+
+for (j in c(10,8)) {
+  df_norm_lab5 <- subset(df_norm_lab4, Label%in%c(j,1))
+  rownames(df_norm_lab5) <- df_norm_lab5$rowname
+  pd_g <- append(pd_g,opls(df_norm_lab5[,-c(1,2)],as.factor(df_norm_lab5$Label),orthoI = 1,predI=1,scaleC = "center", permI = 1000))
+  vip_g <- lapply(pd_g, function(x) data.frame(getVipVn(x)))
+  vip_g <- lapply(vip_g, function(x) {colnames(x) <- "VIP"; x})
+  vip_g <- lapply(vip_g, function(x) {x$Metabolite <- rownames(x); x})
+  var_g <- lapply(vip_g, function(x) data.frame(x$Metabolite[which(x$VIP>1)]))
+}
+
+names(pd_g) <- c("Hypoglutamatergic","Hyperglutamatergic")
+tables <- lapply(pd_g, function(x) getSummaryDF(x))
+lapply(names(tables),function(x) write.csv(tables[[x]],file=paste0("opls_diag_",x,".csv")))
+
+
+names(var_g) <- c("Hypoglutamatergic","Hyperglutamatergic")
+names(vip_g) <- c("Hypoglutamatergic","Hyperglutamatergic")
+
+
+
+col_op <- c("#B25D91", "#FF3F38")
+names(col_op) <- names(vip_g)
+
+sels <- c()  # Create an empty list to store plots
+
+for (i in 1:length(vip_g)) {
+  vip_g2 <- vip_g[[i]][order(vip_g[[i]]$VIP, decreasing = TRUE),]
+  vip_g2 <- subset(vip_g2, VIP > 1)
+  vip_g2$color <- names(vip_g[i])
+  sels <- append(sels, vip_g2$Metabolite)
+  
+  p <- vip_g2 %>%
+    filter(!is.na(VIP)) %>%
+    arrange(VIP) %>%
+    mutate(Metabolite = factor(Metabolite, Metabolite)) %>%
+    ggplot() +
+    geom_point(aes(x = Metabolite, y = VIP, size = 3, color = color)) +
+    coord_flip() +
+    theme(
+      panel.grid.minor.y = element_blank(),
+      panel.grid.major.y = element_blank(),
+      legend.position = "right"
+    ) +
+    theme_light() +
+    xlab("") +
+    ylab("VIP scores") +
+    ggtitle(c("Hypoglutamatergic", "Hypoglutamatergic")[i]) +
+    ylim(0, 3.5) +
+    guides(size = "none") +
+    scale_color_manual(values = col_op[i], labels=NULL)
+  
+  plot(p) # Add the plot to the list
+}
+
+vip_g$Hypoglutamatergic$p.adj <- subset(sta_lst_sig,group2=="8"&group1=="1")$p.adj
+vip_g$Hyperglutamatergic$p.adj <- subset(sta_lst_sig,group2=="10"&group1=="1")$p.adj
+
+```
+
+
+
+
+```{r fig_5, fig.show = "hold", out.height="50%",out.width="50%", results='asis'}
+
+col_op <- c("#B25D91", "#FF3F38")
+names(col_op) <- names(vip_g)
+
+sels <- c()  # Create an empty list to store plots
+
+for (i in 1:length(vip_g)) {
+  vip_g2 <- vip_g[[i]][order(vip_g[[i]]$VIP, decreasing = TRUE),]
+  vip_g2 <- subset(vip_g2, VIP > 1)
+  vip_g2$color <- names(vip_g[i])
+  sels <- append(sels, vip_g2$Metabolite)
+}
+
+
+```
+
+# Affected pathways
+
+```{r, results='asis', fig.height=4, fig.width=8}
+library(httr)
+library(KEGGREST)
+
+#Fix this, the part that calls the funciton got broken
+
+background <- read.csv("//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/metadata/background.csv")
+rows_to_remove <- grep("carnitine", background$Query)
+background <- background[-rows_to_remove, ]
+background$Query <- colnames(df_norm_lab[,-1])
+
+sels_kegg <- subset(background, Query%in%sels)
+names_sel <- sels_kegg$Query
+sels_kegg <- sels_kegg$KEGG #now we need to select these metabolites in all_pathways to make the graph we want
+names(sels_kegg) <- names_sel
+
+
+# List of compound IDs
+compound_ids <- na.omit(background$KEGG)
+
+# Base URL for KEGG API
+base_url <- "http://rest.kegg.jp"
+
+# Function to retrieve pathways for a compound
+get_pathways <- function(compound_id) {
+  request_url <- paste0(base_url, "/link/pathway/", compound_id)
+  response <- GET(request_url)
+  if (status_code(response) == 200) {
+    pathway_lines <- strsplit(content(response, "text"), "/n")[[1]]
+    pathways <- sapply(strsplit(pathway_lines, "/t"), `[`, 2)
+    return(pathways)
+  } else {
+    return(NULL)
+  }
+}
+
+# Retrieve pathways for each compound
+all_pathways <- lapply(compound_ids, get_pathways)
+all_pathways <- lapply(all_pathways,function(x) gsub("path:","",x))
+names(all_pathways) <- compound_ids
+freq <- table(unlist(all_pathways))
+
+# Flatten the list of pathways
+pathways <- na.omit(unique(unlist(all_pathways)))
+
+
+path_names <- lapply(pathways, function(x) keggFind("pathway",x))
+names(path_names) <- pathways
+
+freq <- freq[pathways]
+names(freq) <- path_names
+freq <- data.frame(freq)
+colnames(freq) <- c("Pathway","Hits")
+
+sel_sreq <- all_pathways[na.omit(sels_kegg)]
+
+paths_sel <- all_pathways[na.omit(sels_kegg)]
+names(paths_sel) <- names(na.omit(sels_kegg))
+
+paths_list <- lapply(paths_sel, function(x) data.frame(path_names[x]))
+paths_df <- data.frame(na.omit(unlist(paths_list)))
+colnames(paths_df) <- "Pathways"
+
+sel_path_names <- path_names[na.omit(unique(unlist(sel_sreq)))]
+sel_sreq <- table(unlist(sel_sreq))
+names(sel_sreq) <- sel_path_names[names(sel_sreq)]
+sel_sreq <- data.frame(sel_sreq)
+colnames(sel_sreq) <- c("Pathway","Hits")
+sel_sreq <- subset(sel_sreq, Hits>1)
+sel_sreq <- sel_sreq[order(sel_sreq$Hits, decreasing = TRUE),]
+
+gen_paths <- c("Metabolic pathways",
+"Biosynthesis of secondary metabolites",
+"Microbial metabolism in diverse environments",
+"Carbon metabolism",
+"2-Oxocarboxylic acid metabolism",
+"Fatty acid metabolism",
+"Biosynthesis of amino acids",
+"Nucleotide metabolism",
+"Biosynthesis of nucleotide sugars",
+"Biosynthesis of cofactors",
+"Degradation of aromatic compounds")
+
+cancer_paths <- c( "Pathways in cancer", "Transcriptional misregulation in cancer"," MicroRNAs in cancer", "Proteoglycans in cancer", "Chemical carcinogenesis - DNA adducts", "Chemical carcinogenesis - receptor activation", "Chemical carcinogenesis - reactive oxygen species", "Viral carcinogenesis", "Central carbon metabolism in cancer", "Choline metabolism in cancer", "PD-L1 expression and PD-1 checkpoint pathway in cancer")
+
+dig_sys <- c("Salivary secretion","Gastric acid secretion","Pancreatic secretion","Bile secretion","Carbohydrate digestion and absorption","Protein digestion and absorption","Fat digestion and absorption", "Cholesterol metabolism","Vitamin digestion and absorption","Mineral absorption")
+
+exc_sys <- c("Vasopressin-regulated water reabsorption","Aldosterone-regulated sodium reabsorption","Endocrine and other factor-regulated calcium reabsorption","Proximal tubule bicarbonate reclamation","Collecting duct acid secretion")
+
+sel_sreq <- subset(sel_sreq, !(Pathway %in% c(gen_paths, cancer_paths, dig_sys, exc_sys)))
+paths_sel <- subset(sel_sreq, !(Pathway %in% c(gen_paths, cancer_paths, dig_sys, exc_sys)))
+
+sel_sreq2 <- sel_sreq
+rownames(sel_sreq2) <- NULL
+sel_sreq2 <- column_to_rownames(sel_sreq2, var = "Pathway")
+
+human <- keggList("pathway", "hsa")
+
+human <- sapply(human, function(x) gsub(" - Homo sapiens //(human)","",x))
+sel_sreq <- subset(sel_sreq, sel_sreq$Pathway%in%human)
+
+
+all_freq <- subset(freq, Pathway%in%sel_sreq$Pathway)
+
+
+proptn <- data.frame(sel_sreq[order(as.character(sel_sreq$Pathway)),]$Hits/all_freq[order(as.character(all_freq$Pathway)),]$Hits)
+colnames(proptn) <- "Proportion"
+proptn$Pathway <- as.character(sel_sreq[order(as.character(sel_sreq$Pathway)),]$Pathway)
+rownames(proptn) <- as.character(sel_sreq[order(as.character(sel_sreq$Pathway)),]$Pathway)
+proptn <- proptn[as.character(sel_sreq$Pathway),]
+
+sel_sreq$Proportion <- proptn$Proportion
+
+p <- sel_sreq %>%
+    arrange(Hits) %>%
+    mutate(Pathway = factor(Pathway, Pathway)) %>%
+    ggplot(aes(x = Pathway, y = Hits, color=Proportion, size=4)) +
+    geom_point() +
+    coord_flip() +
+    theme(
+      panel.grid.minor.y = element_blank(),
+      panel.grid.major.y = element_blank(),
+      legend.position = "right"
+    ) +
+    theme_light() +
+    xlab("") +
+    ylab("Hits") +
+    ggtitle(c("Pathways affected by selected metabolites")) +
+    scale_color_gradient(low="#F4E3C7",high =  "#FF3200", limits=c(0,1)) +
+    guides(size = "none")
+print(p)
+
+
+paths_df <- subset(paths_df,Pathways %in%sel_sreq$Pathway)
+paths_df <- rownames_to_column(paths_df)
+paths_df$rowname <- gsub("//..*","",paths_df$rowname)
+paths_df <- subset(paths_df, rowname%in%names_sel)
+
+kable(paths_df, caption="Metabolites in selected pathways")
+
+```
+
+# Alterations in tryptophan metabolism
+
+```{r}
+
+
+tryp_mets <- c(
+"Kynurenic acid",
+"Kynurenine",
+"3-Hydroxyanthranilic acid",
+"Tryptophan",
+"Anthranilic acid",
+"5-Hydroxyindole-3-acetic acid",
+"N-Acetyl-5-hydroxytryptamine"
+)
+# aas <- c("Phenylalanine",
+# "Proline",
+# "Serine",
+# "Threonine",
+# "Tryptophan",
+# "Valine",
+# "Alanine", 
+# "Aspartic acid",
+# "Glutamine",
+# "Glutamic acid",
+# "Glycine",
+# "Isoleucine",
+# "Leucine",
+# "4-hydroxyphenyllactic acid",
+# "Ornithine"
+# )
+aas <- c(
+"Proline",
+"Serine",
+"Threonine",
+"Valine",
+"Alanine", 
+"Aspartic acid",
+"Glycine",
+"Isoleucine",
+"Leucine")
+
+
+
+lcp4 <- c("#95C65C","#B25D91","#FF3F38")
+
+# joined_df <- join_all(sta_lst_sig[c("Hyperglutamatergic","Hypoglutamatergic")], by="group2", type = "full")
+joined_df <- sta_lst_sig
+joined_df <- subset(joined_df, variable%in%tryp_mets)
+vg <- log_df1[log_df1$variable %in% joined_df$variable, ]
+colnames(vg) <- c("rowname","Label","variable","log2 Concentration")
+vg$Label <- factor(vg$Label, levels=c("1","8","10"))
+maxim_val <- apply(df_norm_lab4[, which(colnames(df_norm_lab4)%in%tryp_mets)], 2, max)
+maxim_val <- maxim_val + 0.5
+joined_df$y.position <- c(sapply(maxim_val, function(x) rep(x,3)))
+
+four4 <- ggboxplot(vg, x = "Label", y = "log2 Concentration", color = "Label", facet.by = "variable", fill = "Label", alpha=0.4) + geom_point(aes(color = vg$Label)) +
+  facet_wrap(~ variable, scales = "free", ncol = 4) +
+  stat_pvalue_manual(joined_df, label = "p.adj.signif", y.position = "y.position",hide.ns = TRUE,step.increase = 0.2,bracket.nudge.y = -1) +
+  labs(title = "Alterations in tryptophan metabolism") +
+  theme(
+axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank()
+) +
+   scale_color_manual(values = lcp4, labels = c("Control","Hyperglutamatergic","Hypoglutamatergic")) +
+  scale_fill_manual(values = lcp4, labels = c("Control","Hyperglutamatergic","Hypoglutamatergic"))
+print(four4) 
+
+
+ggsave(file="//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/paper/Figures/4.jpeg",plot=four4,       width = 300, 
+       height = 200, 
+       units = "mm", dpi = 300, scale = 0.8) 
+
+
+```
+# Alterations in tryptophan metabolism
+
+
+
+```{r,fig.height=9,fig.width=10,results='hide'}
+
+# 
+# filtered_pathways <- lapply(all_pathways, function(x) if ("map02010" %in% x) x)
+# filtered_pathways <- filtered_pathways[!sapply(filtered_pathways, is.null)]
+# 
+# trnsp <- subset(background, KEGG %in% names(filtered_pathways))$Query
+# trnsp <- trnsp[!trnsp%in%amin]
+# 
+# joined_df <- join_all(sta_lst_sig[c("Hyperglutamatergic","Hypoglutamatergic")], by="group2", type = "full")
+# joined_df <- subset(joined_df, variable%in%trnsp)
+# maxim_val <- apply(df_norm_lab4[, which(colnames(df_norm_lab4)%in%trnsp)], 2, max)
+# vg <- log_df1[log_df1$variable %in% joined_df$variable, ]
+# colnames(vg) <- c("rowname","Label","variable","log2 Concentration")
+# pg <- ggboxplot(vg, x = "Label", y = "log2 Concentration", fill = "Label", facet.by = "variable") + geom_point() + 
+#   facet_wrap(~ variable, scales = "free", ncol = 4) +
+#   stat_pvalue_manual(joined_df, label = "p.adj.signif", y = maxim_val-0.01, step.increase = 0.01) +
+#   labs(title = "Alterations in other substrates of ABC transporters") +
+# theme(
+# axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank()
+# ) +
+#    scale_fill_manual(values = lcp4, labels = c("Control","Hyperglutamatergic","Hypoglutamatergic")) 
+# print(pg)
+
+```
+
+```{r}
+vip_p <- vip_g
+sels_r <- vip_p$Hyperglutamatergic$Metabolite[vip_p$Hyperglutamatergic$p.adj < 0.05 | vip_p$Hyperglutamatergic$VIP > 1]
+sels_g <- vip_p$Hypoglutamatergic$Metabolite[vip_p$Hypoglutamatergic$p.adj < 0.05 | vip_p$Hypoglutamatergic$VIP > 1]
+# comp_meds <- median_values_t[median_values_t$variable%in%amin,]
+# aa_comp <- pivot_wider(data = comp_meds, names_from = Label, values_from = value)
+# colnames(aa_comp) <- c("Metabolite","Control","Hypoglutamatergic","Hyperglutamatergic")
+
+
+
+```
+
+
+```{r}
+df_metg <- df_norm_lab[,c("Label",union(sels_r,sels_g))] 
+# df_metg <- subset(df_metg,Label%in%c(1,10,2,12,8))
+df_metg <- data.frame(t(df_metg),check.names = FALSE)
+mat_allg <- as.matrix(df_metg)
+lab <- data.frame(as.factor(mat_allg[1,]))
+lab$as.factor.mat_allg.1.... <- gsub(12,"STXBP1  ",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub(2,"CDKL5  ",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub(10,"MeCP2  ",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub(1,"Control  ",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub(8,"GRIN  ",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub("STXBPControl    ","STXBP1  ",lab$as.factor.mat_allg.1....)
+colnames(lab)<-"Label"
+lab$Label<- factor(lab$Label,levels = c("Control  ","MeCP2  ","CDKL5  ", "STXBP1  ", "GRIN  "),ordered = TRUE)
+
+mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
+
+library(viridis)
+library(pheatmap)
+
+lc <- c("#95C65C","#C70E7B","#808B96","#46dbf2","#F19743")
+names(lc) <-  levels(lab$Label)
+lc <- list(Label = lc)
+
+
+
+```
+
+```{r, hc2_nowitspersonalr, , results='asis', fig.height=5, fig.width=7}
+df_metr <- df_norm_lab[,c("Label",sels_r)] 
+df_metr <- subset(df_metr,Label%in%c(1,10,2))
+df_metr <- df_metr[order(make.names(rownames(df_metr))),]
+metdat <- metdat[order(metdat$COS.Code),]
+rownames(df_metr) <- subset(metdat,metdat$COS.Code%in%make.names(rownames(df_metr)))$ID
+df_metr <- data.frame(t(df_metr),check.names = FALSE)
+mat_allr <- as.matrix(df_metr)
+conds <- c("Hypoglutamatergic","Control")
+labr <- data.frame(as.factor(mat_allr[1,]))
+labr$as.factor.mat_allr.1.... <- gsub(2,"CDKL5  ",labr$as.factor.mat_allr.1....)
+labr$as.factor.mat_allr.1.... <- gsub(10,"MeCP2  ",labr$as.factor.mat_allr.1....)
+labr$as.factor.mat_allr.1.... <- gsub(1,"Control  ",labr$as.factor.mat_allr.1....)
+colnames(labr)<-"Label"
+labr$Label<- factor(labr$Label,levels = c("Control  ","MeCP2  ","CDKL5  "),ordered = TRUE)
+
+mat_allr <- apply(mat_allr[-1,],c(1,2),as.numeric)
+
+lcr <- c("#95C65C","#C70E7B","#808B96")
+names(lcr) <-  levels(labr$Label)
+lcr <- list(Label = lcr)
+
+```
+
+
+```{r, hc2_nowitspersonalg,  fig.height=5, fig.width=5 results='asis'}
+df_metg <- df_norm_lab[,c("Label",sels_g)]
+df_metg <- subset(df_metg,Label%in%c(1,8,12))
+df_metg <- df_metg[order(make.names(rownames(df_metg))),]
+metdat <- metdat[order(metdat$COS.Code),]
+rownames(df_metg) <- subset(metdat,metdat$COS.Code%in%make.names(rownames(df_metg)))$ID
+df_metg <- data.frame(t(df_metg),check.names = FALSE)
+mat_allg <- as.matrix(df_metg)
+conds <- c("GRIN","Control")
+labg <- data.frame(as.factor(mat_allg[1,]))
+labg$as.factor.mat_allg.1.... <- gsub(8,"GRIN",labg$as.factor.mat_allg.1....)
+labg$as.factor.mat_allg.1.... <- gsub(12,"STXBP1",labg$as.factor.mat_allg.1....)
+labg$as.factor.mat_allg.1.... <- gsub(1,"Control",labg$as.factor.mat_allg.1....)
+labg$as.factor.mat_allg.1.... <- gsub("STXBPControl","STXBP1  ",labg$as.factor.mat_allg.1....)
+colnames(labg)<-"Label"
+labg$Label<- factor(labg$Label,levels = c("Control","STXBP1  ","GRIN"),ordered = TRUE)
+
+mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
+
+lcg <- c("#95C65C","#46dbf2","#F19743")
+names(lcg) <-  levels(labg$Label)
+lcg <- list(Label = lcg)
+
+```
+
+
+```{r}
+vip_p <- vip_g
+vip_p$`Hyperglutamatergic`$diffexpressed <- "None"
+vip_p$`Hyperglutamatergic`$diffexpressed[vip_p$`Hyperglutamatergic`$VIP >= 1] <- "MVA"
+vip_p$`Hyperglutamatergic`$diffexpressed[vip_p$`Hyperglutamatergic`$p.adj < 0.05] <- "UVA"
+vip_p$`Hyperglutamatergic`$diffexpressed[vip_p$`Hyperglutamatergic`$p.adj < 0.05 & vip_p$`Hyperglutamatergic`$VIP > 1] <- "UVA+MVA"
+vip_p$`Hyperglutamatergic`$diffexpressed <- factor(vip_p$`Hyperglutamatergic`$diffexpressed, levels = c("UVA+MVA", "MVA", "UVA", "None"))
+vip_p$Hypoglutamatergic$diffexpressed <- "None"
+vip_p$Hypoglutamatergic$diffexpressed[vip_p$Hypoglutamatergic$VIP >= 1] <- "MVA"
+vip_p$Hypoglutamatergic$diffexpressed[vip_p$Hypoglutamatergic$p.adj < 0.05] <- "UVA"
+vip_p$Hypoglutamatergic$diffexpressed[vip_p$Hypoglutamatergic$p.adj < 0.05 & vip_p$Hypoglutamatergic$VIP >= 1] <- "UVA+MVA"
+vip_p$Hypoglutamatergic$diffexpressed <- factor(vip_p$Hypoglutamatergic$diffexpressed, levels = c("UVA+MVA", "MVA", "UVA", "None"))
+
+```
+
+
+```{r}
+library(patchwork)
+
+col_op <- c("#B25D91", "#FF3F38","#95C65C")
+names(col_op) <- c("Hypoglutamatergic","Hyperglutamatergic", "Control")
+
+
+
+two_e <- ggplot(data =  vip_p$Hypoglutamatergic, aes(x = p.adj, y = VIP, label=Metabolite, col=diffexpressed)) +
+  geom_vline(xintercept = 0.05, col = "darkgray", linetype = 'dashed') +
+  geom_hline(yintercept = 1, col = "darkgray", linetype = 'dashed') + 
+  geom_point(size = 3) + 
+  # geom_text_repel(aes(label=ifelse(vip_p$Hypoglutamatergic$p.adj < 0.05,as.character(vip_p$Hypoglutamatergic$Metabolite),'')),max.overlaps = 15) +
+  scale_color_manual(values = c("#9900F0", "#FF00E4", "#38E54D","grey"), # to set the colors of our variable
+                     labels = c("UVA+MVA", "MVA", "UVA", "None"), breaks = levels(vip_p$Hypoglutamatergic$diffexpressed)) +
+  theme_light() +
+  # coord_cartesian(ylim = c(0, 3.5), xlim = c(0, 3.5)) +
+  labs(color = 'Altered', #legend_title, 
+       x = "p-value", y = "VIP score", title=NULL) +
+  theme(legend.position = "bottom") +
+  xlim(c(0,1))
+
+two_f <- ggplot(data=vip_p$`Hyperglutamatergic` ,aes(x = p.adj, y = VIP,  label=Metabolite,col=diffexpressed)) +
+  geom_vline(xintercept = 0.05, col = "darkgray", linetype = 'dashed') +
+  geom_hline(yintercept = 1, col = "darkgray", linetype = 'dashed') +  
+  geom_point(size = 3) + 
+  # geom_text_repel(aes(label=ifelse(vip_p$`Hyperglutamatergic`$p.adj < 0.05,as.character(vip_p$`Hyperglutamatergic`$Metabolite),'')),max.overlaps = 15) +
+  scale_color_manual(values = c("#9900F0","#FF00E4","#38E54D",  "grey"), # to set the colours of our variable
+  labels = c("UVA+MVA", "MVA", "UVA", "None"), breaks = levels(vip_p$`Hyperglutamatergic`$diffexpressed)) +
+  theme_light() +
+  # coord_cartesian(ylim = c(0, 3.5), xlim = c(0, 3.5)) +
+  labs(color = 'Altered', 
+       x = "p-value", y = "VIP score", title=NULL) +
+  theme(legend.position = "bottom")
+
+ggsave(file="//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/paper/Figures/2C.jpeg",plot=two_e) 
+ggsave(file="//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/paper/Figures/2D.jpeg",plot=two_f)
+
+```
+
+
+```{r fig.width = 7, fig.height = 5}
+  vip_g2 <- vip_g$Hypoglutamatergic[order(vip_g$Hypoglutamatergic$VIP, decreasing = TRUE),]
+  vip_g2 <- subset(vip_g2, VIP > 1)
+  vip_g2$color <- factor(names(vip_g[1]),levels=c("Hypoglutamatergic","Hyperglutamatergic"))
+  two_c <- vip_g2 %>%
+    filter(!is.na(VIP)) %>%
+    arrange(VIP) %>%
+    mutate(Metabolite = factor(Metabolite, Metabolite)) %>%
+    ggplot() +
+    geom_point(aes(x = Metabolite, y = VIP, size = 3, color = color)) +
+    coord_flip() +
+    theme_light(base_size = 11) +
+    xlab("") +
+    ylab("VIP scores") +
+    ylim(0, 4) +
+    guides(size = "none") +
+    scale_color_manual(values = col_op[1], labels = NULL) +
+    theme(legend.position = "none")
+  
+  vip_g2 <- vip_g$`Hyperglutamatergic`[order(vip_g$`Hyperglutamatergic`$VIP, decreasing = TRUE),]
+  vip_g2 <- subset(vip_g2, VIP > 1)
+  vip_g2$color <- factor(names(vip_g[2]),levels=c("Hypoglutamatergic","Hyperglutamatergic"))
+  two_d <- vip_g2 %>%
+    filter(!is.na(VIP)) %>%
+    arrange(VIP) %>%
+    mutate(Metabolite = factor(Metabolite, Metabolite)) %>%
+    ggplot() +
+    geom_point(aes(x = Metabolite, y = VIP, size = 3, color = color)) +
+    coord_flip() +
+    theme_light(base_size = 11) +
+    xlab("") +
+    ylab("VIP scores") +
+    ylim(0, 4) +
+    guides(size = "none") +
+    scale_color_manual(values = col_op[2], labels = NULL) +
+    theme(legend.position = "none") 
+
+ggsave(file="//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/paper/Figures/2C.jpeg",plot=two_c) 
+ggsave(file="//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/paper/Figures/2D.jpeg",plot=two_d)   
+
+```
+
+
+```{r}
+two_g <- pheatmap(mat_allr, annotation = labr,clustering_method = "ward.D2",fontsize = 10,show_colnames = TRUE,show_rownames = TRUE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = FALSE,annotation_legend = FALSE)
+
+two_h <- pheatmap(mat_allg, annotation = labg,clustering_method = "ward.D2",fontsize = 10,show_colnames = TRUE,show_rownames = TRUE, border_color = NA, annotation_colors = lcg, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = FALSE,annotation_legend = FALSE)
+
+ggsave(file="//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/paper/Figures/2G.jpeg",plot=two_g) 
+ggsave(file="//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/paper/Figures/2H.jpeg",plot=two_h) 
+
+# plot(pd_g$Hypoglutamatergic,typeVc ="x-score",plotSubC="Hypoglutamatergic",parPaletteVc=c("#95C65C","#B25D91"))
+# plot(pd_g$`Hyperglutamatergic`,typeVc ="x-score",plotSubC="Hypoglutamatergic",parPaletteVc=c("#95C65C","#FF3F38"))
+
+rt <- factor(subset(df_norm_lab4,Label%in%c(1,10))$Label)
+gr <- factor(subset(df_norm_lab4,Label%in%c(1,8))$Label)
+opdf <- data.frame("lab"=rt,"x"=pd_g$Hypoglutamatergic@scoreMN,"y"=pd_g$Hypoglutamatergic@orthoScoreMN)
+opdf2 <- data.frame("lab"=gr,"x"=pd_g$`Hyperglutamatergic`@scoreMN,"y"=pd_g$`Hyperglutamatergic`@orthoScoreMN)
+
+# par(mfrow=c(1,2))
+two_a <- opdf %>%
+  ggplot(aes(x=p1,y=o1,color=lab)) +
+  geom_point() +
+  stat_ellipse(geom = "polygon",
+               aes(fill = lab), 
+               alpha = 0.25,
+               level = 0.8) +
+  coord_fixed(xlim = c(-10,10),ylim=c(-5,5)) +
+  theme_minimal() +
+  ggtitle(paste("OPLS-DA", "SCORE PLOT ",collapse="\n")) +
+  scale_color_manual(values=c("#95C65C","#B25D91"),labels=c("Control","Hyperglutamatergic")) +
+  scale_fill_manual(values=c("#95C65C","#B25D91"),labels=c("Control","Hyperglutamatergic")) +
+  theme(legend.title = element_blank())
+
+two_b <- opdf2 %>%
+  ggplot(aes(x=p1,y=o1,color=lab)) +
+  geom_point() +
+  stat_ellipse(geom = "polygon",
+               aes(fill = lab), 
+               alpha = 0.25,
+               level = 0.8) +
+  coord_fixed(xlim = c(-10,10),ylim=c(-5,5)) +
+  theme_minimal() +
+  ggtitle(paste("OPLS-DA", "SCORE PLOT ",collapse="\n")) +
+  scale_color_manual(values=c("#95C65C","#FF3F38"),labels=c("Control","Hypoglutamatergic")) +
+  scale_fill_manual(values=c("#95C65C","#FF3F38"),labels=c("Control","Hypoglutamatergic")) +
+  theme(legend.title = element_blank())
+
+ggsave(file="//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/paper/Figures/2A.jpeg",plot=two_a) 
+ggsave(file="//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/paper/Figures/2B.jpeg",plot=two_b) 
+
+# op <- wrap_elements(two_a + two_b + plot_annotation(tag_levels = 'A') + plot_layout(guides = "keep",widths = c(1,1),heights = c(1,1)) & theme(legend.position = 'bottom'))
+
+# two_g <- wrap_elements(as.grob(two_g))
+# two_h <- wrap_elements(as.grob(two_h))
+# 
+# 
+# (op/(two_c|two_d)/(two_e|two_f)/(two_g|two_h)+plot_annotation(tag_levels = 'A'))
+
+```
+
+```{r}
+
+# df_norm_lab6 <- df_norm_lab4[,c("rowname","Label",aas)]
+# log_df_aa <- melt(df_norm_lab6[,-1],id.vars = "Label")
+# man <- manova(cbind(Phenylalanine, Proline, Serine, Threonine, Tryptophan, Valine, Alanine, `Aspartic acid`, Glutamine, `Glutamic acid`, Glycine, Isoleucine, Leucine)~Label,df_norm_lab6)
+# 
+# summary(man)
+# summary.aov(man)
+# 
+# an <- aov(value~Label*variable,log_df_aa)
+# summary(an)
+# summary.aov(an)
+```
+
+
+```{r}
+library(psych)
+
+metdat_char <- read.csv("C:/Users/killescas/OneDrive - San Juan de Dios/Desktop/TESIS/LCR/metabolomica/meds_5h.csv",sep=";")
+metdat_char <- metdat_char[complete.cases(metdat_char),]
+metdat_char <- metdat_char %>%
+  column_to_rownames(var="ID")
+contab <- table(metdat_char)
+phi(contab,digits=3)
+
+
+```
+
+
+
