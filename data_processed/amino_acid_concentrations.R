@@ -1,18 +1,3 @@
----
-title: "patient_char"
-author: "Sofia Illescas"
-date: "`r Sys.Date()`"
-output: pdf_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_knit$set(root.dir = 'C:/Users/killescas/Documents/GitHub/metabolomics/LCR/metabolomica')
-knitr::opts_chunk$set(message = FALSE)
-knitr::opts_chunk$set(warning = FALSE)
-```
-
-```{r, include=FALSE}
 library(purrr)
 library(tidyverse)
 library(reshape2)
@@ -21,37 +6,28 @@ library(rstatix)
 library(ggplot2)
 library(knitr)
 library(readxl)
-```
 
-```{r}
 metdat <- read_excel("//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/Supplementary_1.xlsx",col_names = TRUE)
 
 df_list <- map(purrr::set_names(excel_sheets("//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/metabolomica/P21145_Results_final.xlsx")),
                read_excel, path = "//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/metabolomica/P21145_Results_final.xlsx",
 )
-
-
-```
-
-```{r,results='asis'}
-
 library(writexl)
 
-# write.csv(metdat[,c("ID","HC","Age","Sex","Gene","Mutation")],file="//hsjdbcn.es/dfsroot/Recursos/metabolismosinaptico/SOFIA/metabolomics_rett_grin/Supplementary_1",quote = TRUE,sep=";")
 
 aas <- c("Phenylalanine",
-"Proline",
-"Serine",
-"Threonine",
-"Tryptophan",
-"Valine",
-"Alanine", 
-"Aspartic acid",
-"Glutamine",
-"Glutamic acid",
-"Glycine",
-"Isoleucine",
-"Leucine")
+         "Proline",
+         "Serine",
+         "Threonine",
+         "Tryptophan",
+         "Valine",
+         "Alanine", 
+         "Aspartic acid",
+         "Glutamine",
+         "Glutamic acid",
+         "Glycine",
+         "Isoleucine",
+         "Leucine")
 
 df_list <- lapply(df_list,t)
 df_list <- lapply(df_list,data.frame)
@@ -85,5 +61,3 @@ library(LaCroixColoR)
 metdat <- metdat[order(metdat$Disease),]
 lcp <- lacroix_palette("Tangerine", 5, type = "discrete")
 ggboxplot(metdat, x = "Disease", y = "Age", fill = "Disease", palette = lcp[-2]) + geom_point()
-
-```
