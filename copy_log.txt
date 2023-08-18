@@ -1,0 +1,551 @@
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : jueves, 3 de agosto de 2023 17:07:44
+   Source : C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\
+     Dest : \\hsjdbcn.es\dfsroot\Recursos\metabolismosinaptico\SOFIA\Omics\01.neurodevelopmental_disorders\metabolomics\
+
+    Files : *.*
+	    
+  Options : *.* /S /E /DCOPY:DA /COPY:DAT /Z /NP /IS /IT /XX /XO /R:3 /W:5 
+
+------------------------------------------------------------------------------
+
+	                   7	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\
+	    Tweaked   		    6148	.DS_Store
+	    Tweaked   		      66	.gitattributes
+	    Tweaked   		     393	.gitignore
+	    Tweaked   		   24599	.Rhistory
+	    Newer     		       0	copy_log.txt
+	    Newer     		     682	copy_to_recursos.bat
+	    Newer     		     218	metabolomics_rett_grin.Rproj
+	                   8	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\
+	    Tweaked   		      17	COMMIT_EDITMSG
+	    Tweaked   		     344	config
+	    Tweaked   		      73	description
+	    Tweaked   		     106	FETCH_HEAD
+	    Tweaked   		      21	HEAD
+	    Newer     		    5447	index
+	    Tweaked   		      41	ORIG_HEAD
+	    Tweaked   		      46	packed-refs
+	                  13	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\hooks\
+	    Tweaked   		     478	applypatch-msg.sample
+	    Tweaked   		     896	commit-msg.sample
+	    Tweaked   		    4726	fsmonitor-watchman.sample
+	    Tweaked   		     189	post-update.sample
+	    Tweaked   		     424	pre-applypatch.sample
+	    Tweaked   		    1643	pre-commit.sample
+	    Tweaked   		     416	pre-merge-commit.sample
+	    Tweaked   		    1374	pre-push.sample
+	    Tweaked   		    4898	pre-rebase.sample
+	    Tweaked   		     544	pre-receive.sample
+	    Tweaked   		    1492	prepare-commit-msg.sample
+	    Tweaked   		    2783	push-to-checkout.sample
+	    Tweaked   		    3650	update.sample
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\info\
+	    Tweaked   		     240	exclude
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\logs\
+	    Tweaked   		    1041	HEAD
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\logs\refs\
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\logs\refs\heads\
+	    Tweaked   		    1041	main
+	    Tweaked   		    3748	master
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\logs\refs\remotes\
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\logs\refs\remotes\origin\
+	    Tweaked   		    1312	HEAD
+	    Tweaked   		     978	main
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\
+	                   5	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\00\
+	    Tweaked   		     174	1293b4d1f7df15814f595fb49237be8acc6ba3
+	    Tweaked   		     767	296aad2a8bbfc3bddeb4ca7817bea3384cf442
+	    Tweaked   		     177	576a83b0779ef1bc4b80bd8efaf9944c08b525
+	    Tweaked   		    2087	78aedef827da1dc45f9737be317fe5eec9e36d
+	    Tweaked   		      93	eb322369fb4be55f2adb34e5e9718a78572e35
+	                   5	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\02\
+	    Tweaked   		     186	055e894bcee059a7f67576ba998ac13b723f4d
+	    Tweaked   		      33	28baad4891683e910234af2eb8c858c45762ce
+	    Tweaked   		     296	3a3e061f7936ca783e9d5cd1213c0006ee951a
+	    Tweaked   		   44204	6727d040caa1247e0e7d33efe9dc91cb3fc6bf
+	    Tweaked   		   86716	908c2e7145b9d9b26ea8ae80f32cf46fadba37
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\03\
+	    Tweaked   		     204	13d843aae4420b9441ae9faa1fe0cf98602fa1
+	    Tweaked   		     116	dc0c79a883df7f7c5072614eb6de53ec36041e
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\04\
+	    Tweaked   		   52669	78fd431448f86a8b133c2549489bf47bb0fb4c
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\05\
+	    Tweaked   		     676	04336fcb17274d90bc0c4cabb94ef05ee13d9a
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\07\
+	    Tweaked   		     814	13179c2f80c16d6c5c710ae46e85b65d61b4eb
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\08\
+	    Tweaked   		     116	6fe5d3086559634f4a602a0b1210d3f6c8ba63
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\0b\
+	    Tweaked   		    8895	a5330c6043c8467da5ca736e65091486eb0f46
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\0d\
+	    Tweaked   		    1105	05fd93b83700ca35d01754f03ed5145049bd6b
+	    Tweaked   		     183	a38b8efdc86e84e8389aff15330ba99ec15810
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\0e\
+	    Tweaked   		    5144	bed6cbe164beb703b91ab75ced9083d7b5f9df
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\11\
+	    Tweaked   		   41162	98f2a0f368967c2c1e4866ef3d4002e8b58817
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\12\
+	    Tweaked   		  306704	9d1913c14c4e0c3d0f0ce0015ba8ff97e2f796
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\13\
+	    Tweaked   		    2085	89d5e28432027c95870c9368ed4b9b31c44dd8
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\14\
+	    Tweaked   		     149	7b74bbb10185f7f64af6fa4fa9640d2591a532
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\15\
+	    Tweaked   		     741	8f2abc646fbb6e52319bc8d3e1f39af29e2b2e
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\16\
+	    Tweaked   		    9366	36dcdccedf5ee2afe66fbda38f5da44767822d
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\17\
+	    Tweaked   		      97	58eb2eb7d31b7a7dfc4f9ded6c07f8eb06f76b
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\18\
+	    Tweaked   		      54	d93b636d70a2ae396087449f0a8277af33e8bf
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\1b\
+	    Tweaked   		   16204	7697be8611c34224ce161a5b0a726e95a2945e
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\1c\
+	    Tweaked   		     326	6d6653e2b57d613b7c8772b2106fb41f5bdedd
+	    Tweaked   		     643	e6357f46d94ed03a6ed3990826d0414075e2cd
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\1e\
+	    Tweaked   		   53744	0d78f876a3a4f47a5ce9652afbbe306e619acc
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\24\
+	    Tweaked   		     834	39b8aa79442b1931892a5a945f4b63708220ba
+	    Tweaked   		     178	9de7f94bb2d673044589ba381ca5ba55842f5b
+	    Tweaked   		      93	ddfb0c0eb167b9c02f64ff40c3847fbae87743
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\27\
+	    Tweaked   		     901	cd6e87d92272df4e1f14e7c36ecb2d4416287e
+	    Tweaked   		     728	cf34e890ef0f4b80622eaf838fd23128b32b64
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\2a\
+	    Tweaked   		    4355	7ede4fa74e306b52dbc6bda9fd982d0c608a34
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\2c\
+	    Tweaked   		      92	835c6a235a5fe24805d1dcb8eb8607233dd7c2
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\2d\
+	    Tweaked   		   19221	0c65a9a92606ee5ae9f84dc8a2657bdcb4f04e
+	    Tweaked   		   60582	906c3c528fc417cb1fbdf8120592a5b7a84182
+	    Tweaked   		     101	de5d2d3e5d6573cc8e760fb8ab259e9a91f152
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\30\
+	    Tweaked   		      97	c640dba2f19e0b7a79fffe7465d3dca8306483
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\32\
+	    Tweaked   		  375430	8d88e372e565f50ee450a4f383d8e7fa4589a1
+	    Tweaked   		    1120	b0988dc7d8b6a1eb5f32d30aae70b0dddae0a7
+	    Tweaked   		  136128	bfb17af7058c78a3ce24d36f5080c78db5ce00
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\34\
+	    Tweaked   		    9293	371f3f6b0491646a5f0c9cba30959f2fae9c51
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\35\
+	    Tweaked   		     169	8eecc34f29efbe9a8587ca40b5ba2d1222f072
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\36\
+	    Tweaked   		     173	9acf2e8e3d2cd32ba54d6f7b67d20dcb4ba98b
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\37\
+	    Tweaked   		     116	08eef2f0500a33ed679ff03a2c0cebf4c0923e
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\38\
+	    Tweaked   		     144	ff9177e3b259389084f4cd6c8e107b53000a8e
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\3a\
+	    Tweaked   		  429406	32cc2828acf3efaaf3007842c45d35a4952a1d
+	    Tweaked   		    1862	a6cb8c28c5cb643bc03d19d99252c075e43cca
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\3b\
+	    Tweaked   		    1144	1adcdd7e43f4001eaac58ff509285186215cc3
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\3c\
+	    Tweaked   		     177	7f30237acb715040438d91405b2b3eb973a2ff
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\3f\
+	    Tweaked   		   13791	005030954fe0627199b9d0197177bdb8ae6135
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\44\
+	    Tweaked   		    3087	03efb84ee66539325bcfcd25fbcddf6274509d
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\45\
+	    Tweaked   		     115	7a515be5b2afd2a691652087f90870f9e49878
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\46\
+	    Tweaked   		    2084	60087df08b08a57daced3b8c5a4199f06df990
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\47\
+	    Tweaked   		     115	9bb446564589bb0792f001d558cbf7463ef08e
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\48\
+	    Tweaked   		      99	0a50eb28b02bf1b296ed5bd9dedf8335b9ff21
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\49\
+	    Tweaked   		     187	30543c859e1273592ca438ec584381c806aa5b
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\4a\
+	    Tweaked   		    2175	b57a91a41fa1601b869c412935725982aa5642
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\4c\
+	    Tweaked   		    9176	12cd2cf44e83dc5959314b43a747c3817741ad
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\4d\
+	    Tweaked   		     116	b6ccc1dd1cd4688ab8ef8a42b1582410a56d66
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\4e\
+	    Tweaked   		   10455	8869f155f99526b0b01453111da3fd3f32d5ad
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\4f\
+	    Tweaked   		  326128	0acb674954e7d84dfc026e93bb915c1bc7f421
+	                   4	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\50\
+	    Tweaked   		     396	561ede549fd8924c6679993797fc69925a90cc
+	    Tweaked   		     834	7686bae6cd5fdef0d5c0feb9b2df8ddc4f3886
+	    Tweaked   		     864	8b645e074d2c54e0f5c9cc5250c216c1fda78a
+	    Tweaked   		      93	cb1726f4609760c51ad8cd08d9dc043c03e7b9
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\51\
+	    Tweaked   		      92	d11dfb5e4c2c35de183c8667daa0573aed5874
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\54\
+	    Tweaked   		     116	0078fe63ffb5de589abb8a6256d541810bcf54
+	    Tweaked   		      92	3c1054b027bce240ec16c3aad79d526c45a725
+	    Tweaked   		     218	51750e5e23a4597dfa2326b6a51975c4510d1b
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\55\
+	    Tweaked   		      93	894e9dd081d14ed1f23633578c8ca607ac3e51
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\57\
+	    Tweaked   		   20219	c292bf515bf729aace1f190d3562ebeaa4da12
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\58\
+	    Tweaked   		     184	b4de3f1a3bcecf2cfd0766fd49d94bd5dd2c68
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\59\
+	    Tweaked   		     543	305d8111d564387800a3149f2bb05965e52f41
+	    Tweaked   		      93	449dd61657b338da63ff92e7e287c2be7ae1f5
+	    Tweaked   		     171	fac7afeeb50c2ad519740abae980f2a0a3ed3f
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\5c\
+	    Tweaked   		     115	b4dd2a44c680b08567cbf6c3b90cc6fa1a25b1
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\5d\
+	    Tweaked   		     176	3e14cad8f4ae6cbe08641db775295517d4fe44
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\5f\
+	    Tweaked   		     113	4b94857162b232d35796c662862e48d4ff664c
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\60\
+	    Tweaked   		     144	9546b7945feb5e6c9c2a998b1501774b1ccd5e
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\62\
+	    Tweaked   		     439	a05d9de1d0568ba6e044d9a56bef6877fdc768
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\63\
+	    Tweaked   		     261	3530bda86ffb9deaeb1f91be3d119e9dae66b5
+	    Tweaked   		     171	85660aeaa509fa0896bf32c14dbb650031f5ac
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\64\
+	    Tweaked   		     116	f303cfd50f811b953d58bd39ec2c56455c7666
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\67\
+	    Tweaked   		    2082	6f4a5b0c27351183aa2523db6bbf5dc70eff0f
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\68\
+	    Tweaked   		  344934	4fa041db5ac55a6799f1f49c99c6f3ab142cda
+	    Tweaked   		   1.1 m	dbed2613f2b5da49a8c120f5785b75fededac5
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\69\
+	    Tweaked   		     749	2a86469fc0d086e938f8e8acdad20556eef63e
+	    Tweaked   		     177	5ff10a1cff40f35c8607a84aa2da6c74cd86c9
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\6c\
+	    Tweaked   		      98	d737a4ae94892d3f1964f6f1647d0d578113ea
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\6f\
+	    Tweaked   		     173	3fe9d42b7e9194957d726dca3982807b0eab40
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\74\
+	    Tweaked   		     187	c2f18db7abd3dbc67fe59ab839d07092b3cc5a
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\75\
+	    Tweaked   		    8347	3460e260aa278ee27681d03bea9c305c7969f3
+	    Tweaked   		     116	9de0924afaa7c4a13b41a7b7055e9dfbbc5dc0
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\76\
+	    Tweaked   		      98	28d7d66ef5d425ee322dc88deca330c66190d1
+	    Tweaked   		    1673	8b8ea4c28c5895ebc7bab497a11b65ad621439
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\77\
+	    Tweaked   		     115	bb3a901bd45fdd52ef1c0b74bb0775297444f8
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\78\
+	    Tweaked   		    8892	9c18eea77ea85eebafd3bceaba5993c433308b
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\79\
+	    Tweaked   		      93	30b11afb4403eb35bda3288ed6a5c1edace91e
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\7b\
+	    Tweaked   		     116	11861fbfd4798ed75a92dcc5425180cfb0bed2
+	    Tweaked   		  102976	da2eb6e2e738764643d2e3d7a396701db1113d
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\7c\
+	    Tweaked   		     768	3abc2ac6c09dcb13d4fe056188f931bdf23487
+	    Tweaked   		  391540	df7d3bc82eba8a8ef98a1b0c391636ecde6a9e
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\7d\
+	    Tweaked   		     768	280bdee87652eeee432a8b36f7c179b2f10eec
+	    Tweaked   		   13674	740f9c9d9a00f5393b13d5ad69abe8719ed9c0
+	    Tweaked   		     188	94f9181c3dc6de9f4afed259ea9ef31c6bf9a3
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\7e\
+	    Tweaked   		  321862	533d0ad618e71919dec6a9ef0acb996c7d4457
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\81\
+	    Tweaked   		   39425	b83676b981d5f289aa2d6d175b53bbf3a641ba
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\84\
+	    Tweaked   		  205713	251fa416af8162ac2485308e67f253e969f693
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\85\
+	    Tweaked   		     170	5ecc5bbc06b7108d0fd375d64f2070f491ebea
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\86\
+	    Tweaked   		     741	03604fcf269775748b6f35fdc12ec65202bad4
+	    Tweaked   		      99	2a7b5a63ecc2fd661a891035f95447e8842ae8
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\87\
+	    Tweaked   		   94000	cde788153fe9f6b79b269daf3a99fd285ecad1
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\8a\
+	    Tweaked   		      97	0af4578646bcc5a451f33d64606035cd5b81f8
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\8d\
+	    Tweaked   		  360715	92f0432a7f8a432173aace3af3f82dadcc2177
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\8e\
+	    Tweaked   		     160	3c2ebc99e2e337f7d69948b93529a437590b27
+	    Tweaked   		    9223	45e661d90278bf452c41426644f802e26f0ed2
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\90\
+	    Tweaked   		     115	09bbbe2f91ec344987f718fed70df9ac2846d1
+	    Tweaked   		    6625	cf98abdcd6725dea4da815be2733c95fb855a6
+	    Tweaked   		     115	ef8eb0577d8457d6c383474a90cd4f90c3de41
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\91\
+	    Tweaked   		      42	1fc77bbf7c502ec8861af2e39a2fb86875f668
+	    Tweaked   		     116	c5d6f1480e829f7df5b6e46c4810362a5bacb7
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\92\
+	    Tweaked   		    1107	2e08aa66f772bc365014fb77360f6ff18f8b41
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\93\
+	    Tweaked   		    1406	cec6d1faf92d5b552ed904c172122d120d6f97
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\94\
+	    Tweaked   		   32536	e203d9e270319af497b20ae6f128905d8e7ab9
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\95\
+	    Tweaked   		     798	3b650e4e21a90c293e3178076b3ff2a03d8dde
+	    Tweaked   		     717	7095ee51c5f02ecb6afaaa414540a39916aaa6
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\96\
+	    Tweaked   		     631	52b22c4ee8cadeed8b8e7a8bb71d4d5029f061
+	    Tweaked   		     366	954c4bd680c80f1aca9a01e986739629a5fea8
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\97\
+	    Tweaked   		     115	30d753535bb5e04c8e0301f3fdee045bf7393a
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\99\
+	    Tweaked   		      93	b597eb848db03d6ceba9cdfab7e4cec5665644
+	    Tweaked   		    3363	eb4ab5923d90c837b70d31bf180b1157a04368
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\9a\
+	    Tweaked   		    7514	83bc41e5a42a88ac68600bdbe47b6cd70b6c38
+	    Tweaked   		    6761	c17f849c924fb8a23d8e8897ee654460a0c777
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\9b\
+	    Tweaked   		     814	0927f7a2b0e776007d81c444d8934693b98a2d
+	    Tweaked   		   49507	b8a925062421bf5e5e247668890a5f5ae4901e
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\9e\
+	    Tweaked   		    6686	dd96d7753958bd18f5c19674680f7b364c9d11
+	    Tweaked   		   10203	f2f6e698b88eae93c85f745c66ffac07f60785
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\9f\
+	    Tweaked   		    5983	33e208d80723066c638426b32421f38da47c4e
+	    Tweaked   		    7638	63b38ccc9db4a93f4e5ca9610c30fd16e8318a
+	    Tweaked   		      92	9f781dd53a9f81976cea6b1733e2da7036de77
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\a1\
+	    Tweaked   		      93	197f6cd064e7aed831718723811f70cfed5846
+	    Tweaked   		    2169	1cf8119e41edfe4e2b4a9501e378bdd78a9c05
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\a4\
+	    Tweaked   		    2172	44f9d0880231eab6e5896546e97c7c1ed83f55
+	    Tweaked   		     145	e770dd9cc1f26f3894bcf5952b07bc595782be
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\aa\
+	    Tweaked   		    9129	ca3bf67048b11c00e6b111704d5176f194b89c
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\ab\
+	    Tweaked   		      92	6f11a5654038d63de2094620e20fe0ae342b0b
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\b0\
+	    Tweaked   		     780	8c626dcd330026d84feccbd099368ec44d75fa
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\b1\
+	    Tweaked   		     169	a780c11a3a66707630f3ec05aadf64715b7b69
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\b2\
+	    Tweaked   		  403484	222eafd9015756a89ebd103a2a8fb9d6f56b3a
+	    Tweaked   		    9708	6cdfff38fa0ab1841d726b20995bcf8fd614fe
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\b4\
+	    Tweaked   		     116	244f2f26532f508c681f68eacc4371c92988d9
+	    Tweaked   		   44699	f6906f68778284eb646f1cbdf1b17335b3c8a6
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\b6\
+	    Tweaked   		  194685	2d15c1b6c7eb1fba16be37019362418a6dcc76
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\b7\
+	    Tweaked   		   11783	2155dd4a46d5941abb3f733671467fc4f80f10
+	    Tweaked   		      92	9d056df029b1d2e173bcb3e368d68412c0e059
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\b9\
+	    Tweaked   		     749	a17365d2bf01824f6f966eeed7a86dfaded714
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\ba\
+	    Tweaked   		      69	6f31f6eac4b69126957aebf2e13297e4c0404a
+	    Tweaked   		   12050	cceef9bea8430072c301c6564d9247171af08d
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\bb\
+	    Tweaked   		    8889	521db4f9423060dd422051cefad19f7f372866
+	    Tweaked   		      96	c788cd33c7643025e61fa80d5d1f4facc8f7b2
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\bd\
+	    Tweaked   		    6405	e6bd4f05997bb43b37cf920d1218d4b3922d0e
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\c1\
+	    Tweaked   		     101	13e10f72f7b8c684760c4018f65e7a9eeb387d
+	    Tweaked   		      93	d1df39b96b48722a0244071dfe66c9291a85bd
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\c3\
+	    Tweaked   		  109766	fbc201d4a4f7c6034d4b8a1c60beff15ef7785
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\c4\
+	    Tweaked   		      93	17444311ab37f946c8698a49638c297c89df8e
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\c5\
+	    Tweaked   		     101	693137781b77f450cf59799dc2c4a640b1fbdf
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\c8\
+	    Tweaked   		  143208	0a0d52400b73eba076a70433d452eb6e0d1ade
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\ca\
+	    Tweaked   		     834	1c93a03581ec0b343c0bf44b44e54627d5f8dd
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\cb\
+	    Tweaked   		      95	8bbfe0282d57eaa4dcb060c53310be1b5b9eff
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\ce\
+	    Tweaked   		    7567	513f87a811b1d3a6fc35a32d611329bbbc4475
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\cf\
+	    Tweaked   		  328582	87d8b55725e6aada967c08a57d0c0656908b3c
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\d0\
+	    Tweaked   		   20550	b808b5239bc10d6ba6ea29354bf13fe622a3fa
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\d1\
+	    Tweaked   		     741	fff528225eaaee3091dd989271d96cd0cf37f4
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\d2\
+	    Tweaked   		     143	57dea84afdf09966d631b244f0367aaeb6bbf3
+	    Tweaked   		     176	b9c73664d073a9f95e5ca0faa641a1ffb6866f
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\d3\
+	    Tweaked   		   59231	5edb616bd66bf76949c075c487c1bbea52b5e1
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\d5\
+	    Tweaked   		     113	8503176bc48e26e7e1f71e6379030319c390ce
+	    Tweaked   		     116	fc3d8bd3bae8060d118e9734b00a520e433b7f
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\d6\
+	    Tweaked   		   16509	254d3cce01d95148fc2f8a4e1f2856d9bb3aa1
+	    Tweaked   		     115	2eb2149c5046c5ded437f259d41ecfb92a87f1
+	    Tweaked   		      93	4f3271d617c40f8396a9f1cf1741bb5dfa8b55
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\d8\
+	    Tweaked   		  746803	7545be06712a0cefd44c0eb126d5c216923618
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\dd\
+	    Tweaked   		    9180	db8a74806e2d5902440dc2742e155938b31845
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\de\
+	    Tweaked   		     115	c7612eb0fc85effe2cb99a163dcc6caaa48419
+	                   4	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\df\
+	    Tweaked   		    1145	975cdc17872f1c991cc19058b56c0088fec04b
+	    Tweaked   		   11476	ae9c9e5e42fcb9a4250e0307cb9e7cafde84ff
+	    Tweaked   		    7635	be7234ce030ccc8693a156abf644311b62fce7
+	    Tweaked   		      76	e0770424b2a19faf507a501ebfc23be8f54e7b
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\e0\
+	    Tweaked   		  391804	9fd68de5eadd03834bbcff589552d3d1407a99
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\e1\
+	    Tweaked   		  140060	2cc644db043f288ee41cc8a1c17f2b960648c1
+	    Tweaked   		     463	be36ef31a86c80be70dadf2c2686238c5a72bf
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\e2\
+	    Tweaked   		      93	6cfa7527ad5cba72a18a852b82774f234b4183
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\e3\
+	    Tweaked   		     179	68971ff3efb81e4bc993c866973fa7ea0fe981
+	    Tweaked   		     168	ca4c2f6dbf3e9022922c4f9ed8b2d4266e6531
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\e6\
+	    Tweaked   		  364148	20507a0191410620a8118b7ef9e2276e67e73e
+	    Tweaked   		      92	45ca8fb7d155cbf324172f7ea8959600f10836
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\e7\
+	    Tweaked   		      92	8f30d16299515931f77d12b175eaabb9f6ba89
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\ea\
+	    Tweaked   		     101	4c7f3904e9e0f55fabe07f9caf3dc1336e2af5
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\ed\
+	    Tweaked   		     181	d65157706bbf407fdb81279f68f6692bfa4db1
+	                   4	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\f0\
+	    Tweaked   		    5356	4ff0199807b30e97f7d8f5726a37990fa30523
+	    Tweaked   		     394	69d5b7e11e1e84957071a5f4f63860e75739b7
+	    Tweaked   		     123	a5a6c916b0a7105e768c9c0cfdda63785d90f9
+	    Tweaked   		     176	b69f7ef430e46e24aae8d4067892c5c2f8d046
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\f4\
+	    Tweaked   		   10800	27443852a351203d51047b057cfa3da66e289f
+	    Tweaked   		   95731	fc2fd5fa148e82763853ebb4195093729994b8
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\f7\
+	    Tweaked   		      93	56ba2043f1cc46444f392a7d80bafc045ba87c
+	    Tweaked   		     351	64b8d169e2b2716c560f3251b19a6804568767
+	    Tweaked   		    1658	f958de7e9ae72ea7a66067a527883cf7fefc06
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\f9\
+	    Tweaked   		     185	f5b0106df2d2d2664e7eee6cfb92208cb93edb
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\fb\
+	    Tweaked   		   56307	3d5e3ec3071963a97a04843a18ebe639d5d645
+	    Tweaked   		     394	a1dc3dc62be75d9040b1dc025fab9f59be4ef0
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\fc\
+	    Tweaked   		    1504	d9103a347effa8c2e3b827000691f127171ff1
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\fd\
+	    Tweaked   		  178006	fc8b4ccf67f46778826c900a2126baeb0a4494
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\info\
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\objects\pack\
+	    Tweaked   		   19328	pack-7576c41651270bc30af2b8d2076b1886f4ef2419.idx
+	    Tweaked   		  45.3 m	pack-7576c41651270bc30af2b8d2076b1886f4ef2419.pack
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\refs\
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\refs\heads\
+	    Tweaked   		      41	main
+	    Tweaked   		      41	master
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\refs\remotes\
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\refs\remotes\origin\
+	    Tweaked   		      30	HEAD
+	    Tweaked   		      41	main
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.git\refs\tags\
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\
+	    Tweaked   		     199	build_options
+	    Newer     		       5	rmd-outputs
+	    Newer     		      27	saved_source_markers
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\bibliography-index\
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\ctx\
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\explorer-cache\
+	                   4	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\pcs\
+	    Newer     		     206	files-pane.pper
+	    Newer     		      22	source-pane.pper
+	    Newer     		     287	windowlayoutstate.pper
+	    Newer     		      57	workbench-pane.pper
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\presentation\
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\profiles-cache\
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\sources\
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\sources\per\
+	                   4	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\sources\per\t\
+	    New File  		     944	07F0A613
+	    New File  		       0	07F0A613-contents
+	    New File  		     740	131C0C3A
+	    New File  		    3374	131C0C3A-contents
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\sources\per\u\
+	    Newer     		     588	E2F42949
+	    Newer     		       0	E2F42949-contents
+	                   5	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\sources\prop\
+	    Tweaked   		     107	0DFDB8E7
+	    New File  		     109	45D81BBF
+	    Tweaked   		     109	97C0E9A2
+	    Tweaked   		     138	A99E9421
+	    Newer     		     647	INDEX
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\tutorial\
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\3EFC8D5C\viewer-cache\
+	    New File  		     774	completion_popup_dataframe.Rdata
+	    New File  		   16200	F576C729.Rdata
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\shared\
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\.Rproj.user\shared\notebooks\
+	    Tweaked   		       0	patch-chunk-names
+	    Newer     		       0	paths
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\data_processed\
+	    Tweaked   		    2119	amino_acid_concentrations.R
+	    Tweaked   		   16679	long_format_df.rds
+	    Tweaked   		   16182	wide_format_df.rds
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\data_raw\
+	    Tweaked   		  376579	P21145_Results_final.xlsx
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\LCR\
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\LCR\metabolomics\
+	                   8	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\metadata\
+	    Tweaked   		     811	acylcarnitines.txt
+	    Tweaked   		    7861	background.csv
+	    Tweaked   		    9094	codigos.xlsx
+	    Tweaked   		   19996	mean_normal_values_HMDB.xlsx
+	    Tweaked   		    1352	metdat.csv
+	    Tweaked   		   43172	normal_values_HMDB.xlsx
+	    Tweaked   		    1843	patient_characteristics.csv
+	    Tweaked   		    3608	selected_metabolites_w_name_conversions.csv
+	                   8	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\networks\
+	    Tweaked   		    3828	Compound-Reaction.sif
+	    Tweaked   		  111343	compounds.cys
+	    Tweaked   		  106385	Compound_1.png
+	    Tweaked   		    2618	Compound_1.sif
+	    Tweaked   		   13794	Compound_2.sif
+	    Tweaked   		    3900	network_analysis.Rmd
+	    Tweaked   		  428457	neurodeveopmental_networks.cys
+	    Tweaked   		  751950	neurodeveopmental_networks.zip
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\paper\
+	                  10	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\paper\Figures\
+	    Tweaked   		  244383	2A.jpeg
+	    Tweaked   		  246319	2B.jpeg
+	    Tweaked   		  509635	2C.jpeg
+	    Tweaked   		  485532	2D.jpeg
+	    Tweaked   		  705322	2G.jpeg
+	    Tweaked   		  635247	2H.jpeg
+	    Tweaked   		  762662	4.jpeg
+	    Tweaked   		  157682	figs_vertical.pptx
+	    Tweaked   		  398322	Figures.pptx
+	    Tweaked   		   41864	oplsda score plots.pptx
+	                  12	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\paper\Manuscript\
+	    Tweaked   		   13431	abstract.docx
+	    Tweaked   		   15780	CARACTERIZACI‡N MULTI‡MICA DE ENFERMEDADES DEL NEURODESARROLLO.docx
+	    Tweaked   		   14447	figure descriptions.docx
+	    Tweaked   		   25283	Introduction.docx
+	    Tweaked   		   14746	METABOLIC CHARACTERIZATION OF NEURODEVELOPMENTAL DISORDERS WITH NEUROTRANSMISSION AFFECTATIONS.docx
+	    Tweaked   		   23061	Methods.docx
+	    Tweaked   		   58371	Paper_OMIC_V2-AO.docx
+	    Tweaked   		   66096	Paper_OMIC_V2-SI.docx
+	    Tweaked   		   54688	Paper_OMIC_V3-AO (Autoguardado).docx
+	    Tweaked   		   1.1 m	Paper_OMIC_V4-AO-AGC.docx
+	    Tweaked   		   12848	results summary.docx
+	    Tweaked   		   47492	tabla_biblio.xlsx
+	                   5	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\paper\Tables\
+	    Tweaked   		     118	opls_diag_Hyperglutamatergic.csv
+	    Tweaked   		     117	opls_diag_Hypoglutamatergic.csv
+	    Tweaked   		   18595	Suplemmentary_2.xlsx
+	    Tweaked   		   16352	Supplementary_1.xlsx
+	    Tweaked   		    9232	Supplementary_3.xlsx
+	                   3	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\metabolomics\scripts\
+	    Tweaked   		       0	.Rhistory
+	    Newer     		    3444	00.preprocess.R
+	    Tweaked   		   34758	01.data_analysis.Rmd
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :       191         0       191         0         0         2
+   Files :       331       331         0         0         0        15
+   Bytes :   61.14 m   61.14 m         0         0         0    46.0 k
+   Times :   0:00:06   0:00:01                       0:00:00   0:00:05
+
+
+   Speed :            42855006 Bytes/sec.
+   Speed :            2452.183 MegaBytes/min.
+   Ended : jueves, 3 de agosto de 2023 17:07:51
+

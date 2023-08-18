@@ -1,0 +1,87 @@
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : jueves, 3 de agosto de 2023 17:07:51
+   Source : C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\
+     Dest : \\hsjdbcn.es\dfsroot\Recursos\metabolismosinaptico\SOFIA\Omics\01.neurodevelopmental_disorders\lipidomics\
+
+    Files : *.*
+	    
+  Options : *.* /S /E /DCOPY:DA /COPY:DAT /Z /NP /IS /IT /XX /XO /R:3 /W:5 
+
+------------------------------------------------------------------------------
+
+	                   4	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\
+	    New File  		    6443	.Rhistory
+	    New File  		     218	lipidomics.Rproj
+	    New File  		  665520	lipidomics_learning.nb.html
+	    New File  		      82	lipidomics_learning.Rmd
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\
+	  New Dir          2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\
+	    New File  		     105	rmd-outputs
+	    New File  		      27	saved_source_markers
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\bibliography-index\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\ctx\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\explorer-cache\
+	  New Dir          4	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\pcs\
+	    New File  		     196	files-pane.pper
+	    New File  		      22	source-pane.pper
+	    New File  		     285	windowlayoutstate.pper
+	    New File  		      57	workbench-pane.pper
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\presentation\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\profiles-cache\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\sources\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\sources\per\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\sources\per\t\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\sources\per\u\
+	  New Dir          5	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\sources\prop\
+	    New File  		     108	59632ADF
+	    New File  		      54	95B1D549
+	    New File  		      54	A5C59587
+	    New File  		     171	E375AE67
+	    New File  		     441	INDEX
+	  New Dir          6	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\sources\session-fdba907e\
+	    New File  		     728	65145184
+	    New File  		    3194	65145184-contents
+	    New File  		     800	8C6D2D8A
+	    New File  		     116	8C6D2D8A-contents
+	    New File  		   11159	A764E056-contents
+	    New File  		       0	lock_file
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\tutorial\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\unsaved-notebooks\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\unsaved-notebooks\8C6D2D8A\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\3EFC8D5C\viewer-cache\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\shared\
+	  New Dir          2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\shared\notebooks\
+	    New File  		       0	patch-chunk-names
+	    New File  		     304	paths
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\shared\notebooks\E2FBE44A-lipidomics_learning\
+	  New Dir          0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\shared\notebooks\E2FBE44A-lipidomics_learning\1\
+	  New Dir          1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\shared\notebooks\E2FBE44A-lipidomics_learning\1\3EFC8D5Cfdba907e\
+	    New File  		      52	chunks.json
+	  New Dir          1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\.Rproj.user\shared\notebooks\E2FBE44A-lipidomics_learning\1\s\
+	    New File  		      52	chunks.json
+	                   0	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\data_processed\
+	                   1	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\data_raw\
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\metadata\
+	    Tweaked   		     811	acylcarnitines.txt
+	    Tweaked   		    1843	patient_characteristics.csv
+	                   2	C:\Users\killescas\OneDrive - San Juan de Dios\Desktop\GitHub\lipidomics\scripts\
+	    Tweaked   		       0	.Rhistory
+	    Newer     		    3257	00.preprocess.R
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :        29        24         5         0         0         0
+   Files :        30        29         1         0         0         4
+   Bytes :    1.02 m   679.7 k   367.7 k         0         0   142.3 k
+   Times :   0:00:01   0:00:00                       0:00:00   0:00:00
+
+
+   Speed :             1061126 Bytes/sec.
+   Speed :              60.718 MegaBytes/min.
+   Ended : jueves, 3 de agosto de 2023 17:07:52
+
