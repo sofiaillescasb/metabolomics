@@ -389,7 +389,7 @@ for (i in names(vip_g)) {
 
 # Affected pathways
 
-```{r, results='asis', fig.height=4, fig.width=8}
+```{r, results='asis'}
 library(httr)
 library(KEGGREST)
 
@@ -438,9 +438,29 @@ names(freq) <- path_names
 freq <- data.frame(freq)
 colnames(freq) <- c("Pathway","Total Hits")
 
-s<-sels$Hyperglutamatergic
-# for (s in sels) {
-  sels_kegg <- subset(background, Query%in%s)
+  
+  gen_paths <- c("Metabolic pathways",
+  "Biosynthesis of secondary metabolites",
+  "Microbial metabolism in diverse environments",
+  "Carbon metabolism",
+  "2-Oxocarboxylic acid metabolism",
+  "Fatty acid metabolism",
+  "Biosynthesis of amino acids",
+  "Nucleotide metabolism",
+  "Biosynthesis of nucleotide sugars",
+  "Biosynthesis of cofactors",
+  "Degradation of aromatic compounds")
+  
+  cancer_paths <- c( "Pathways in cancer", "Transcriptional misregulation in cancer"," MicroRNAs in cancer", "Proteoglycans in cancer", "Chemical carcinogenesis - DNA adducts", "Chemical carcinogenesis - receptor activation", "Chemical carcinogenesis - reactive oxygen species", "Viral carcinogenesis", "Central carbon metabolism in cancer", "Choline metabolism in cancer", "PD-L1 expression and PD-1 checkpoint pathway in cancer")
+  
+  dig_sys <- c("Salivary secretion","Gastric acid secretion","Pancreatic secretion","Bile secretion","Carbohydrate digestion and absorption","Protein digestion and absorption","Fat digestion and absorption", "Cholesterol metabolism","Vitamin digestion and absorption","Mineral absorption")
+  
+  exc_sys <- c("Vasopressin-regulated water reabsorption","Aldosterone-regulated sodium reabsorption","Endocrine and other factor-regulated calcium reabsorption","Proximal tubule bicarbonate reclamation","Collecting duct acid secretion")
+
+p <- list()
+# s<-sels$Hyperglutamatergic
+for (s in names(sels)) {
+  sels_kegg <- subset(background, Query%in%sels[[s]])
   names_sel <- sels_kegg$Query
   sels_kegg <- sels_kegg$KEGG #now we need to select these metabolites in all_pathways to make the graph we want
   names(sels_kegg) <- names_sel
@@ -465,24 +485,7 @@ s<-sels$Hyperglutamatergic
   sel_sreq <- subset(sel_sreq, Hits>1)
   sel_sreq <- sel_sreq %>%
     arrange(-Hits)
-  
-  gen_paths <- c("Metabolic pathways",
-  "Biosynthesis of secondary metabolites",
-  "Microbial metabolism in diverse environments",
-  "Carbon metabolism",
-  "2-Oxocarboxylic acid metabolism",
-  "Fatty acid metabolism",
-  "Biosynthesis of amino acids",
-  "Nucleotide metabolism",
-  "Biosynthesis of nucleotide sugars",
-  "Biosynthesis of cofactors",
-  "Degradation of aromatic compounds")
-  
-  cancer_paths <- c( "Pathways in cancer", "Transcriptional misregulation in cancer"," MicroRNAs in cancer", "Proteoglycans in cancer", "Chemical carcinogenesis - DNA adducts", "Chemical carcinogenesis - receptor activation", "Chemical carcinogenesis - reactive oxygen species", "Viral carcinogenesis", "Central carbon metabolism in cancer", "Choline metabolism in cancer", "PD-L1 expression and PD-1 checkpoint pathway in cancer")
-  
-  dig_sys <- c("Salivary secretion","Gastric acid secretion","Pancreatic secretion","Bile secretion","Carbohydrate digestion and absorption","Protein digestion and absorption","Fat digestion and absorption", "Cholesterol metabolism","Vitamin digestion and absorption","Mineral absorption")
-  
-  exc_sys <- c("Vasopressin-regulated water reabsorption","Aldosterone-regulated sodium reabsorption","Endocrine and other factor-regulated calcium reabsorption","Proximal tubule bicarbonate reclamation","Collecting duct acid secretion")
+
   
   sel_sreq <- subset(sel_sreq, !(rownames(sel_sreq) %in% c(gen_paths, cancer_paths, dig_sys, exc_sys)))
   
@@ -503,10 +506,12 @@ s<-sels$Hyperglutamatergic
   sel_sreq$Proportion <- proptn[rownames(sel_sreq),]$Proportion
   sel_sreq$Pathway <- rownames(sel_sreq)
   
-  p <- sel_sreq %>%
+  
+  g <- sel_sreq %>%
       arrange(Hits) %>%
       mutate(Pathway = factor(Pathway, Pathway)) %>%
       ggplot(aes(x = Pathway, y = Hits, fill=Proportion)) +
+      ylim(0,7) +
       geom_col() +
       coord_flip() +
       theme(
@@ -517,20 +522,27 @@ s<-sels$Hyperglutamatergic
       theme_light() +
       xlab("") +
       ylab("Hits") +
-      ggtitle(c("Pathways affected by selected metabolites")) +
-      scale_fill_gradient(low="#F4E3C7",high =  "#FF3200", limits=c(0,1)) +
-      guides(size = "none")
-  print(p)
+      scale_fill_gradient2(low="#F4E3C7",mid = "#ff7f75",high =  "#aa1a00", limits=c(0,1), midpoint = 0.4) +
+      guides(size = "none") 
   
+  p[[s]] <- g
   
-  paths_df <- subset(paths_df,Pathways %in%sel_sreq$Pathway)
-  paths_df <- rownames_to_column(paths_df)
-  paths_df$rowname <- gsub("//..*","",paths_df$rowname)
-  paths_df <- subset(paths_df, rowname%in%names_sel)
-  kable(paths_df, caption="Metabolites in selected pathways")
-# }
+  # paths_df <- subset(paths_df,Pathways %in%sel_sreq$Pathway)
+  # paths_df <- rownames_to_column(paths_df)
+  # paths_df$rowname <- gsub("//..*","",paths_df$rowname)
+  # paths_df <- subset(paths_df, rowname%in%names_sel)
+  # kable(paths_df, caption="Metabolites in selected pathways")
+}
 
 
+p$Hypoglutamatergic <- p$Hypoglutamatergic + scale_x_discrete(position = "top")
+
+patchpath <- p$Hyperglutamatergic + p$Hypoglutamatergic + plot_annotation("Pathways affected by selected metabolites") +plot_layout(guides = "collect") & theme(legend.position = 'bottom')
+
+
+ggsave(file=here("paper/Figures/paths.jpeg"),plot=patchpath,       width = 300, 
+       height = 200, 
+       units = "mm", dpi = 300, scale = 0.8) 
 ```
 
 # Alterations in tryptophan metabolism
