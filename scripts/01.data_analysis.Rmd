@@ -153,11 +153,31 @@ df_norm_lab4 <- df_norm_lab
 df_norm_lab4$Label <- ifelse(df_norm_lab4$Label==2,10,df_norm_lab4$Label)
 df_norm_lab4$Label <- ifelse(df_norm_lab4$Label==12,8,df_norm_lab4$Label)
 
-lcp3 <- c("#95C65C","#FF3F38","#B25D91")
+lcp3 <- c("#95C65C","#B25D91","#FF3F38")
 pca_m <- prcomp(df_norm_lab4[,-1], scale. = TRUE, center = TRUE)
 
 # Get the maximum x-axis limit among all the plots
 max_x_limit <- max(abs(pca_m$x[, 1]))+2
+
+df_norm_lab_s <- df_norm_lab4
+p4 <- ggbiplot(pca_m,
+                choices = c(1,2),
+                obs.scale = 1,
+                var.scale = 1,
+                var.axes = FALSE,
+                circle = TRUE,
+                ellipse = FALSE,
+                groups = as.factor(df_norm_lab_s$Label),
+                fill = TRUE) +
+    theme_light(base_size = 10) +
+    labs(colour = "Mutated gene") +
+    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 4) +
+    scale_color_manual(values = lcp3, labels = c("Control","Hyperglutamatergic","Hypoglutamatergic")) +
+    xlim(-max_x_limit, max_x_limit)  +
+    ylim(-6,6) +
+  theme(legend.position="bottom")
+
+p4 <- wrap_elements(as.grob(p4))
 
 # Create a list to store the modified plots
 
@@ -166,9 +186,6 @@ max_x_limit <- max(abs(pca_m$x[, 1]))+2
 # 
 # nr <- ggplot() +
 #   background_image(neurons) 
-
-
-
 
 ```
 
@@ -359,7 +376,7 @@ for (i in 1:length(vip_g)) {
     guides(size = "none") +
     scale_color_manual(values = col_op[i], labels=NULL)
   
-  plot(p) # Add the plot to the list
+  plot(p) 
 }
 
 vip_g$Hypoglutamatergic$p.adj <- subset(sta_lst_sig,group2=="8"&group1=="1")$p.adj
@@ -438,7 +455,7 @@ names(freq) <- path_names
 freq <- data.frame(freq)
 colnames(freq) <- c("Pathway","Total Hits")
 
-  
+
   gen_paths <- c("Metabolic pathways",
   "Biosynthesis of secondary metabolites",
   "Microbial metabolism in diverse environments",
@@ -450,11 +467,11 @@ colnames(freq) <- c("Pathway","Total Hits")
   "Biosynthesis of nucleotide sugars",
   "Biosynthesis of cofactors",
   "Degradation of aromatic compounds")
-  
+
   cancer_paths <- c( "Pathways in cancer", "Transcriptional misregulation in cancer"," MicroRNAs in cancer", "Proteoglycans in cancer", "Chemical carcinogenesis - DNA adducts", "Chemical carcinogenesis - receptor activation", "Chemical carcinogenesis - reactive oxygen species", "Viral carcinogenesis", "Central carbon metabolism in cancer", "Choline metabolism in cancer", "PD-L1 expression and PD-1 checkpoint pathway in cancer")
-  
+
   dig_sys <- c("Salivary secretion","Gastric acid secretion","Pancreatic secretion","Bile secretion","Carbohydrate digestion and absorption","Protein digestion and absorption","Fat digestion and absorption", "Cholesterol metabolism","Vitamin digestion and absorption","Mineral absorption")
-  
+
   exc_sys <- c("Vasopressin-regulated water reabsorption","Aldosterone-regulated sodium reabsorption","Endocrine and other factor-regulated calcium reabsorption","Proximal tubule bicarbonate reclamation","Collecting duct acid secretion")
 
 p <- list()
@@ -464,20 +481,20 @@ for (s in names(sels)) {
   names_sel <- sels_kegg$Query
   sels_kegg <- sels_kegg$KEGG #now we need to select these metabolites in all_pathways to make the graph we want
   names(sels_kegg) <- names_sel
-  
+
   paths_sel <- all_pathways[na.omit(sels_kegg)]
   names(paths_sel) <- names(na.omit(sels_kegg))
-  
+
   paths_list <- lapply(paths_sel, function(x) data.frame(path_names[x]))
-  
+
   for (i in seq_along(paths_list)) {
     rownames(paths_list[[i]]) <- names(paths_list)[[i]]
   }
-  
+
   for (i in seq_along(paths_list)) {
     colnames(paths_list[[i]]) <- paths_list[[i]][1,]
   }
-  
+
   paths_df <- bind_rows(paths_list)
   paths_df <- data.frame(ifelse(is.na(paths_df),0,1), check.names = FALSE)
   sel_sreq <- data.frame(colSums(paths_df))
@@ -486,63 +503,61 @@ for (s in names(sels)) {
   sel_sreq <- sel_sreq %>%
     arrange(-Hits)
 
-  
+
   sel_sreq <- subset(sel_sreq, !(rownames(sel_sreq) %in% c(gen_paths, cancer_paths, dig_sys, exc_sys)))
-  
-  
+
+
   human <- keggList("pathway", "hsa")
-  
+
   human <- sapply(human, function(x) gsub(" - Homo sapiens \\(human)","",x))
   sel_sreq <- subset(sel_sreq, rownames(sel_sreq)%in%human)
-  
+
 
   all_freq <- subset(freq, Pathway%in%rownames(sel_sreq))
-  
-  
+
+
   proptn <- data.frame(sel_sreq[order(as.character(rownames(sel_sreq))),]/all_freq[order(as.character(all_freq$Pathway)),]$`Total Hits`)
   colnames(proptn) <- "Proportion"
   proptn$Pathway <- all_freq[order(as.character(all_freq$Pathway)),]$Pathway
   rownames(proptn) <-   proptn$Pathway
   sel_sreq$Proportion <- proptn[rownames(sel_sreq),]$Proportion
   sel_sreq$Pathway <- rownames(sel_sreq)
-  
-  
+
+
   g <- sel_sreq %>%
       arrange(Hits) %>%
       mutate(Pathway = factor(Pathway, Pathway)) %>%
       ggplot(aes(x = Pathway, y = Hits, fill=Proportion)) +
       ylim(0,7) +
-      geom_col() +
+      geom_col(size=2) +
       coord_flip() +
       theme(
         panel.grid.minor.y = element_blank(),
         panel.grid.major.y = element_blank(),
-        legend.position = "right"
+        legend.position = "right",
+        legend.spacing = unit(1, 'cm')
       ) +
-      theme_light() +
+      theme_light(base_size = 15) +
       xlab("") +
       ylab("Hits") +
       scale_fill_gradient2(low="#F4E3C7",mid = "#ff7f75",high =  "#aa1a00", limits=c(0,1), midpoint = 0.4) +
-      guides(size = "none") 
-  
+      guides(size = "none")
+
   p[[s]] <- g
-  
-  # paths_df <- subset(paths_df,Pathways %in%sel_sreq$Pathway)
-  # paths_df <- rownames_to_column(paths_df)
-  # paths_df$rowname <- gsub("//..*","",paths_df$rowname)
-  # paths_df <- subset(paths_df, rowname%in%names_sel)
-  # kable(paths_df, caption="Metabolites in selected pathways")
+
 }
 
 
 p$Hypoglutamatergic <- p$Hypoglutamatergic + scale_x_discrete(position = "top")
 
-patchpath <- p$Hyperglutamatergic + p$Hypoglutamatergic + plot_annotation("Pathways affected by selected metabolites") +plot_layout(guides = "collect") & theme(legend.position = 'bottom')
+patchpath <- p$Hyperglutamatergic + p$Hypoglutamatergic + plot_annotation("Pathways affected by selected metabolites") +plot_layout(guides = "collect") & theme(legend.position = 'right',legend.spacing = unit(1, 'cm'))
 
+# 
+# ggsave(file=here("paper/Figures/paths.jpeg"),plot=patchpath,       width = 300, 
+#        height = 200, 
+#        units = "mm", dpi = 300, scale = 0.8) 
 
-ggsave(file=here("paper/Figures/paths.jpeg"),plot=patchpath,       width = 300, 
-       height = 200, 
-       units = "mm", dpi = 300, scale = 0.8) 
+ggsave(file=here("paper/Figures/paths.png"),patchpath,dpi = 1000, scale = 1,width = 40, height = 15, units = "cm")
 ```
 
 # Alterations in tryptophan metabolism
@@ -605,16 +620,14 @@ four4 <- ggboxplot(vg, x = "Label", y = "log2 Concentration", color = "Label", f
   stat_pvalue_manual(joined_df, label = "p.adj.signif", y.position = "y.position",hide.ns = TRUE,step.increase = 0.2,bracket.nudge.y = -1) +
   labs(title = "Alterations in tryptophan metabolism") +
   theme(
-axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank()
+axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),plot.background = element_rect(fill = "transparent",colour = NA)
 ) +
    scale_color_manual(values = lcp4, labels = c("Control","Hyperglutamatergic","Hypoglutamatergic")) +
   scale_fill_manual(values = lcp4, labels = c("Control","Hyperglutamatergic","Hypoglutamatergic"))
 print(four4) 
 
 
-ggsave(file="paper/Figures/4.jpeg",plot=four4,       width = 300, 
-       height = 200, 
-       units = "mm", dpi = 300, scale = 0.8) 
+ggsave(file=here("paper/Figures/4.png"),plot=four4, dpi = 1000, scale = 0.8, bg="transparent",width = 30, height = 20, units = "cm") 
 
 
 ```
@@ -661,83 +674,9 @@ sels_g <- vip_p$Hypoglutamatergic$Metabolite[vip_p$Hypoglutamatergic$p.adj < 0.0
 ```
 
 
-```{r}
-df_metg <- df_norm_lab[,c("Label",union(sels_r,sels_g))] 
-# df_metg <- subset(df_metg,Label%in%c(1,10,2,12,8))
-df_metg <- data.frame(t(df_metg),check.names = FALSE)
-mat_allg <- as.matrix(df_metg)
-lab <- data.frame(as.factor(mat_allg[1,]))
-lab$as.factor.mat_allg.1.... <- gsub(12,"STXBP1  ",lab$as.factor.mat_allg.1....)
-lab$as.factor.mat_allg.1.... <- gsub(2,"CDKL5  ",lab$as.factor.mat_allg.1....)
-lab$as.factor.mat_allg.1.... <- gsub(10,"MeCP2  ",lab$as.factor.mat_allg.1....)
-lab$as.factor.mat_allg.1.... <- gsub(1,"Control  ",lab$as.factor.mat_allg.1....)
-lab$as.factor.mat_allg.1.... <- gsub(8,"GRIN  ",lab$as.factor.mat_allg.1....)
-lab$as.factor.mat_allg.1.... <- gsub("STXBPControl    ","STXBP1  ",lab$as.factor.mat_allg.1....)
-colnames(lab)<-"Label"
-lab$Label<- factor(lab$Label,levels = c("Control  ","MeCP2  ","CDKL5  ", "STXBP1  ", "GRIN  "),ordered = TRUE)
-
-mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
-
-library(viridis)
-library(pheatmap)
-
-lc <- c("#95C65C","#C70E7B","#808B96","#46dbf2","#F19743")
-names(lc) <-  levels(lab$Label)
-lc <- list(Label = lc)
 
 
 
-```
-
-```{r, hc2_nowitspersonalr, , results='asis', fig.height=5, fig.width=7}
-df_metr <- df_norm_lab[,c("Label",sels_r)] 
-df_metr <- subset(df_metr,Label%in%c(1,10,2))
-df_metr <- df_metr[order(make.names(rownames(df_metr))),]
-metdat <- metdat[order(metdat$COS.Code),]
-rownames(df_metr) <- subset(metdat,metdat$COS.Code%in%make.names(rownames(df_metr)))$ID
-df_metr <- data.frame(t(df_metr),check.names = FALSE)
-mat_allr <- as.matrix(df_metr)
-conds <- c("Hypoglutamatergic","Control")
-labr <- data.frame(as.factor(mat_allr[1,]))
-labr$as.factor.mat_allr.1.... <- gsub(2,"CDKL5  ",labr$as.factor.mat_allr.1....)
-labr$as.factor.mat_allr.1.... <- gsub(10,"MeCP2  ",labr$as.factor.mat_allr.1....)
-labr$as.factor.mat_allr.1.... <- gsub(1,"Control  ",labr$as.factor.mat_allr.1....)
-colnames(labr)<-"Label"
-labr$Label<- factor(labr$Label,levels = c("Control  ","MeCP2  ","CDKL5  "),ordered = TRUE)
-
-mat_allr <- apply(mat_allr[-1,],c(1,2),as.numeric)
-
-lcr <- c("#95C65C","#C70E7B","#808B96")
-names(lcr) <-  levels(labr$Label)
-lcr <- list(Label = lcr)
-
-```
-
-
-```{r, hc2_nowitspersonalg,  fig.height=5, fig.width=5 results='asis'}
-df_metg <- df_norm_lab[,c("Label",sels_g)]
-df_metg <- subset(df_metg,Label%in%c(1,8,12))
-df_metg <- df_metg[order(make.names(rownames(df_metg))),]
-metdat <- metdat[order(metdat$COS.Code),]
-rownames(df_metg) <- subset(metdat,metdat$COS.Code%in%make.names(rownames(df_metg)))$ID
-df_metg <- data.frame(t(df_metg),check.names = FALSE)
-mat_allg <- as.matrix(df_metg)
-conds <- c("GRIN","Control")
-labg <- data.frame(as.factor(mat_allg[1,]))
-labg$as.factor.mat_allg.1.... <- gsub(8,"GRIN",labg$as.factor.mat_allg.1....)
-labg$as.factor.mat_allg.1.... <- gsub(12,"STXBP1",labg$as.factor.mat_allg.1....)
-labg$as.factor.mat_allg.1.... <- gsub(1,"Control",labg$as.factor.mat_allg.1....)
-labg$as.factor.mat_allg.1.... <- gsub("STXBPControl","STXBP1  ",labg$as.factor.mat_allg.1....)
-colnames(labg)<-"Label"
-labg$Label<- factor(labg$Label,levels = c("Control","STXBP1  ","GRIN"),ordered = TRUE)
-
-mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
-
-lcg <- c("#95C65C","#46dbf2","#F19743")
-names(lcg) <-  levels(labg$Label)
-lcg <- list(Label = lcg)
-
-```
 
 
 ```{r}
@@ -757,10 +696,10 @@ vip_p$Hypoglutamatergic$diffexpressed <- factor(vip_p$Hypoglutamatergic$diffexpr
 
 
 ```{r}
-library(patchwork)
+
 
 col_op <- c("#B25D91", "#FF3F38","#95C65C")
-names(col_op) <- c("Hypoglutamatergic","Hyperglutamatergic", "Control")
+names(col_op) <- c("Hyperglutamatergic","Hypoglutamatergic", "Control")
 
 
 
@@ -797,96 +736,167 @@ ggsave(file=here("paper/Figures/2D.jpeg"),plot=two_f)
 ```
 
 
-```{r fig.width = 7, fig.height = 5}
-  vip_g2 <- vip_g$Hypoglutamatergic[order(vip_g$Hypoglutamatergic$VIP, decreasing = TRUE),]
+```{r}
+  vip_g2 <- vip_g$Hyperglutamatergic[order(vip_g$Hyperglutamatergic$VIP, decreasing = TRUE),]
   vip_g2 <- subset(vip_g2, VIP > 1)
-  vip_g2$color <- factor(names(vip_g[1]),levels=c("Hypoglutamatergic","Hyperglutamatergic"))
+  vip_g2$color <- factor(names(vip_g[1]),levels=c("Hyperglutamatergic","Hypoglutamatergic"))
   two_c <- vip_g2 %>%
     filter(!is.na(VIP)) %>%
     arrange(VIP) %>%
     mutate(Metabolite = factor(Metabolite, Metabolite)) %>%
-    ggplot() +
-    geom_point(aes(x = Metabolite, y = VIP, size = 3, color = color)) +
+    ggplot(aes(x = Metabolite, y = VIP, size = 1, fill = color)) +
+    geom_col() +
     coord_flip() +
-    theme_light(base_size = 11) +
+    theme_bw(base_size = 12) +
     xlab("") +
     ylab("VIP scores") +
     ylim(0, 4) +
     guides(size = "none") +
-    scale_color_manual(values = col_op[1], labels = NULL) +
-    theme(legend.position = "none")
+    scale_fill_manual(values = col_op[1], labels = "Hyperglutamatergic") +
+    theme(legend.title=element_blank(),legend.position = "bottom")
   
-  vip_g2 <- vip_g$`Hyperglutamatergic`[order(vip_g$`Hyperglutamatergic`$VIP, decreasing = TRUE),]
+  vip_g2 <- vip_g$`Hypoglutamatergic`[order(vip_g$`Hypoglutamatergic`$VIP, decreasing = TRUE),]
   vip_g2 <- subset(vip_g2, VIP > 1)
-  vip_g2$color <- factor(names(vip_g[2]),levels=c("Hypoglutamatergic","Hyperglutamatergic"))
+  vip_g2$color <- factor(names(vip_g[2]),levels=c("Hyperglutamatergic","Hypoglutamatergic"))
   two_d <- vip_g2 %>%
     filter(!is.na(VIP)) %>%
     arrange(VIP) %>%
     mutate(Metabolite = factor(Metabolite, Metabolite)) %>%
-    ggplot() +
-    geom_point(aes(x = Metabolite, y = VIP, size = 3, color = color)) +
+    ggplot(aes(x = Metabolite, y = VIP, size = 1, fill = color)) +
+    geom_col() +
     coord_flip() +
-    theme_light(base_size = 11) +
+    theme_bw(base_size = 12) +
     xlab("") +
     ylab("VIP scores") +
     ylim(0, 4) +
     guides(size = "none") +
-    scale_color_manual(values = col_op[2], labels = NULL) +
-    theme(legend.position = "none") 
+    scale_fill_manual(values = col_op[2], labels = "Hypoglutamatergic") +
+    theme(legend.title=element_blank(),legend.position = "bottom") +
+    scale_x_discrete(position = "top")
+  
 
-ggsave(file=here("paper/Figures/2C.jpeg"),plot=two_c) 
-ggsave(file=here("paper/Figures/2D.jpeg"),plot=two_d)   
+patchvip <- two_c + two_d + plot_layout(guides = "collect") & theme(legend.position = "right", plot.background = element_rect(fill = "transparent",colour = NA), legend.background = element_rect(fill = "transparent",colour = NA)) 
+    
+ggsave(file=here("paper/Figures/vip.png"),patchvip,dpi = 1000, scale = 1, bg="transparent",width = 30, height = 12, units = "cm")
 
+```
+
+```{r}
+df_metg <- df_norm_lab4 
+df_metg <- subset(df_metg,Label%in%c(1,10))
+metdat2 <- metdat[order(make.names(metdat$COS.Code)),]
+df_metg <- df_metg[order(make.names(rownames(df_metg))),]
+rownames(df_metg) <- metdat2[metdat2$COS.Code%in%make.names(rownames(df_metg)),]$ID
+df_metg <- data.frame(t(df_metg),check.names = FALSE)
+mat_allg <- as.matrix(df_metg)
+lab <- data.frame(as.factor(mat_allg[1,]))
+lab$as.factor.mat_allg.1.... <- gsub(10,"Hyperglutamatergic     ",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub(1,"Control",lab$as.factor.mat_allg.1....)
+colnames(lab)<-"Label"
+# lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic","Hypoglutamatergic"),ordered = TRUE)
+lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic     "),ordered = TRUE)
+mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
+
+# lc <- c("#95C65C","#B25D91","#FF3F38")
+# names(lc) <-  levels(lab$Label)
+# lc <- list(Label = lc)
+lc <- c("#95C65C","#B25D91")
+names(lc) <-  levels(lab$Label)
+lc <- list(Label = lc)
+
+p6 <- pheatmap(mat_allg, annotation = lab,clustering_method = "ward.D2",fontsize = 10,show_colnames = TRUE,show_rownames = FALSE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = TRUE, annotation_legend = TRUE, cellwidth = 10, cellheight = 2)
+
+p6 <- wrap_elements(as.grob(p6))
 ```
 
 
 ```{r}
-two_g <- pheatmap(mat_allr, annotation = labr,clustering_method = "ward.D2",fontsize = 10,show_colnames = TRUE,show_rownames = TRUE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = FALSE,annotation_legend = FALSE)
+df_metg <- df_norm_lab4 
+df_metg <- subset(df_metg,Label%in%c(1,8))
+metdat2 <- metdat[order(make.names(metdat$COS.Code)),]
+df_metg <- df_metg[order(make.names(rownames(df_metg))),]
+rownames(df_metg) <- metdat2[metdat2$COS.Code%in%make.names(rownames(df_metg)),]$ID
+df_metg <- data.frame(t(df_metg),check.names = FALSE)
+mat_allg <- as.matrix(df_metg)
+lab <- data.frame(as.factor(mat_allg[1,]))
+lab$as.factor.mat_allg.1.... <- gsub(8,"Hypoglutamatergic",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub(1,"Control",lab$as.factor.mat_allg.1....)
+colnames(lab)<-"Label"
+# lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic","Hypoglutamatergic"),ordered = TRUE)
+lab$Label<- factor(lab$Label,levels = c("Control","Hypoglutamatergic"),ordered = TRUE)
+mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
 
-two_h <- pheatmap(mat_allg, annotation = labg,clustering_method = "ward.D2",fontsize = 10,show_colnames = TRUE,show_rownames = TRUE, border_color = NA, annotation_colors = lcg, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = FALSE,annotation_legend = FALSE)
+# lc <- c("#95C65C","#B25D91","#FF3F38")
+# names(lc) <-  levels(lab$Label)
+# lc <- list(Label = lc)
 
-ggsave(file=here("paper/Figures/2G.jpeg"),plot=two_g) 
-ggsave(file=here("paper/Figures/2H.jpeg"),plot=two_h) 
+lc <- c("#95C65C","#FF3F38")
+names(lc) <-  levels(lab$Label)
+lc <- list(Label = lc)
+
+p5 <- pheatmap(mat_allg, annotation = lab,clustering_method = "ward.D2",fontsize = 10,show_colnames = TRUE,show_rownames = FALSE, border_color = NA, annotation_colors = lc, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = TRUE, annotation_legend = TRUE, cellwidth = 10, cellheight = 2)
+
+p5 <- wrap_elements(as.grob(p5))
+```
+
+
+```{r}
+
 
 # plot(pd_g$Hypoglutamatergic,typeVc ="x-score",plotSubC="Hypoglutamatergic",parPaletteVc=c("#95C65C","#B25D91"))
 # plot(pd_g$`Hyperglutamatergic`,typeVc ="x-score",plotSubC="Hypoglutamatergic",parPaletteVc=c("#95C65C","#FF3F38"))
+rt <- gsub("10", "Hyperglutamatergic", subset(df_norm_lab4,Label%in%c(1,10))$Label)
+rt <- gsub("1", "Control", rt)
+rt <- factor(rt,levels = c("Control","Hyperglutamatergic","Hypoglutamatergic"))
+gr <- gsub("8", "Hypoglutamatergic", subset(df_norm_lab4,Label%in%c(1,8))$Label)
+gr <- gsub("1", "Control", gr)
+gr <- factor(gr,levels = c("Control","Hyperglutamatergic","Hypoglutamatergic"))
 
-rt <- factor(subset(df_norm_lab4,Label%in%c(1,10))$Label)
-gr <- factor(subset(df_norm_lab4,Label%in%c(1,8))$Label)
-opdf <- data.frame("lab"=rt,"x"=pd_g$Hypoglutamatergic@scoreMN,"y"=pd_g$Hypoglutamatergic@orthoScoreMN)
-opdf2 <- data.frame("lab"=gr,"x"=pd_g$`Hyperglutamatergic`@scoreMN,"y"=pd_g$`Hyperglutamatergic`@orthoScoreMN)
+opdf <- data.frame("lab"=rt,"x"=pd_g$Hyperglutamatergic@scoreMN,"y"=pd_g$Hyperglutamatergic@orthoScoreMN)
+opdf2 <- data.frame("lab"=gr,"x"=pd_g$`Hypoglutamatergic`@scoreMN,"y"=pd_g$`Hypoglutamatergic`@orthoScoreMN)
 
 # par(mfrow=c(1,2))
 two_a <- opdf %>%
   ggplot(aes(x=p1,y=o1,color=lab)) +
-  geom_point() +
+  geom_point(size=3) +
   stat_ellipse(geom = "polygon",
                aes(fill = lab), 
                alpha = 0.25,
                level = 0.8) +
   coord_fixed(xlim = c(-10,10),ylim=c(-5,5)) +
-  theme_minimal() +
-  ggtitle(paste("OPLS-DA", "SCORE PLOT ",collapse="\n")) +
-  scale_color_manual(values=c("#95C65C","#B25D91"),labels=c("Control","Hyperglutamatergic")) +
-  scale_fill_manual(values=c("#95C65C","#B25D91"),labels=c("Control","Hyperglutamatergic")) +
-  theme(legend.title = element_blank())
+  theme_bw(base_size = 15) +
+  # ggtitle(paste("OPLS-DA", "SCORE PLOT ",collapse="\n")) +
+  scale_color_manual(values=c("#95C65C","#B25D91","#FF3F38"),labels=c("Control","Hyperglutamatergic","Hypoglutamatergic"),drop = FALSE) +
+  scale_fill_manual(values=c("#95C65C","#B25D91","#FF3F38"),labels=c("Control","Hyperglutamatergic","Hypoglutamatergic"),drop = FALSE) +
+  theme(legend.title = element_blank()) +
+  geom_vline(xintercept=0) +
+  geom_hline(yintercept = 0)
 
 two_b <- opdf2 %>%
   ggplot(aes(x=p1,y=o1,color=lab)) +
-  geom_point() +
+  geom_point(size=3) +
   stat_ellipse(geom = "polygon",
                aes(fill = lab), 
                alpha = 0.25,
                level = 0.8) +
   coord_fixed(xlim = c(-10,10),ylim=c(-5,5)) +
-  theme_minimal() +
-  ggtitle(paste("OPLS-DA", "SCORE PLOT ",collapse="\n")) +
-  scale_color_manual(values=c("#95C65C","#FF3F38"),labels=c("Control","Hypoglutamatergic")) +
-  scale_fill_manual(values=c("#95C65C","#FF3F38"),labels=c("Control","Hypoglutamatergic")) +
-  theme(legend.title = element_blank())
+  theme_bw(base_size = 15) +
+  # ggtitle(paste("OPLS-DA", "SCORE PLOT ",collapse="\n")) +
+  scale_color_manual(values=c("#95C65C","#B25D91","#FF3F38"),drop = FALSE) +
+  scale_fill_manual(values=c("#95C65C","#B25D91","#FF3F38"),drop = FALSE) +
+  theme(legend.title = element_blank()) +
+  geom_vline(xintercept=0) +
+  geom_hline(yintercept = 0) 
+  
 
-ggsave(file=here("paper/Figures/2A.jpeg"),plot=two_a) 
-ggsave(file=here("paper/Figures/2B.jpeg"),plot=two_b) 
+patchop <- two_a + two_b + plot_annotation("OPLS-DA SCORE PLOTS")  + plot_layout(guides = "collect") & theme(legend.position = 'top')  
+ 
+ggsave(file=here("paper/Figures/opls.jpeg"),plot=patchop, width = 300,
+       height = 200,
+       units = "mm", dpi = 300, scale = 0.8)
+
+# ggsave(file=here("paper/Figures/2A.jpeg"),plot=two_a) 
+# ggsave(file=here("paper/Figures/2B.jpeg"),plot=two_b) 
 
 # op <- wrap_elements(two_a + two_b + plot_annotation(tag_levels = 'A') + plot_layout(guides = "keep",widths = c(1,1),heights = c(1,1)) & theme(legend.position = 'bottom'))
 
@@ -896,6 +906,12 @@ ggsave(file=here("paper/Figures/2B.jpeg"),plot=two_b)
 # 
 # (op/(two_c|two_d)/(two_e|two_f)/(two_g|two_h)+plot_annotation(tag_levels = 'A'))
 
+fig_2 <- (p6 + plot_spacer() + p5  + plot_layout(widths = c(1, 1,1))) / (two_a + two_b + plot_layout(guides = "collect") & theme(legend.position="bottom")) /  (two_c + two_d + plot_layout(guides = "collect") & theme(legend.position="bottom"))+ plot_layout(heights = c(2,1,1),widths = c(3,1,1)) + plot_annotation(tag_levels = 'A') & theme(plot.tag = element_text(size = 15, hjust = 0, vjust = 0)) 
+fig_2
+ggsave(file=here("paper/Figures/fig_2.png"),fig_2,dpi = 1000, scale = 1,width = 30, height = 30, units = "cm")
+
+
+# (two_c + two_d + plot_layout(guides = "collect")
 ```
 
 ```{r}
