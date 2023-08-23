@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 494.949 498.168" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient id="linearGradient9" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.48069482,0,0,0.43078169,426.38286,-222.51104)" x1="349.81104" y1="165.18003" x2="510.70605" y2="165.18004" xlink:href="#linearGradient6769"/>
+    <linearGradient id="linearGradient6769">
+      <stop style="stop-color:#babdb6;stop-opacity:1;" offset="0" id="stop6771"/>
+      <stop style="stop-color:#babdb6;stop-opacity:0;" offset="1" id="stop6773"/>
+    </linearGradient>
+    <linearGradient id="linearGradient10" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.48069482,0,0,0.43078169,426.38286,-222.51104)" x1="389.03281" y1="224.46575" x2="462.67941" y2="224.46574" xlink:href="#linearGradient6769"/>
+    <style bx:fonts="Ubuntu">@import url(https://fonts.googleapis.com/css2?family=Ubuntu%3Aital%2Cwght%400%2C300%3B0%2C400%3B0%2C500%3B0%2C700%3B1%2C300%3B1%2C400%3B1%2C500%3B1%2C700&amp;display=swap);</style>
+    <bx:grid x="0" y="0" width="38.073" height="41.514"/>
+  </defs>
+  <rect style="fill: rgb(238, 215, 244); fill-opacity: 1; stroke-width: 0.616663; stroke-dasharray: none; stroke-opacity: 1; paint-order: normal; display: inline;" id="rect20" width="494.949" height="200.116"/>
+  <rect style="fill: rgb(238, 215, 244); fill-opacity: 1; stroke-width: 0.616663; stroke-dasharray: none; stroke-opacity: 1; paint-order: normal; display: inline;" id="rect-1" width="494.949" height="277.699" y="220.469"/>
+  <g id="layer3" style="display:inline" transform="matrix(1, 0, 0, 1, -0.577127, -75.48407)">
+    <g id="g9-5" transform="matrix(0.132834, -0.134948, 0.125727, 0.124626, 133.382736, 189.657669)" style="">
+      <path id="rect6157-9" d="m 536.00862,298.17808 c -1.62716,-1.60084 -4.09159,-1.70175 -5.52108,-0.23853 l -10.31993,10.56339 c -1.4295,1.46321 -1.27075,3.92419 0.35641,5.52503 l 11.75759,11.56745 -23.22689,23.77484 -11.26501,-11.08284 -101.91987,104.32425 14.69163,14.45405 -21.15726,21.65638 2.90019,3.16682 -65.60821,65.74137 c -4.85804,4.94705 -1.5655,16.24591 -1.9594,21.83302 1.35596,1.33403 3.41522,1.42675 4.60647,0.2074 l 74.74187,-76.5051 3.91919,3.85582 21.15726,-21.65638 12.72133,12.5156 101.91986,-104.32425 -9.2947,-9.1444 23.22689,-23.77483 10.27986,10.11362 c 1.62715,1.60084 4.08218,1.71138 5.51167,0.24815 l 10.31993,-10.56338 c 1.42949,-1.46322 1.28015,-3.93382 -0.34701,-5.53466 z" style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:11.3763;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+      <rect rx="3.4335344" ry="3.0770121" y="-155.35461" x="594.53522" height="8.0002308" width="61.116913" id="rect6675-5" style="opacity:0.658;fill:url(#linearGradient9);fill-opacity:1;stroke:none;stroke-width:11.3764;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" transform="matrix(0.71284706,0.70131952,-0.69881587,0.7153016,0,0)"/>
+      <rect rx="3.4335344" style="opacity:0.658;fill:url(#linearGradient10);fill-opacity:1;stroke:none;stroke-width:11.3764;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" id="rect6677-4" width="23.409533" height="33.231731" x="613.38892" y="-142.43117" ry="3.0770121" transform="matrix(0.71284706,0.70131952,-0.69881587,0.7153016,0,0)"/>
+      <rect ry="3.0770123" y="-103.66082" x="597.62543" height="138.40959" width="54.936554" id="rect6679-9" style="opacity:0.658;fill:#aaccff;fill-opacity:1;stroke:none;stroke-width:11.3764;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" rx="3.4335346" transform="matrix(0.71284706,0.70131952,-0.69881587,0.7153016,0,0)"/>
+      <rect rx="3.4335346" style="fill:#d3d7cf;fill-opacity:1;stroke:none;stroke-width:11.3764;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" id="rect6681-1" width="14.420847" height="25.175554" x="617.88324" y="38.497154" ry="3.0770123" transform="matrix(0.71284706,0.70131952,-0.69881587,0.7153016,0,0)"/>
+      <path id="rect6683-7" d="m 500.03177,422.47013 -56.74211,58.08072 c -1.19126,1.21935 -3.2419,1.12702 -4.59786,-0.20701 l -34.26619,-33.71207 c -1.35596,-1.33403 -1.48857,-3.38965 -0.29732,-4.609 l 24.14738,-24.71704" style="fill:#afdde9;fill-opacity:1;stroke:none;stroke-width:11.3763;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+      <path id="path6697-5" d="m 491.1882,392.2157 23.06676,23.55704" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:6.8258;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+      <path style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:6.8258;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m 473.55603,410.26383 23.06676,23.55705" id="path6699-5"/>
+      <path id="path6701-4" d="M 455.92386,428.31196 478.99063,451.869" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:6.8258;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+      <path style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:6.8258;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m 438.29168,446.36009 23.06677,23.55705" id="path6703-1"/>
+      <path id="path6708-8" d="m 394.04913,489.44579 c -1.74709,1.90679 -3.32115,3.98392 -5.30598,5.69244 -19.01832,19.71595 -38.40842,37.51877 -56.57045,58.06068 -0.72553,2.80902 -2.8229,6.87306 -1.24418,4.56248 20.5978,-21.40565 44.30222,-45.09061 64.54062,-66.84568 -0.47741,-0.4399 -0.95552,-1.26028 -1.42001,-1.46992 z" style="fill:#babdb6;fill-opacity:1;stroke:#babdb6;stroke-width:6.8258;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"/>
+      <ellipse transform="matrix(0.71284707,0.70131951,-0.69881587,0.7153016,0,0)" id="path6807-8" style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:11.3764;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" cx="543.0116" cy="-77.037407" rx="47.732418" ry="41.090778"/>
+      <ellipse style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:11.3764;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" id="path6809-3" transform="matrix(0.71284707,0.70131951,-0.69881587,0.7153016,0,0)" cx="706.6673" cy="-78.301743" rx="47.732418" ry="41.090778"/>
+    </g>
+    <g style="" transform="matrix(0.77695, 0, 0, 0.756803, 1.167125, 48.470921)">
+      <text id="text14-8-8" style="fill: rgb(109, 55, 88); font-family: Ubuntu; font-size: 41.5748px; font-weight: 600; line-height: 66.5196px; stroke-width: 4.25953px; white-space: pre;" transform="matrix(0.264583, 0, 0, 0.264584, -80.414833, 58.944214)"><tspan x="336.348" y="421.932">hyperglutamatergic </tspan><tspan x="336.348" dy="1.1em">​</tspan><tspan>         patients</tspan><tspan x="336.348" dy="1.1em">​</tspan><tspan>          n = 14</tspan><tspan x="336.348" dy="1.1em">​</tspan></text>
+      <path d="M 45.06 90.977 C 45.06 85.727 49.319 81.472 54.574 81.472 C 59.828 81.472 64.087 85.727 64.087 90.977 C 64.087 96.226 59.828 100.482 54.574 100.482 C 49.319 100.482 45.06 96.226 45.06 90.977 Z M 78.704 91.158 C 77.053 89.508 74.376 89.508 72.725 91.158 L 61.279 102.594 L 47.869 102.594 L 36.423 91.158 C 34.772 89.508 32.094 89.508 30.443 91.158 C 28.792 92.808 28.792 95.483 30.443 97.132 L 42.946 109.624 L 42.946 144.839 C 42.946 147.172 44.839 149.064 47.174 149.064 L 49.288 149.064 C 51.624 149.064 53.517 147.172 53.517 144.839 L 53.517 130.053 L 55.631 130.053 L 55.631 144.839 C 55.631 147.172 57.524 149.064 59.859 149.064 L 61.973 149.064 C 64.308 149.064 66.201 147.172 66.201 144.839 L 66.201 109.624 L 78.704 97.132 C 80.355 95.482 80.355 92.808 78.704 91.158 Z" id="path1-72" style="fill-opacity: 1; stroke-width: 0.132072; stroke: none; fill: rgb(178, 93, 145);"/>
+    </g>
+    <g transform="matrix(0.77695, 0, 0, 0.756803, -0.697502, -46.254452)" style="">
+      <g transform="matrix(1, 0, 0, 1, 110.689293, 0)">
+        <text id="text-1" style="fill: rgb(166, 38, 34); font-family: Ubuntu; font-size: 41.5748px; font-weight: 600; line-height: 66.5196px; stroke-width: 4.25953px; white-space: pre;" transform="matrix(0.264583, 0, 0, 0.264584, -73.781158, 184.109375)"><tspan x="336.348" y="421.932">hypoglutamatergic </tspan><tspan x="336.348" dy="1.1em">​</tspan><tspan>         patients</tspan><tspan x="336.348" dy="1.1em">​</tspan><tspan>          n = 10</tspan><tspan x="336.348" dy="1.1em">​</tspan></text>
+        <path d="M 51.06 215.841 C 51.06 210.591 55.319 206.336 60.573 206.336 C 65.827 206.336 70.087 210.591 70.087 215.841 C 70.087 221.091 65.827 225.346 60.573 225.346 C 55.319 225.346 51.06 221.091 51.06 215.841 Z M 84.704 216.022 C 83.053 214.373 80.375 214.373 78.724 216.022 L 67.278 227.458 L 53.868 227.458 L 42.422 216.022 C 40.771 214.373 38.094 214.373 36.443 216.022 C 34.792 217.672 34.792 220.347 36.443 221.997 L 48.946 234.489 L 48.946 269.703 C 48.946 272.037 50.839 273.928 53.174 273.928 L 55.288 273.928 C 57.623 273.928 59.516 272.037 59.516 269.703 L 59.516 254.918 L 61.63 254.918 L 61.63 269.703 C 61.63 272.037 63.523 273.928 65.858 273.928 L 67.973 273.928 C 70.308 273.928 72.201 272.037 72.201 269.703 L 72.201 234.489 L 84.704 221.997 C 86.355 220.347 86.355 217.672 84.704 216.022 Z" id="path1-72-7" style="display: inline; fill-opacity: 1; stroke-width: 0.132072; fill: rgb(255, 63, 56);"/>
+      </g>
+    </g>
+    <g transform="matrix(0.77695, 0, 0, 0.756803, 38.443527, -63.989655)" style="">
+      <text id="text14" style="fill: rgb(78, 104, 47); font-family: Ubuntu; font-size: 41.5748px; font-weight: 600; line-height: 66.5196px; stroke-width: 4.25953px; white-space: pre;" transform="matrix(0.264583, 0, 0, 0.264584, -70.959839, 307.701843)"><tspan x="336.348" y="421.932">healthy controls</tspan><tspan x="336.348" dy="1.2em">​</tspan><tspan>          n = 5</tspan></text>
+      <path d="M 50.06 341.828 C 50.06 336.578 54.319 332.323 59.574 332.323 C 64.828 332.323 69.087 336.578 69.087 341.828 C 69.087 347.077 64.828 351.333 59.574 351.333 C 54.319 351.333 50.06 347.077 50.06 341.828 Z M 83.704 342.009 C 82.053 340.359 79.376 340.359 77.725 342.009 L 66.278 353.445 L 52.868 353.445 L 41.422 342.009 C 39.771 340.359 37.094 340.359 35.443 342.009 C 33.792 343.659 33.792 346.334 35.443 347.984 L 47.946 360.476 L 47.946 395.69 C 47.946 398.023 49.839 399.915 52.174 399.915 L 54.288 399.915 C 56.623 399.915 58.516 398.023 58.516 395.69 L 58.516 380.905 L 60.631 380.905 L 60.631 395.69 C 60.631 398.023 62.524 399.915 64.859 399.915 L 66.973 399.915 C 69.308 399.915 71.201 398.023 71.201 395.69 L 71.201 360.476 L 83.704 347.983 C 85.355 346.334 85.355 343.659 83.704 342.009 Z" id="path1-72-8" style="fill-opacity: 1; stroke-width: 0.132072; fill: rgb(149, 198, 92);"/>
+    </g>
+    <g id="g18" transform="matrix(0.761621, 0, 0, 0.716941, 49.088039, 63.205116)" style="">
+      <rect style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.965;stroke-dasharray:none" id="rect10" width="135.80991" height="108.40967" x="397.30359" y="103.64441"/>
+      <rect style="fill-opacity: 1; stroke: none; stroke-width: 1.15346; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141);" id="rect11" width="3.5739453" height="36.123554" x="435.86407" y="174.84"/>
+      <rect style="fill-opacity: 1; stroke: none; stroke-width: 0.580348; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141);" id="rect11-5" width="3.5739453" height="9.1445465" x="404.20209" y="202.519"/>
+      <rect style="fill-opacity: 1; stroke: none; stroke-width: 0.580348; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141);" id="rect11-5-8" width="3.5739453" height="9.1445465" x="520.2088" y="201.6844"/>
+      <rect style="fill-opacity: 1; stroke: none; stroke-width: 0.842276; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141);" id="rect11-5-8-4" width="3.5739453" height="19.261675" x="424.84158" y="191.48175"/>
+      <rect style="fill-opacity: 1; stroke: none; stroke-width: 1.15346; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141);" id="rect11-71" width="3.5739453" height="36.123554" x="507.33304" y="175.0155"/>
+      <rect style="fill-opacity: 1; stroke: none; stroke-width: 1.50401; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141);" id="rect11-71-7" width="3.5739453" height="61.416374" x="460.99304" y="149.84349"/>
+      <rect style="fill-opacity: 1; stroke: none; stroke-width: 1.50401; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141);" id="rect11-71-7-9" width="3.5739453" height="61.416374" x="483.28656" y="149.6606"/>
+      <rect style="fill-opacity: 1; stroke: none; stroke-width: 1.965; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141);" id="rect11-7" width="3.5739453" height="104.83572" x="489.21329" y="106.14301"/>
+      <text id="text11" style="font-style: normal; font-variant: normal; font-weight: bold; font-stretch: normal; font-size: 48px; font-family: sans-serif; white-space: pre; display: inline; fill: rgb(0, 0, 0); fill-opacity: 1; stroke: none; stroke-width: 7.42677; stroke-dasharray: none; stroke-opacity: 1; text-anchor: middle;" x="-1185.916" y="-665.993"><tspan x="464.69" y="227" id="tspan8" style="font-size: 12.7px; word-spacing: 0px;">m/z</tspan></text>
+      <text transform="matrix(-0.002368, -0.999997, 0.999997, -0.002368, 153.844193, 591.579285)" id="text11-1" style="font-style: normal; font-variant: normal; font-weight: bold; font-stretch: normal; font-size: 48px; font-family: sans-serif; white-space: pre; display: inline; fill: rgb(0, 0, 0); fill-opacity: 1; stroke: none; stroke-width: 7.42677; stroke-dasharray: none; stroke-opacity: 1; text-anchor: middle;" x="-1213.883" y="-656.722"><tspan x="436.723" y="236.271" id="tspan9" style="font-size: 12.7px; word-spacing: 0px;">intensity</tspan></text>
+    </g>
+    <path style="fill-opacity: 1; stroke-width: 1.127; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141); transform-box: fill-box; transform-origin: 50% 50%;" id="path14" d="M 237.137 313.501 L 237.209 286.058 L 237.281 258.616 L 247.718 272.48 L 258.155 286.343 L 247.646 299.922 L 237.137 313.501 Z" transform="matrix(0, 1, -1, 0, 0, 0.000006)"/>
+    <path id="path-1" style="fill-opacity: 1; stroke: none; stroke-width: 0.43683; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141); transform-box: fill-box; transform-origin: 50% 50%;" d="M 302.773 188.579 L 302.834 195.154 L 287.952 195.154 L 287.952 204.197 L 302.921 204.197 L 302.982 210.543 L 311.558 204.953 L 320.135 199.362 L 311.454 193.97 L 302.773 188.579 Z"/>
+    <path id="path-2" style="fill-opacity: 1; stroke: none; stroke-width: 0.43683; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141); transform-origin: 191.384px 199.561px;" d="M 190.113 188.579 L 190.174 195.154 L 175.292 195.154 L 175.292 204.197 L 190.261 204.197 L 190.322 210.543 L 198.898 204.953 L 207.475 199.362 L 198.794 193.97 L 190.113 188.579 Z"/>
+    <text style="fill: rgb(94, 29, 92); font-family: Ubuntu; font-size: 13px; font-weight: 700; white-space: pre;" x="197.475" y="142.292">lumbar puncture</text>
+    <g transform="matrix(1, 0, 0, 1, 101.842133, -86.25692)">
+      <g transform="matrix(1, 0, 0, 1, -1.501991, 46.561729)">
+        <text style="fill: rgb(94, 29, 92); font-family: Ubuntu; font-size: 13px; font-weight: 700; white-space: pre;" x="228.936" y="158.735">targeted metabolomics</text>
+        <text style="fill: rgb(94, 29, 92); font-family: Ubuntu; font-size: 11px; font-style: italic; white-space: pre;" x="228.936" y="291.323">tryptophan &amp; TCA metabolites</text>
+        <g transform="matrix(1, 0, 0, 1, -5.375671, -31.516006)">
+          <text style="fill: rgb(94, 29, 92); font-family: Ubuntu; font-size: 13px; font-weight: 700; white-space: pre;" transform="matrix(1, 0, 0, 1, -151.353836, 192.939743)"><tspan x="252.178" y="195.732">pre-processing</tspan><tspan x="0" dy="1em">​</tspan><tspan x="0" dy="1em">​</tspan></text>
+          <text style="fill: rgb(94, 29, 92); font-family: Ubuntu; font-size: 11px; font-style: italic; white-space: pre;" x="67.78" y="404.959">log-transformed concentrations</text>
+        </g>
+        <g transform="matrix(1, 0, 0, 1, 0, -5)">
+          <g transform="matrix(1, 0, 0, 1, -305.64447, 315.993164)">
+            <g transform="matrix(1, 0, 0, 1, 0, 77)">
+              <g transform="matrix(1, 0, 0, 1, 0, 6)">
+                <text style="fill: rgb(94, 29, 92); font-family: Ubuntu; font-size: 13px; font-weight: 700; white-space: pre;" transform="matrix(1, 0, 0, 1, 1.944842, -157.64476)"><tspan x="252.178" y="195.732">multivariate analysis</tspan><tspan x="252.178" dy="1em">​</tspan><tspan x="252.178" dy="1em">​</tspan></text>
+                <text style="fill: rgb(94, 29, 92); font-family: Ubuntu; font-size: 11px; font-style: italic; text-anchor: middle; white-space: pre;" transform="matrix(1, 0, 0, 1, 52.289001, -42.160549)" y="82.88999938964844"><tspan x="272.5679931640625" dy="1.6em">​</tspan><tspan>Unsupervised clustering (Ward's method)</tspan><tspan x="272.5679931640625" dy="1.6em">​</tspan><tspan>Supervised clustering (OPLS-DA) </tspan><tspan style="font-weight: 500;">(VIP ≥1) </tspan></text>
+              </g>
+            </g>
+          </g>
+          <g transform="matrix(1, 0, 0, 1, -190.895599, 349.448425)">
+            <g transform="matrix(1, 0, 0, 1, -1.302593, 25.611235)">
+              <g transform="matrix(1, 0, 0, 1, 145, 0)">
+                <text style="fill: rgb(94, 29, 92); font-family: Ubuntu; font-size: 13px; font-weight: 700; white-space: pre;" transform="matrix(1, 0, 0, 1, -3.564334, -125.711266)"><tspan x="252.178" y="195.732">univariate analysis</tspan><tspan x="252.178" dy="1em">​</tspan><tspan x="252.178" dy="1em">​</tspan></text>
+                <g transform="matrix(1, 0, 0, 1, 0.253324, 0.991724)">
+                  <text style="fill: rgb(94, 29, 92); font-family: Ubuntu; font-size: 11px; font-style: italic; white-space: pre;" transform="matrix(1, 0, 0, 1, -24.000004, 3.753693)"><tspan x="251.614" y="84.89">Mann- Whitney U test </tspan><tspan style="font-weight: 500;">(FDR≤.05)</tspan><tspan x="251.614" dy="1em">​</tspan><tspan> </tspan></text>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g transform="matrix(1, 0, 0, 1, -5.375671, 153.580627)">
+          <text style="fill: rgb(94, 29, 92); font-family: Ubuntu; font-size: 13px; font-weight: 700; white-space: pre;" x="92.978" y="442.959">pathway analysis</text>
+          <g transform="matrix(1, 0, 0, 1, 0, 4)">
+            <rect x="64.905" y="355.463" width="168.236" height="24.276" style="fill: rgb(144, 42, 141);"/>
+            <text style="fill: rgb(253, 250, 252); font-family: Ubuntu; font-size: 13px; font-weight: 700; white-space: pre;" x="76.511" y="372.051">metabolites of interest</text>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 0, -27)">
+      <path id="path-3" style="fill-opacity: 1; stroke: none; stroke-width: 0.43683; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141); transform-box: fill-box; transform-origin: 51.2507% 51.8615%;" d="M 334.599 373.378 L 334.66 379.953 L 319.778 379.953 L 319.778 388.996 L 334.747 388.996 L 334.808 395.342 L 343.384 389.752 L 351.961 384.161 L 343.28 378.769 L 334.599 373.378 Z" transform="matrix(0.71303, 0.701134, -0.701134, 0.71303, -0.000009, -0.000004)"/>
+      <path id="path-4" style="fill-opacity: 1; stroke: none; stroke-width: 0.43683; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141); transform-origin: 141.119px 384.769px;" d="M 139.446 396.16 L 139.507 389.585 L 124.625 389.585 L 124.625 380.542 L 139.594 380.542 L 139.655 374.196 L 148.231 379.786 L 156.808 385.377 L 148.127 390.769 L 139.446 396.16 Z" transform="matrix(-0.71303, 0.701134, -0.701134, -0.71303, -0.000033, -0.000037)"/>
+    </g>
+    <text style="fill: rgb(109, 55, 88); font-family: Ubuntu; font-size: 8px; font-style: italic; font-weight: 700; text-anchor: middle; white-space: pre;" transform="matrix(1, 0, 0, 1, -31.303265, -18.027523)"><tspan x="97.071" y="115.278">MECP2 &amp; CDKL5 </tspan><tspan x="97.071" dy="1em">​</tspan><tspan>mutations</tspan></text>
+    <text style="fill: rgb(166, 38, 34); font-family: Ubuntu; font-size: 8px; font-style: italic; font-weight: 700; text-anchor: middle; white-space: pre;" transform="matrix(1, 0, 0, 1, 63.518723, -20.027523)"><tspan x="97.071" y="115.278">GRIN1, GRIN2B &amp; STXBP1  </tspan><tspan x="97.07099914550781" dy="1em">​</tspan><tspan>mutations</tspan></text>
+    <g transform="matrix(1, 0, 0, 1, -14.976105, 96.46228)"/>
+    <path id="path-5" style="fill-opacity: 1; stroke: none; stroke-width: 0.43683; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141); transform-origin: 246.295px 523.092px;" d="M 245.024 512.11 L 245.085 518.685 L 230.203 518.685 L 230.203 527.728 L 245.172 527.728 L 245.233 534.074 L 253.809 528.484 L 262.386 522.893 L 253.705 517.501 L 245.024 512.11 Z" transform="matrix(0, 1, -1, 0, 0.000031, 0.000036)"/>
+    <g transform="matrix(-1, 0, 0, 1, -6.999968, 69.552017)" style="transform-origin: 238.695px 384.195px;">
+      <g transform="matrix(1, 0, 0, 1, 1, 5)">
+        <path id="path-6" style="fill-opacity: 1; stroke: none; stroke-width: 0.43683; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141); transform-origin: 321.272px 380.769px;" d="M 319.599 392.16 L 319.66 385.585 L 304.778 385.585 L 304.778 376.542 L 319.747 376.542 L 319.808 370.196 L 328.384 375.786 L 336.961 381.377 L 328.28 386.769 L 319.599 392.16 Z" transform="matrix(-0.71303, 0.701134, -0.701134, -0.71303, -0.000007, -0.000036)"/>
+        <path id="path-7" style="fill-opacity: 1; stroke: none; stroke-width: 0.43683; stroke-dasharray: none; stroke-opacity: 1; fill: rgb(144, 42, 141); transform-origin: 129.119px 379.769px;" d="M 127.446 368.378 L 127.507 374.953 L 112.625 374.953 L 112.625 383.996 L 127.594 383.996 L 127.655 390.342 L 136.231 384.752 L 144.808 379.161 L 136.127 373.769 L 127.446 368.378 Z" transform="matrix(0.71303, 0.701134, -0.701134, 0.71303, 0.000002, 0.000004)"/>
+      </g>
+    </g>
+  </g>
+</svg>
