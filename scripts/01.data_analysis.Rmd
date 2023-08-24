@@ -246,7 +246,9 @@ lc <- list(Label = lc)
 # colnames(mat_allr) <- subset(metdat,metdat$COS.Code%in%colnames(mat_allr))$Gene.ID
 
 
-pheatmap(mat_allr, annotation = labr,clustering_method = "ward.D2",fontsize = 8,show_colnames = TRUE,show_rownames = FALSE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",annotation_legend = TRUE)
+p4 <- pheatmap(mat_allr, annotation = labr,clustering_method = "ward.D2",fontsize = 8,show_colnames = TRUE,show_rownames = FALSE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",annotation_legend = TRUE)
+
+
 
 ```
 
@@ -627,7 +629,7 @@ axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = el
 print(four4) 
 
 
-ggsave(file=here("paper/Figures/4.png"),plot=four4, dpi = 1000, scale = 0.8, bg="transparent",width = 30, height = 20, units = "cm") 
+ggsave(file=here("paper/Figures/4.png"),plot=four4, dpi = 1000, scale = 0.8, bg="transparent",width = 30, height = 15, units = "cm") 
 
 
 ```
@@ -636,12 +638,11 @@ ggsave(file=here("paper/Figures/4.png"),plot=four4, dpi = 1000, scale = 0.8, bg=
 
 ```{r}
 joined_df <- sta_lst_sig
-selectedmeta <- setdiff(unique(unlist(sels)),tryp_mets)
-joined_df <- subset(joined_df, variable%in%selectedmeta)
+joined_df <- subset(joined_df, variable%in%aas)
 vg <- log_df1[log_df1$variable %in% joined_df$variable, ]
 colnames(vg) <- c("rowname","Label","variable","log2 Concentration")
 vg$Label <- factor(vg$Label, levels=c("1","10","8"))
-maxim_val <- apply(df_norm_lab4[, which(colnames(df_norm_lab4)%in%selectedmeta)], 2, max)
+maxim_val <- apply(df_norm_lab4[, which(colnames(df_norm_lab4)%in%aas)], 2, max)
 maxim_val <- maxim_val 
 joined_df$y.position <- c(sapply(maxim_val, function(x) rep(x,3)))
 
@@ -942,17 +943,71 @@ ggsave(file=here("paper/Figures/fig_2.png"),fig_2,dpi = 1000, scale = 1,width = 
 ```
 
 ```{r}
+df_metg <- df_norm_lab4[,c("rowname","Label",(sels$Hyperglutamatergic))]
+df_metg <- column_to_rownames(df_metg,"rowname")
+df_metg <- subset(df_metg,Label%in%c(1,10))
+metdat2 <- metdat[order(make.names(metdat$COS.Code)),]
+df_metg <- df_metg[order(make.names(rownames(df_metg))),]
+rownames(df_metg) <- metdat2[metdat2$COS.Code%in%make.names(rownames(df_metg)),]$ID
+df_metg <- data.frame(t(df_metg),check.names = FALSE)
+mat_allg <- as.matrix(df_metg)
+lab <- data.frame(as.factor(mat_allg[1,]))
+lab$as.factor.mat_allg.1.... <- gsub(10,"Hyperglutamatergic     ",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub(1,"Control",lab$as.factor.mat_allg.1....)
+colnames(lab)<-"Label"
+# lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic","Hypoglutamatergic"),ordered = TRUE)
+lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic     "),ordered = TRUE)
+mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
 
-# df_norm_lab6 <- df_norm_lab4[,c("rowname","Label",aas)]
-# log_df_aa <- melt(df_norm_lab6[,-1],id.vars = "Label")
-# man <- manova(cbind(Phenylalanine, Proline, Serine, Threonine, Tryptophan, Valine, Alanine, `Aspartic acid`, Glutamine, `Glutamic acid`, Glycine, Isoleucine, Leucine)~Label,df_norm_lab6)
-# 
-# summary(man)
-# summary.aov(man)
-# 
-# an <- aov(value~Label*variable,log_df_aa)
-# summary(an)
-# summary.aov(an)
+# lc <- c("#95C65C","#B25D91","#FF3F38")
+# names(lc) <-  levels(lab$Label)
+# lc <- list(Label = lc)
+lc <- c("#95C65C","#B25D91")
+names(lc) <-  levels(lab$Label)
+lc <- list(Label = lc)
+
+p6 <- pheatmap(mat_allg, annotation = lab,clustering_method = "ward.D2",fontsize = 10,show_colnames = TRUE,show_rownames = TRUE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = TRUE, annotation_legend = TRUE, cellwidth = 12, cellheight = 9)
+
+p6 <- wrap_elements(as.grob(p6))
+```
+
+
+
+
+```{r}
+df_metg <- df_norm_lab4[,c("rowname","Label",(sels$Hypoglutamatergic))]
+df_metg <- column_to_rownames(df_metg,"rowname")
+df_metg <- subset(df_metg,Label%in%c(1,8))
+metdat2 <- metdat[order(make.names(metdat$COS.Code)),]
+df_metg <- df_metg[order(make.names(rownames(df_metg))),]
+rownames(df_metg) <- metdat2[metdat2$COS.Code%in%make.names(rownames(df_metg)),]$ID
+df_metg <- data.frame(t(df_metg),check.names = FALSE)
+mat_allg <- as.matrix(df_metg)
+lab <- data.frame(as.factor(mat_allg[1,]))
+lab$as.factor.mat_allg.1.... <- gsub(8,"Hyperglutamatergic     ",lab$as.factor.mat_allg.1....)
+lab$as.factor.mat_allg.1.... <- gsub(1,"Control",lab$as.factor.mat_allg.1....)
+colnames(lab)<-"Label"
+# lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic","Hypoglutamatergic"),ordered = TRUE)
+lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic     "),ordered = TRUE)
+mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
+
+# lc <- c("#95C65C","#B25D91","#FF3F38")
+# names(lc) <-  levels(lab$Label)
+# lc <- list(Label = lc)
+lc <- c("#95C65C","#FF3F38")
+names(lc) <-  levels(lab$Label)
+lc <- list(Label = lc)
+
+p7 <- pheatmap(mat_allg, annotation = lab,clustering_method = "ward.D2",fontsize = 10,show_colnames = TRUE,show_rownames = TRUE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = TRUE, annotation_legend = TRUE, cellwidth = 15, cellheight = 10)
+
+p7 <- wrap_elements(as.grob(p7))
+```
+
+
+```{r}
+fig_5 <- p6 + p7 + plot_annotation(tag_levels = "A", theme = theme(plot.margin = margin(t = 2, r = 1, b = 1, l = 1, unit = "cm")))
+
+ggsave(file=here("paper/Figures/fig_5.png"),fig_5,dpi = 1000, scale = 1,width = 40, height = 15, units = "cm")
 ```
 
 
