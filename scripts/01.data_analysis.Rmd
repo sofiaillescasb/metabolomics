@@ -589,7 +589,11 @@ tryp_mets <- c(
 "Tryptophan",
 "Anthranilic acid",
 "5-Hydroxyindole-3-acetic acid",
-"N-Acetyl-5-hydroxytryptamine"
+"N-Acetyl-5-hydroxytryptamine",
+"2-Picolinic acid",
+"Trigonelline",
+"Progesterone",
+"Trigonelline"
 )
 
 aas <- c(
@@ -601,7 +605,8 @@ aas <- c(
 "Aspartic acid",
 "Glycine",
 "Isoleucine",
-"Leucine")
+"Leucine",
+"Phenylalanine")
 
 
 
