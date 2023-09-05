@@ -10,7 +10,6 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_knit$set(root.dir = 'C:/Users/killescas/Documents/GitHub/metabolomics/LCR/metabolomica')
 knitr::opts_chunk$set(message = FALSE)
 knitr::opts_chunk$set(warning = FALSE)
 ```
@@ -343,7 +342,7 @@ for (i in 1:length(vip_g)) {
 
 # Univariate Analysis
 
-```{r table_3, results = 'asis'}
+```{r table_3, results = 'asis', message=FALSE}
 lcp3 <- c("#FF3F38","#B25D91","#95C65C")
 df_norm_lab4 <- df_norm_lab
 df_norm_lab4$Label <- ifelse(df_norm_lab4$Label==2,10,df_norm_lab4$Label)
@@ -357,6 +356,10 @@ ex_df1$value <-as.numeric(format(ex_df1$value, scientific = FALSE))
 ex_df1$Label <- factor(ex_df1$Label)
 
 
+aov_form <- sapply(make.names(colnames(df_norm_lab4[,-c(1,2)])), function(x) as.formula(paste0(x,"~Label")))
+df_norm_aov <- df_norm_lab4
+colnames(df_norm_aov) <- make.names(colnames(df_norm_aov))
+aov_lst <- lapply(aov_form, aov, df_norm_aov)
 
 stat.test <-
     log_df1 %>%
@@ -364,10 +367,21 @@ stat.test <-
     Anova(value ~ Label)
 summary(stat.test)
 
-ggqqplot(residuals(get_anova_table(stat.test)))
+
+resds <- lapply(aov_lst, residuals)
+lapply(names(resds), function(x) ggqqplot(resds[[x]], title = paste("Q-Q plot of residuals",x)))
+
+fitd <- lapply(aov_lst,fitted)
 
 
-?get_anova_table
+#heteroscedasticity suspected in some, maybe because of extremely small sample from control
+for(i in names(fitd)) {
+  plot(fitd[[i]],resds[[i]])
+  abline(0,0)
+}
+
+lapply(aov_lst, plot)
+
 sigs <- subset(stat.test, `p<.05`=="*")
 log_df_sig <- subset(log_df1, variable%in%sigs$variable)
 
