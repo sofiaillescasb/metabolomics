@@ -10,7 +10,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_knit$set(root.dir = 'C:/Users/killescas/Documents/GitHub/metabolomics/LCR/metabolomica')
+# knitr::opts_knit$set(root.dir = 'C:/Users/killescas/Documents/GitHub/metabolomics/LCR/metabolomica')
 knitr::opts_chunk$set(message = FALSE)
 knitr::opts_chunk$set(warning = FALSE)
 ```
@@ -75,7 +75,7 @@ p1 <- ggbiplot(pca_m1,
     geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 4) +
     scale_color_manual(values = lcps, labels = c("Control", "MeCP2","STXBP1","CDKL5","GRIN")) +
     xlim(-max_x_limit, max_x_limit)  +
-  ylim(-6,6) 
+    ylim(-7,7)
 
 
 p1 <- wrap_elements(as.grob(p1))
@@ -108,7 +108,7 @@ p2 <- ggbiplot(pca_m2,
     geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 4) +
     scale_color_manual(values = lcps, labels = NULL) +
     xlim(-max_x_limit, max_x_limit) +
-  ylim(-6,6) +
+    ylim(-7,7) +
     theme(legend.position="none") 
 
 p2 <- wrap_elements(as.grob(p2))
@@ -139,8 +139,8 @@ p3 <- ggbiplot(pca_m3,
     labs(colour = "Mutated gene") +
     geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 4) +
     scale_color_manual(values = lcps, labels = c("Control","STXBP1","GRIN")) +
-    xlim(-max_x_limit, max_x_limit)  +
-    ylim(-6,6) +
+    # xlim(-max_x_limit, max_x_limit)  +
+    ylim(-7,7) +
   theme(legend.position="none")
 
 p3 <- wrap_elements(as.grob(p3))
@@ -181,12 +181,14 @@ p4 <- wrap_elements(as.grob(p4))
 
 # Create a list to store the modified plots
 
-# library(imager)
-# neurons <- load.image("/Users/sofiaillescas/Desktop/LAB/LCR/metabolomica/neuronas.jpg")
-# 
-# nr <- ggplot() +
-#   background_image(neurons) 
+library(png)
+neurons <- readPNG(here("paper/Figures/neurons.png"), native = TRUE)
 
+nr <- ggplot() +
+  background_image(neurons) + 
+  coord_fixed()
+
+nr / p4
 ```
 
 
@@ -221,7 +223,6 @@ pheatmap(mat_alla, annotation = laba,clustering_method = "ward.D2",fontsize = 8,
 ```{r fig.width = 5, fig.height = 4, fig.show = "hold", out.height="50%",out.width="50%",  results='asis'}
 df_metr <- df_norm_lab
 df_metr <- subset(df_metr,Label%in%c(1,10,2))
-rownames(df_metr) <- subset(metdat,metdat$COS.Code%in%rownames(df_metr))$Gene.ID
 df_metr <- data.frame(t(df_metr),check.names = FALSE)
 mat_allr <- as.matrix(df_metr)
 conds <- c("Hypoglutamatergic","Control")
@@ -243,8 +244,6 @@ lc <- c("#95C65C","#C70E7B","#808B96")
 names(lc) <-  levels(labr$Label)
 lc <- list(Label = lc)
 
-# colnames(mat_allr) <- subset(metdat,metdat$COS.Code%in%colnames(mat_allr))$Gene.ID
-
 
 p4 <- pheatmap(mat_allr, annotation = labr,clustering_method = "ward.D2",fontsize = 8,show_colnames = TRUE,show_rownames = FALSE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",annotation_legend = TRUE)
 
@@ -256,7 +255,6 @@ p4 <- pheatmap(mat_allr, annotation = labr,clustering_method = "ward.D2",fontsiz
 ```{r fig.width = 5, fig.height = 4}
 df_metg <- df_norm_lab 
 df_metg <- subset(df_metg,Label%in%c(1,8,12))
-rownames(df_metg) <- subset(metdat,metdat$COS.Code%in%rownames(df_metg))$Gene.ID
 df_metg <- data.frame(t(df_metg),check.names = FALSE)
 mat_allg <- as.matrix(df_metg)
 conds <- c("GRIN","Control")
@@ -298,10 +296,7 @@ ex_df1 <- log_df1
 ex_df1$value <- exp(ex_df1$value)
 ex_df1$value <-as.numeric(format(ex_df1$value, scientific = FALSE))
 ex_df1$Label <- factor(ex_df1$Label)
-# 
-# sam_stat <- log_df %>%
-#   group_by(Label,variable) %>%
-#   get_summary_stats(value, type = "median_iqr")
+
 
 stat.test <-
     log_df1 %>%
@@ -386,41 +381,6 @@ vip_g$Hyperglutamatergic$p.adj <- subset(sta_lst_sig,group2=="10"&group1=="1")$p
 
 ```
 
-
-
-
-```{r}
-library(VennDiagram)
-
-col_op <- c("#B25D91", "#FF3F38")
-names(col_op) <- names(vip_g)
-
-sels <- c()  # Create an empty list to store plots
-
-for (i in names(vip_g)) {
-  vip_g2 <- vip_g[[i]][order(vip_g[[i]]$VIP, decreasing = TRUE),]
-  vip_g2 <- subset(vip_g2, VIP > 1 | p.adj <=0.05)
-  vip_g2$color <- names(vip_g[i])
-  sels[[i]] <- vip_g2$Metabolite
-}
-
-venn.diagram(sels,filename = here("paper/Figures/venn.png"),
-             imagetype = "png",
-          col=c("#B25D91", "#FF3F38"),
-          fill = c(alpha("#B25D91",0.3), alpha('#FF3F38',0.3)),
-          cex = 1,
-          fontfamily = "sans",
-          cat.cex = 1,
-          cat.default.pos = "outer",
-          cat.pos = c(-27, 27),
-          cat.dist = c(0.055, 0.055),
-          cat.fontfamily = "sans",
-          cat.col = c("#B25D91", "#FF3F38"))
-
-cat(setdiff(sels$Hyperglutamatergic,sels$Hypoglutamatergic),sep = "\n")
-cat(setdiff(sels$Hypoglutamatergic,sels$Hyperglutamatergic),sep = "\n")
-cat(intersect(sels$Hyperglutamatergic,sels$Hypoglutamatergic),sep = "\n")
-```
 
 # Affected pathways
 
@@ -592,11 +552,11 @@ tryp_mets <- c(
 "N-Acetyl-5-hydroxytryptamine",
 "2-Picolinic acid",
 "Trigonelline",
-"Progesterone",
-"Trigonelline"
+"Indole-3-propionic acid"
 )
 
 aas <- c(
+"Glutamic acid",
 "Proline",
 "Serine",
 "Threonine",
@@ -634,8 +594,8 @@ axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = el
 print(four4) 
 
 
-ggsave(file=here("paper/Figures/4.png"),plot=four4, dpi = 1000, scale = 0.8, bg="transparent",width = 30, height = 15, units = "cm") 
-
+ggsave(file=here("paper/Figures/4.png"),plot=four4, dpi = 1000,bg="white" ,width = 30, height = 20, units = "cm") 
+uni1 <- wrap_elements((as.grob(four4)))
 
 ```
 
@@ -654,7 +614,7 @@ joined_df$y.position <- c(sapply(maxim_val, function(x) rep(x,3)))
 four4 <- ggboxplot(vg, x = "Label", y = "log2 Concentration", color = "Label", facet.by = "variable", fill = "Label", alpha=0.4) + geom_point(aes(color = vg$Label)) +
   facet_wrap(~ variable, scales = "free", ncol = 4) +
   stat_pvalue_manual(joined_df, label = "p.adj.signif", y.position = "y.position",hide.ns = TRUE,step.increase = 0.2) +
-  labs(title = "Other alterations") +
+  labs(title = "Other amino acid alterations") +
   theme(
 axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),plot.background = element_rect(fill = "transparent",colour = NA)
 ) +
@@ -663,7 +623,10 @@ axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = el
 print(four4) 
 
 
-ggsave(file=here("paper/Figures/4B.png"),plot=four4, dpi = 1000, scale = 0.8,width = 30, height = 20, units = "cm") 
+ggsave(file=here("paper/Figures/4B.png"),plot=four4, dpi = 1000,bg="white" ,width = 30, height = 20, units = "cm") 
+uni2 <- wrap_elements((as.grob(four4)))
+
+uni1 / uni2
 ```
 
 
@@ -817,10 +780,8 @@ ggsave(file=here("paper/Figures/vip.png"),patchvip,dpi = 1000, scale = 1, bg="tr
 ```{r}
 df_metg <- df_norm_lab4 
 df_metg <- subset(df_metg,Label%in%c(1,10))
-metdat2 <- metdat[order(make.names(metdat$COS.Code)),]
-df_metg <- df_metg[order(make.names(rownames(df_metg))),]
-rownames(df_metg) <- metdat2[metdat2$COS.Code%in%make.names(rownames(df_metg)),]$ID
 df_metg <- data.frame(t(df_metg),check.names = FALSE)
+df_metg <- row_to_names(df_metg,1)
 mat_allg <- as.matrix(df_metg)
 lab <- data.frame(as.factor(mat_allg[1,]))
 lab$as.factor.mat_allg.1.... <- gsub(10,"Hyperglutamatergic     ",lab$as.factor.mat_allg.1....)
@@ -846,10 +807,7 @@ p6 <- wrap_elements(as.grob(p6))
 ```{r}
 df_metg <- df_norm_lab4 
 df_metg <- subset(df_metg,Label%in%c(1,8))
-metdat2 <- metdat[order(make.names(metdat$COS.Code)),]
-df_metg <- df_metg[order(make.names(rownames(df_metg))),]
-rownames(df_metg) <- metdat2[metdat2$COS.Code%in%make.names(rownames(df_metg)),]$ID
-df_metg <- data.frame(t(df_metg),check.names = FALSE)
+df_metg <- row_to_names(df_metg,1)df_metg <- data.frame(t(df_metg),check.names = FALSE)
 mat_allg <- as.matrix(df_metg)
 lab <- data.frame(as.factor(mat_allg[1,]))
 lab$as.factor.mat_allg.1.... <- gsub(8,"Hypoglutamatergic",lab$as.factor.mat_allg.1....)
@@ -951,9 +909,6 @@ ggsave(file=here("paper/Figures/fig_2.png"),fig_2,dpi = 1000, scale = 1,width = 
 df_metg <- df_norm_lab4[,c("rowname","Label",(sels$Hyperglutamatergic))]
 df_metg <- column_to_rownames(df_metg,"rowname")
 df_metg <- subset(df_metg,Label%in%c(1,10))
-metdat2 <- metdat[order(make.names(metdat$COS.Code)),]
-df_metg <- df_metg[order(make.names(rownames(df_metg))),]
-rownames(df_metg) <- metdat2[metdat2$COS.Code%in%make.names(rownames(df_metg)),]$ID
 df_metg <- data.frame(t(df_metg),check.names = FALSE)
 mat_allg <- as.matrix(df_metg)
 lab <- data.frame(as.factor(mat_allg[1,]))
@@ -983,9 +938,6 @@ p6 <- wrap_elements(as.grob(p6))
 df_metg <- df_norm_lab4[,c("rowname","Label",(sels$Hypoglutamatergic))]
 df_metg <- column_to_rownames(df_metg,"rowname")
 df_metg <- subset(df_metg,Label%in%c(1,8))
-metdat2 <- metdat[order(make.names(metdat$COS.Code)),]
-df_metg <- df_metg[order(make.names(rownames(df_metg))),]
-rownames(df_metg) <- metdat2[metdat2$COS.Code%in%make.names(rownames(df_metg)),]$ID
 df_metg <- data.frame(t(df_metg),check.names = FALSE)
 mat_allg <- as.matrix(df_metg)
 lab <- data.frame(as.factor(mat_allg[1,]))

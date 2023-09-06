@@ -1,0 +1,45 @@
+---
+title: "HMDB normal values"
+author: "Sofia Illescas"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(xml2)
+library(XML)
+library(here)
+```
+
+```{r}
+csf_db <- read_xml(here("csf_metabolites/csf_metabolites.xml"))
+
+# csf_xml <- xmlTreeParse(csf_db)
+```
+
+```{r}
+library(tibble)
+# name
+# term
+# pathway
+# normal_concentrations
+# biospecimen
+# concentration_value
+# concentration_units
+# subject_age
+# subject_sex
+# subject_condition
+# Extract department and salary info
+concentrations <- xml_text(xml_find_all(csf_db$doc, ".//normal_concentrations"))
+specimen <- xml_text(xml_find_all(csf_db, ".//biospecimen"))
+salary <- xml_integer(xml_find_all(employee_data, ".//salary"))
+
+# Format as a tibble
+df_dept_salary <- tibble(department = dept, salary = salary)
+df_dept_salary
+```
+
