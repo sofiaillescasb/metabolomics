@@ -1,26 +1,30 @@
-Code;ID;Age;Status;Sex;Disease;Mutation;Medications
-CSF 1;P2;9;A;F;GRIN;GRIN2B P553T;Levomepromazine, carbamazepine, melatonin, L-Serine
-CSF 10;P55;9;D;F;MeCP2;MECP2 c.763C>T (p.R255X);Valproic acid, phenobarbital, clobazam
-CSF 11;P56;6;A;F;MeCP2;MECP2 c.961_1188delins220 (p.Lys321Gly fs X6);Zonisamide, Ethosuximide, risperidone
-CSF 17;P5;0;A;F;GRIN;GRIN1 c.1921G>C p.Gly641Arg;none
-CSF 18;P6;0;D;F;GRIN;"GRIN1 c.1705C>T; p.Arg569Trp";Levetiracetam
-CSF 19;P7;14;A;M;GRIN;"t(1;12)(p13.3;p13.1) (VAV3;GRIN2B)";Guanfacine, Melatonin
-CSF 2;P3;3;A;M;GRIN;GRIN2B p.Arg696His/c.2087G>A;none
-CSF 20;P18;3;A;M;STXPB1;STXPB1 p.Met602Val/ c.1804A>G;Levetiracetam, valproic acid, carbamazepine
-CSF 22;P45;8;A;F;CDKL5;CDKL5 c.2704C>T (p.Gln902Stop);Carbamazepine
-CSF 24;P57;4;A;M;MeCP2;MECP2 c.925C>T (p.R309W);Valproic acid, risperidone, Levomepromazine
-CSF 25;P59;6;A;F;MeCP2;MECP2 c.808C>T (p.R270X);Unknown
-CSF 26;P61;5;A;F;MeCP2;MECP2 c.916C>T (p.R306C);Unknown
-CSF 27;P64;16;A;F;MeCP2;MECP2 c.880C>T (p.R294X);Carbamazepine
-CSF 3;P16;5;A;F;STXPB1;"STXBP1 c.1216C>T; p.Arg406Cys";Unknown
-CSF 32;P8;14;A;F;GRIN;GRIN2B (NM_000834.3): p.Arg926*/c.2776C>T;none
-CSF 33;P9;8;A;M;GRIN;GRIN2B P553T;LEV
-CSF 34;P19;18;A;F;STXPB1;STXBP1 p.Ile55Lys/c.164T>A;none
-CSF 35;P22;9;A;M;STXPB1;STXBP1 (c.1249+2T>C, g417aFSx7);Valproic acid, clonazepam, pregabaline, rufinamide 
-CSF 37;P66;11;A;F;MeCP2;MECP2:S229L;Valproic acid, carbamazepine
-CSF 38;P68;2;A;F;MeCP2;MECP2: c.[ 763>T] p.[ Arg255Stop];Valproic acid, clobazam
-CSF 39;P69;3;A;F;MeCP2;MECP2 c.473C>T (p.T158M);none
-CSF 40;P70;4;A;F;MeCP2;MECP2 c.1075_1178del104bp/p.SerArg_fsTer12;Topiramate
-CSF 6;P44;7;A;F;CDKL5;CDKL5 c.587C>G p.Ser196Trp;Levetiracetam, vigabatrine
-CSF 8;P52;9;A;F;MeCP2;MECP2 c.410A>G (p.E137G);Valproic, levetiracetam
-CSF 9;P53;3;A;F;MeCP2; MECP2 C502T;none
+ID;Age;Status;Sex;Disease;Mutation;Medications
+GRIN.1;9;A;F;GRIN;GRIN2B P553T;Levomepromazine, carbamazepine, melatonin, L-Serine
+MeCP2.3;9;D;F;MeCP2;MECP2 c.763C>T (p.R255X);Valproic acid, phenobarbital, clobazam
+MeCP2.4;6;A;F;MeCP2;MECP2 c.961_1188delins220 (p.Lys321Gly fs X6);Zonisamide, Ethosuximide, risperidone
+GRIN.3;0;A;F;GRIN;GRIN1 c.1921G>C p.Gly641Arg;none
+GRIN.5;14;A;M;GRIN;"t(1;12)(p13.3;p13.1) (VAV3;GRIN2B)";Guanfacine, Melatonin
+GRIN.2;3;A;M;GRIN;GRIN2B p.Arg696His/c.2087G>A;none
+STXBP1.2;3;A;M;STXPB1;STXPB1 p.Met602Val/ c.1804A>G;Levetiracetam, valproic acid, carbamazepine
+CDKL5.2;8;A;F;CDKL5;CDKL5 c.2704C>T (p.Gln902Stop);Carbamazepine
+MeCP2.5;4;A;M;MeCP2;MECP2 c.925C>T (p.R309W);Valproic acid, risperidone, Levomepromazine
+MeCP2.6;6;A;F;MeCP2;MECP2 c.808C>T (p.R270X);Unknown
+MeCP2.7;5;A;F;MeCP2;MECP2 c.916C>T (p.R306C);Unknown
+MeCP2.8;16;A;F;MeCP2;MECP2 c.880C>T (p.R294X);Carbamazepine
+STXBP1.1;5;A;F;STXPB1;"STXBP1 c.1216C>T; p.Arg406Cys";Unknown
+GRIN.6;14;A;F;GRIN;GRIN2B (NM_000834.3): p.Arg926*/c.2776C>T;none
+GRIN.7;8;A;M;GRIN;GRIN2B P553T;LEV
+STXBP1.3;18;A;F;STXPB1;STXBP1 p.Ile55Lys/c.164T>A;none
+STXBP1.4;9;A;M;STXPB1;STXBP1 (c.1249+2T>C, g417aFSx7);Valproic acid, clonazepam, pregabaline, rufinamide 
+MeCP2.9;11;A;F;MeCP2;MECP2:S229L;Valproic acid, carbamazepine
+MeCP2.10;2;A;F;MeCP2;MECP2: c.[ 763>T] p.[ Arg255Stop];Valproic acid, clobazam
+MeCP2.11;3;A;F;MeCP2;MECP2 c.473C>T (p.T158M);none
+MeCP2.12;4;A;F;MeCP2;MECP2 c.1075_1178del104bp/p.SerArg_fsTer12;Topiramate
+CDKL5.1;7;A;F;CDKL5;CDKL5 c.587C>G p.Ser196Trp;Levetiracetam, vigabatrine
+MeCP2.1;9;A;F;MeCP2;MECP2 c.410A>G (p.E137G);Valproic, levetiracetam
+MeCP2.2;3;A;F;MeCP2; MECP2 C502T;none
+Control.1;NA;unknown;M;Control;unknown;none
+Control.2;0;unknown;F;Control;unknown;none
+Control.3;1;unknown;M;Control;unknown;none
+Control.4;0;unknown;M;Control;unknown;none
+Control.5;1;unknown;F;Control;unknown;none
