@@ -42,8 +42,6 @@ log_df <- readRDS(here("data_processed/long_format_df.rds"))
 
 metdat <- read.csv(here("metadata/metdat.csv"), header=TRUE,row.names = 1,sep=";")
 
-
-
 ```
 
 
@@ -55,8 +53,6 @@ lcps <- lcp[c("1","2","8","10","12")]
 df_norm_lab_s <- df_norm_lab
 pca_m1 <- prcomp(df_norm_lab_s[,-1], scale. = TRUE, center = TRUE)
 
-# Get the maximum x-axis limit among all the plots
-max_x_limit <- max(abs(pca_m1$x[, 1]))+2
 
 # Create a list to store the modified plots
 modified_plots <- list()
@@ -72,10 +68,11 @@ p1 <- ggbiplot(pca_m1,
                 fill = TRUE) +
     theme_light(base_size = 10) +
     labs(colour = "Mutated gene") +
-    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 4) +
+    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 2) +
     scale_color_manual(values = lcps, labels = c("Control", "MeCP2","STXBP1","CDKL5","GRIN")) +
-    xlim(-max_x_limit, max_x_limit)  +
-    ylim(-7,7)
+    xlim(-15, 15)  +
+    ylim(-7,7) +
+    theme(legend.position="none")
 
 
 p1 <- wrap_elements(as.grob(p1))
@@ -88,8 +85,6 @@ lcps <- lcp[c("1","2","10")]
 df_norm_lab_s <- subset(df_norm_lab, Label%in%c("2","10","1"))
 pca_m2 <- prcomp(df_norm_lab_s[,-1], scale. = TRUE, center = TRUE)
 
-# Get the maximum x-axis limit among all the plots
-max_x_limit <- max(abs(pca_m2$x[, 1]))+2
 
 # Create a list to store the modified plots
 modified_plots <- list()
@@ -105,23 +100,22 @@ p2 <- ggbiplot(pca_m2,
                 fill = TRUE) +
     theme_light(base_size = 10) +
     labs(colour = "Mutated gene") +
-    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 4) +
+    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 2) +
     scale_color_manual(values = lcps, labels = NULL) +
-    xlim(-max_x_limit, max_x_limit) +
+    xlim(-15, 15)  +
     ylim(-7,7) +
-    theme(legend.position="none") 
+    theme(legend.position="none")
 
 p2 <- wrap_elements(as.grob(p2))
 
 ```
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 df_norm_lab_s <- subset(df_norm_lab, Label%in%c("12","8","1"))
 pca_m3 <- prcomp(df_norm_lab_s[,-1], scale. = TRUE, center = TRUE)
 lcps <- lcp[c("1","8","12")]
-# Get the maximum x-axis limit among all the plots
-max_x_limit <- max(abs(pca_m3$x[, 1]))+2
+
 
 # Create a list to store the modified plots
 modified_plots <- list()
@@ -137,13 +131,14 @@ p3 <- ggbiplot(pca_m3,
                 fill = TRUE) +
     theme_light(base_size = 10) +
     labs(colour = "Mutated gene") +
-    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 4) +
-    scale_color_manual(values = lcps, labels = c("Control","STXBP1","GRIN")) +
-    # xlim(-max_x_limit, max_x_limit)  +
+    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 2) +
+    scale_color_manual(values = lcps, labels = c("Control", "MeCP2","STXBP1","CDKL5","GRIN")) +
+    xlim(-15, 15)  +
     ylim(-7,7) +
   theme(legend.position="none")
 
 p3 <- wrap_elements(as.grob(p3))
+
 ```
 
 
@@ -171,7 +166,7 @@ p4 <- ggbiplot(pca_m,
                 fill = TRUE) +
     theme_light(base_size = 10) +
     labs(colour = "Mutated gene") +
-    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 4) +
+    geom_point(aes(color = as.factor(df_norm_lab_s$Label)), size = 2) +
     scale_color_manual(values = lcp3, labels = c("Control","Hyperglutamatergic","Hypoglutamatergic")) +
     xlim(-max_x_limit, max_x_limit)  +
     ylim(-6,6) +
@@ -188,7 +183,6 @@ nr <- ggplot() +
   background_image(neurons) + 
   coord_fixed()
 
-nr / p4
 ```
 
 
@@ -245,14 +239,15 @@ names(lc) <-  levels(labr$Label)
 lc <- list(Label = lc)
 
 
-p4 <- pheatmap(mat_allr, annotation = labr,clustering_method = "ward.D2",fontsize = 8,show_colnames = TRUE,show_rownames = FALSE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",annotation_legend = TRUE)
+p4 <- pheatmap(mat_allr, annotation = labr,clustering_method = "ward.D2",fontsize = 8,show_colnames = TRUE,show_rownames = FALSE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",annotation_legend = FALSE)
 
+p4 <- wrap_elements(as.grob(p4))
 
 
 ```
 
 
-```{r fig.width = 5, fig.height = 4}
+```{r}
 df_metg <- df_norm_lab 
 df_metg <- subset(df_metg,Label%in%c(1,8,12))
 df_metg <- data.frame(t(df_metg),check.names = FALSE)
@@ -272,12 +267,16 @@ lc <- c("#95C65C","#46dbf2","#F19743")
 names(lc) <-  levels(lab$Label)
 lc <- list(Label = lc)
 
-p5 <- pheatmap(mat_allg, annotation = lab,clustering_method = "ward.D2",fontsize = 8,show_colnames = TRUE,show_rownames = FALSE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = TRUE, annotation_legend = TRUE)
+p5 <- pheatmap(mat_allg, annotation = lab,clustering_method = "ward.D2",fontsize = 8,show_colnames = TRUE,show_rownames = FALSE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = TRUE, annotation_legend = FALSE)
 
 p5 <- wrap_elements(as.grob(p5))
 
+ctof <- wrap_elements()
 
-# (nr|(p1/(p2+p3)/(p4+p5))+plot_layout(heights = c(1,2,2)))+plot_layout(guides = "collect")+plot_annotation(tag_levels = 'A') 
+one_btod <- p1/(p2+p3) + plot_annotation(tag_levels = list(c("B","C","D"))) 
+ggsave(file=here("paper/Figures/1BD.png"),plot=one_btod, dpi = 1000,bg="white" ,width = 6, height = 4, units = "in") 
+one_ef <- (p4+p5) + plot_annotation(tag_levels = list(c("E","F"))) + plot_layout(guides = "collect")
+ggsave(file=here("paper/Figures/1EF.png"),plot=one_ef, dpi = 1000,bg="white" ,width = 8, height = 4, units = "in") 
 ```
 
 # Study design
@@ -292,10 +291,7 @@ df_norm_lab4$Label <- ifelse(df_norm_lab4$Label==12,8,df_norm_lab4$Label)
 
 df_norm_lab4 <- rownames_to_column(df_norm_lab4)
 log_df1 <- melt(df_norm_lab4, id.vars=c("rowname","Label"))
-ex_df1 <- log_df1
-ex_df1$value <- exp(ex_df1$value)
-ex_df1$value <-as.numeric(format(ex_df1$value, scientific = FALSE))
-ex_df1$Label <- factor(ex_df1$Label)
+log_df1$Label <- factor(log_df1$Label)
 
 
 stat.test <-
@@ -307,7 +303,13 @@ stat.test <-
 
 
 sta_lst_sig <- stat.test
- 
+
+
+medians <- log_df1 %>%
+  group_by(variable, Label) %>%
+  summarise(Median = median(2^(value)))
+
+wide_meds <- pivot_wider(medians,values_from = "Median",names_from = "variable")
 
 ```
 
@@ -580,7 +582,6 @@ aas <- c(
 
 lcp4 <- c("#95C65C","#B25D91","#FF3F38")
 
-# joined_df <- join_all(sta_lst_sig[c("Hyperglutamatergic","Hypoglutamatergic")], by="group2", type = "full")
 joined_df <- sta_lst_sig
 joined_df <- subset(joined_df, variable%in%tryp_mets)
 vg <- log_df1[log_df1$variable %in% joined_df$variable, ]
@@ -593,7 +594,6 @@ joined_df$y.position <- c(sapply(maxim_val, function(x) rep(x,3)))
 four4 <- ggboxplot(vg, x = "Label", y = "log2 Concentration", color = "Label", facet.by = "variable", fill = "Label", alpha=0.4) + geom_point(aes(color = vg$Label)) +
   facet_wrap(~ variable, scales = "free", ncol = 4) +
   stat_pvalue_manual(joined_df, label = "p.adj.signif", y.position = "y.position",hide.ns = TRUE,step.increase = 0.2,bracket.nudge.y = -0.5) +
-  # labs(title = "Alterations in tryptophan metabolism") +
   theme(
 axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),plot.background = element_rect(fill = "transparent",colour = NA), legend.position = "bottom",legend.text = element_text(size=12),legend.title=element_text(size=12),legend.box.spacing = unit(0.5, "in")) +
    scale_color_manual(values = lcp4, labels = c("Control","Hyperglutamatergic","Hypoglutamatergic")) +
@@ -619,7 +619,6 @@ joined_df$y.position <- c(sapply(maxim_val, function(x) rep(x,3)))
 four4 <- ggboxplot(vg, x = "Label", y = "log2 Concentration", color = "Label", facet.by = "variable", fill = "Label", alpha=0.4) + geom_point(aes(color = vg$Label)) +
   facet_wrap(~ variable, scales = "free", ncol = 4) +
   stat_pvalue_manual(joined_df, label = "p.adj.signif", y.position = "y.position",hide.ns = TRUE,step.increase = 0.1) +
-  # labs(title = "Other amino acid alterations") +
   theme(
 axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),plot.background = element_rect(fill = "transparent",colour = NA),legend.position = "none"
 ) +
@@ -633,24 +632,6 @@ full_four <- uni1 / uni2 + plot_annotation(tag_levels = list(c("B","C")))
 
 ggsave(file=here("paper/Figures/4.png"),plot=full_four, dpi = 1000,bg="white" ,width = 8, height = 11.4, units = "in") 
 ```
-
-
-
-
-```{r}
-
-# comp_meds <- median_values_t[median_values_t$variable%in%amin,]
-# aa_comp <- pivot_wider(data = comp_meds, names_from = Label, values_from = value)
-# colnames(aa_comp) <- c("Metabolite","Control","Hypoglutamatergic","Hyperglutamatergic")
-
-
-
-```
-
-
-
-
-
 
 
 ```{r}
@@ -671,21 +652,17 @@ vip_p$Hypoglutamatergic$diffexpressed <- factor(vip_p$Hypoglutamatergic$diffexpr
 
 ```{r}
 
-
 col_op <- c("#B25D91", "#FF3F38","#95C65C")
 names(col_op) <- c("Hyperglutamatergic","Hypoglutamatergic", "Control")
-
 
 
 two_e <- ggplot(data =  vip_p$Hypoglutamatergic, aes(x = p.adj, y = VIP, label=Metabolite, col=diffexpressed)) +
   geom_vline(xintercept = 0.05, col = "darkgray", linetype = 'dashed') +
   geom_hline(yintercept = 1, col = "darkgray", linetype = 'dashed') + 
   geom_point(size = 3) + 
-  # geom_text_repel(aes(label=ifelse(vip_p$Hypoglutamatergic$p.adj < 0.05,as.character(vip_p$Hypoglutamatergic$Metabolite),'')),max.overlaps = 15) +
   scale_color_manual(values = c("#9900F0", "#FF00E4", "#38E54D","grey"), # to set the colors of our variable
                      labels = c("UVA+MVA", "MVA", "UVA", "None"), breaks = levels(vip_p$Hypoglutamatergic$diffexpressed)) +
   theme_light() +
-  # coord_cartesian(ylim = c(0, 3.5), xlim = c(0, 3.5)) +
   labs(color = 'Altered', #legend_title, 
        x = "p-value", y = "VIP score", title=NULL) +
   theme(legend.position = "bottom") +
@@ -695,11 +672,9 @@ two_f <- ggplot(data=vip_p$`Hyperglutamatergic` ,aes(x = p.adj, y = VIP,  label=
   geom_vline(xintercept = 0.05, col = "darkgray", linetype = 'dashed') +
   geom_hline(yintercept = 1, col = "darkgray", linetype = 'dashed') +  
   geom_point(size = 3) + 
-  # geom_text_repel(aes(label=ifelse(vip_p$`Hyperglutamatergic`$p.adj < 0.05,as.character(vip_p$`Hyperglutamatergic`$Metabolite),'')),max.overlaps = 15) +
   scale_color_manual(values = c("#9900F0","#FF00E4","#38E54D",  "grey"), # to set the colours of our variable
   labels = c("UVA+MVA", "MVA", "UVA", "None"), breaks = levels(vip_p$`Hyperglutamatergic`$diffexpressed)) +
   theme_light() +
-  # coord_cartesian(ylim = c(0, 3.5), xlim = c(0, 3.5)) +
   labs(color = 'Altered', 
        x = "p-value", y = "VIP score", title=NULL) +
   theme(legend.position = "bottom")
@@ -765,13 +740,10 @@ lab <- data.frame(as.factor(mat_allg[1,]))
 lab$as.factor.mat_allg.1.... <- gsub(10,"Hyperglutamatergic     ",lab$as.factor.mat_allg.1....)
 lab$as.factor.mat_allg.1.... <- gsub(1,"Control",lab$as.factor.mat_allg.1....)
 colnames(lab)<-"Label"
-# lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic","Hypoglutamatergic"),ordered = TRUE)
 lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic     "),ordered = TRUE)
 mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
 
-# lc <- c("#95C65C","#B25D91","#FF3F38")
-# names(lc) <-  levels(lab$Label)
-# lc <- list(Label = lc)
+
 lc <- c("#95C65C","#B25D91")
 names(lc) <-  levels(lab$Label)
 lc <- list(Label = lc)
@@ -792,13 +764,9 @@ lab <- data.frame(as.factor(mat_allg[1,]))
 lab$as.factor.mat_allg.1.... <- gsub(8,"Hypoglutamatergic",lab$as.factor.mat_allg.1....)
 lab$as.factor.mat_allg.1.... <- gsub(1,"Control",lab$as.factor.mat_allg.1....)
 colnames(lab)<-"Label"
-# lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic","Hypoglutamatergic"),ordered = TRUE)
 lab$Label<- factor(lab$Label,levels = c("Control","Hypoglutamatergic"),ordered = TRUE)
 mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
 
-# lc <- c("#95C65C","#B25D91","#FF3F38")
-# names(lc) <-  levels(lab$Label)
-# lc <- list(Label = lc)
 
 lc <- c("#95C65C","#FF3F38")
 names(lc) <-  levels(lab$Label)
@@ -815,9 +783,6 @@ ggsave(file=here("paper/Figures/fig_1E_F.png"),patchhc1,dpi = 1000,scale=1.5,wid
 
 ```{r}
 
-
-# plot(pd_g$Hypoglutamatergic,typeVc ="x-score",plotSubC="Hypoglutamatergic",parPaletteVc=c("#95C65C","#B25D91"))
-# plot(pd_g$`Hyperglutamatergic`,typeVc ="x-score",plotSubC="Hypoglutamatergic",parPaletteVc=c("#95C65C","#FF3F38"))
 rt <- gsub("10", "Hyperglutamatergic", subset(df_norm_lab4,Label%in%c(1,10))$Label)
 rt <- gsub("1", "Control", rt)
 rt <- factor(rt,levels = c("Control","Hyperglutamatergic","Hypoglutamatergic"))
@@ -838,7 +803,6 @@ two_a <- opdf %>%
                level = 0.8) +
   coord_fixed(xlim = c(-10,10),ylim=c(-5,5)) +
   theme_bw(base_size = 15) +
-  # ggtitle(paste("OPLS-DA", "SCORE PLOT ",collapse="\n")) +
   scale_color_manual(values=c("#95C65C","#B25D91","#FF3F38"),labels=c("Control","Hyperglutamatergic","Hypoglutamatergic"),drop = FALSE) +
   scale_fill_manual(values=c("#95C65C","#B25D91","#FF3F38"),labels=c("Control","Hyperglutamatergic","Hypoglutamatergic"),drop = FALSE) +
   theme(legend.title = element_blank()) +
@@ -854,7 +818,6 @@ two_b <- opdf2 %>%
                level = 0.8) +
   coord_fixed(xlim = c(-10,10),ylim=c(-5,5)) +
   theme_bw(base_size = 15) +
-  # ggtitle(paste("OPLS-DA", "SCORE PLOT ",collapse="\n")) +
   scale_color_manual(values=c("#95C65C","#B25D91","#FF3F38"),drop = FALSE) +
   scale_fill_manual(values=c("#95C65C","#B25D91","#FF3F38"),drop = FALSE) +
   theme(legend.title = element_blank()) +
@@ -876,23 +839,17 @@ lab <- data.frame(as.factor(mat_allg[1,]))
 lab$as.factor.mat_allg.1.... <- gsub(10,"Hyperglutamatergic     ",lab$as.factor.mat_allg.1....)
 lab$as.factor.mat_allg.1.... <- gsub(1,"Control",lab$as.factor.mat_allg.1....)
 colnames(lab)<-"Label"
-# lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic","Hypoglutamatergic"),ordered = TRUE)
 lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic     ","Hypoglutamatergic     "),ordered = TRUE)
 mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
 
-# lc <- c("#95C65C","#B25D91","#FF3F38")
-# names(lc) <-  levels(lab$Label)
-# lc <- list(Label = lc)
 lc <- c("#95C65C","#B25D91","#FF3F38")
 names(lc) <-  levels(lab$Label)
 lc <- list(Label = lc)
 
-p6 <- pheatmap(mat_allg, annotation = lab,clustering_method = "ward.D2",fontsize = 10,show_colnames = TRUE,show_rownames = TRUE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = FALSE, annotation_legend = FALSE, cellwidth = 12, cellheight = 9)
+p6 <- pheatmap(mat_allg, annotation = lab,clustering_method = "ward.D2",fontsize = 10,show_colnames = TRUE,show_rownames = TRUE, border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row",legend = TRUE, annotation_legend = FALSE, cellwidth = 12, cellheight = 9)
 ggsave(file=here("paper/Figures/fig_2G.png"),p6,dpi = 500,width = 4,scale=2, height = 3, units = "in")
-# p6 <- wrap_elements(as.grob(p6))
+p6 <- wrap_elements(as.grob(p6))
 ```
-
-
 
 
 ```{r}
@@ -905,13 +862,10 @@ lab <- data.frame(as.factor(mat_allg[1,]))
 lab$as.factor.mat_allg.1.... <- gsub(8,"Hyperglutamatergic     ",lab$as.factor.mat_allg.1....)
 lab$as.factor.mat_allg.1.... <- gsub(1,"Control",lab$as.factor.mat_allg.1....)
 colnames(lab)<-"Label"
-# lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic","Hypoglutamatergic"),ordered = TRUE)
 lab$Label<- factor(lab$Label,levels = c("Control","Hyperglutamatergic     ","Hypoglutamatergic     "),ordered = TRUE)
 mat_allg <- apply(mat_allg[-1,],c(1,2),as.numeric)
 
-# lc <- c("#95C65C","#B25D91","#FF3F38")
-# names(lc) <-  levels(lab$Label)
-# lc <- list(Label = lc)
+
 lc <- c("#95C65C","#FF3F38","#B25D91")
 names(lc) <-  levels(lab$Label)
 lc <- list(Label = lc)
@@ -922,24 +876,14 @@ p7 <- wrap_elements(as.grob(p7))
 
 ggsave(file=here("paper/Figures/fig_2H.png"),p7,dpi = 500,width = 4,scale=2, height = 3, units = "in")
 
-patchhc2 <- wrap_elements(full=as.grob(p6)) + p7 + plot_annotation(tag_levels = list(c("G","H")), theme = theme(plot.margin = margin(t = 0.5, r = 0.5, b = 0.5, l =0.5, unit = "in")))
-
-ggsave(file=here("paper/Figures/fig_2G_H.png"),patchhc2,dpi = 2000,width = 8,scale=2, height = 3, units = "in")
-```
-
-```{r}
-library(psych)
-
-metdat_char <- read.csv("C:/Users/killescas/OneDrive - San Juan de Dios/Desktop/TESIS/LCR/metabolomica/meds_5h.csv",sep=";")
-metdat_char <- metdat_char[complete.cases(metdat_char),]
-metdat_char <- metdat_char %>%
-  column_to_rownames(var="ID")
-contab <- table(metdat_char)
-phi(contab,digits=3)
+patchhc2 <- p6+p7+plot_annotation(tag_levels = list(c("G","H")))
+ggsave(file=here("paper/Figures/fig_2G_H.png"),patchhc2,dpi = 1000,scale=1.5,width = 10, height = 3,units = "in")
 ```
 
 
-# Sex separation 
+
+# Sex and age separation 
+
 ```{r}
 
 pat_contrl <-  read.csv(here("metadata/patient_characteristics.csv"),sep=";")
@@ -956,10 +900,34 @@ log_df_age <- melt(df_norm_age, id.vars = c("ID","Label"))
 
 cor_age <- log_df_age %>%
   group_by(variable) %>%
-  cor_test(Label, value, method= "spearman")
+  cor_test(Label, value, method= "spearman")  %>%
+  adjust_pvalue(method = "fdr") %>%
+  add_significance("p.adj")
 
 write.csv(cor_age,file=here("paper/Tables/correlation_age.csv")) 
   
+
+pat_contrl <-  read.csv(here("metadata/patient_characteristics.csv"),sep=";")
+pat_contrl <-  pat_contrl[,-7]
+pat_contrl <-  pat_contrl[order(pat_contrl$ID),]
+pat_contrl <-  subset(pat_contrl,!(pat_contrl$Disease=="Control"))
+df_norm_sex <- df_norm_lab
+df_norm_sex <- rownames_to_column(df_norm_sex,var = "ID")
+df_norm_sex <- subset(df_norm_sex, make.names(df_norm_sex$ID)%in%pat_contrl$ID)
+df_norm_sex$Label <- factor(pat_contrl$Sex)
+df_norm_sex <- df_norm_sex[complete.cases(df_norm_sex),]
+log_df_sex <- melt(df_norm_sex, id.vars = c("ID","Label"))
+
+
+comp_sex <- log_df_sex %>%
+  group_by(variable) %>%
+  wilcox_test(value ~ Label) %>%
+  adjust_pvalue(method = "fdr") %>%
+  add_significance("p.adj")
+
+write.csv(comp_sex,file=here("paper/Tables/comparing_sex.csv")) 
+
+oplsda_sex <- opls(df_norm_sex[,-c(1,2)],as.factor(df_norm_sex$Label),orthoI = 1,predI=1,scaleC = "center", permI = 1000)
 
 ```
 
