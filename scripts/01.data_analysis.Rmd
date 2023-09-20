@@ -903,13 +903,12 @@ meds_lst <- bind_rows(meds_lst)
 one_hot_encoded <- meds_lst %>%
   pivot_wider(names_from = Medication, values_from = value, values_fill = 0)
 
-
-
+one_hot_encoded$id == rownames(df_norm_lab4)
 
 df_norm_meds <- df_norm_lab
 df_norm_meds <- rownames_to_column(df_norm_meds,var = "ID")
 
-newdata <- dcast(data = melt(meds, id.vars = "ID"), ID ~ variable + value)
+
 
 pat_contrl <-  pat_char[,-7]
 pat_contrl <-  pat_contrl[order(pat_contrl$ID),]
