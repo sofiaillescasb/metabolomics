@@ -13,7 +13,7 @@ MeCP2.7;5;A;F;MeCP2;MECP2 c.916C>T (p.R306C);Unknown
 MeCP2.8;16;A;F;MeCP2;MECP2 c.880C>T (p.R294X);Carbamazepine
 STXBP1.1;5;A;F;STXPB1;"STXBP1 c.1216C>T; p.Arg406Cys";Unknown
 GRIN.6;14;A;F;GRIN;GRIN2B (NM_000834.3): p.Arg926*/c.2776C>T;none
-GRIN.7;8;A;M;GRIN;GRIN2B P553T;LEV
+GRIN.7;8;A;M;GRIN;GRIN2B P553T;Levetiracetam
 STXBP1.3;18;A;F;STXPB1;STXBP1 p.Ile55Lys/c.164T>A;none
 STXBP1.4;9;A;M;STXPB1;STXBP1 (c.1249+2T>C, g417aFSx7);Valproic acid, clonazepam, pregabaline, rufinamide 
 MeCP2.9;11;A;F;MeCP2;MECP2:S229L;Valproic acid, carbamazepine
@@ -21,7 +21,7 @@ MeCP2.10;2;A;F;MeCP2;MECP2: c.[ 763>T] p.[ Arg255Stop];Valproic acid, clobazam
 MeCP2.11;3;A;F;MeCP2;MECP2 c.473C>T (p.T158M);none
 MeCP2.12;4;A;F;MeCP2;MECP2 c.1075_1178del104bp/p.SerArg_fsTer12;Topiramate
 CDKL5.1;7;A;F;CDKL5;CDKL5 c.587C>G p.Ser196Trp;Levetiracetam, vigabatrine
-MeCP2.1;9;A;F;MeCP2;MECP2 c.410A>G (p.E137G);Valproic, levetiracetam
+MeCP2.1;9;A;F;MeCP2;MECP2 c.410A>G (p.E137G);Valproic acid, levetiracetam
 MeCP2.2;3;A;F;MeCP2; MECP2 C502T;none
 Control.1;NA;unknown;M;Control;unknown;none
 Control.2;0;unknown;F;Control;unknown;none

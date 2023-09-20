@@ -882,14 +882,38 @@ ggsave(file=here("paper/Figures/fig_2G_H.png"),patchhc2,dpi = 1000,scale=1.5,wid
 
 
 
-# Sex and age separation 
+# Sex, medication, and age separation 
 
 ```{r}
 
-pat_contrl <-  read.csv(here("metadata/patient_characteristics.csv"),sep=";")
-pat_contrl <-  pat_contrl[,-7]
+pat_char <-  read.csv(here("metadata/patient_characteristics.csv"),sep=";")
+
+# pat_contrl <-  subset(pat_char,!(pat_char$Disease=="Control"))
+pat_ctrl_meds <- pat_char[,c("ID","Medications")]
+meds_lst <- strsplit(pat_ctrl_meds$Medications,",")
+names(meds_lst) <- pat_ctrl_meds$ID
+meds_lst <- lapply(meds_lst, function(x) toupper(str_squish(x)))
+meds_lst <- lapply(meds_lst, data.frame)
+meds_lst <- lapply(meds_lst, function(x) setNames(x, "Medication"))
+meds_lst <- lapply(names(meds_lst), function(x) meds_lst[[x]] %>%
+  mutate(value = 1, id = x, Medication=factor(Medication)))
+meds_lst <- bind_rows(meds_lst)
+
+
+one_hot_encoded <- meds_lst %>%
+  pivot_wider(names_from = Medication, values_from = value, values_fill = 0)
+
+
+
+
+df_norm_meds <- df_norm_lab
+df_norm_meds <- rownames_to_column(df_norm_meds,var = "ID")
+
+newdata <- dcast(data = melt(meds, id.vars = "ID"), ID ~ variable + value)
+
+pat_contrl <-  pat_char[,-7]
 pat_contrl <-  pat_contrl[order(pat_contrl$ID),]
-pat_contrl <-  subset(pat_contrl,!(pat_contrl$Disease=="Control"))
+# pat_contrl <-  subset(pat_contrl,!(pat_contrl$Disease=="Control"))
 df_norm_age <- df_norm_lab
 df_norm_age <- rownames_to_column(df_norm_age,var = "ID")
 df_norm_age <- subset(df_norm_age, make.names(df_norm_age$ID)%in%pat_contrl$ID)
@@ -931,5 +955,8 @@ oplsda_sex <- opls(df_norm_sex[,-c(1,2)],as.factor(df_norm_sex$Label),orthoI = 1
 
 ```
 
+```{r}
+cat(sels$Hypoglutamatergic, sep = "\n")
+```
 
 
