@@ -214,7 +214,7 @@ lc <- list(Label = lc)
 pheatmap(mat_alla, annotation = laba,clustering_method = "ward.D2",fontsize = 8,show_colnames = TRUE,show_rownames = FALSE,main = "Comparing patients to controls", border_color = NA, annotation_colors = lc, fontsize_col = 10, color = colorRampPalette(c("blue","red"))(100), cluster_rows = TRUE,scale = "row")
 ```
 
-```{r fig.width = 5, fig.height = 4, fig.show = "hold", out.height="50%",out.width="50%",  results='asis'}
+```{r}
 df_metr <- df_norm_lab
 df_metr <- subset(df_metr,Label%in%c(1,10,2))
 df_metr <- data.frame(t(df_metr),check.names = FALSE)
@@ -297,7 +297,7 @@ log_df1$Label <- factor(log_df1$Label)
 stat.test <-
     log_df1 %>%
     group_by(variable) %>%
-    wilcox_test(value ~ Label) %>%
+    wilcox_test(value ~ Label, p.adjust.method = NULL) %>%
     adjust_pvalue(method="fdr") %>%
     add_significance("p.adj")
 
@@ -884,10 +884,11 @@ ggsave(file=here("paper/Figures/fig_2G_H.png"),patchhc2,dpi = 1000,scale=1.5,wid
 
 # Sex, medication, and age separation 
 
-```{r}
+```{r, warning=FALSE}
 
 pat_char <-  read.csv(here("metadata/patient_characteristics.csv"),sep=";")
 
+# Checking for effect medications
 # pat_contrl <-  subset(pat_char,!(pat_char$Disease=="Control"))
 pat_ctrl_meds <- pat_char[,c("ID","Medications")]
 meds_lst <- strsplit(pat_ctrl_meds$Medications,",")
@@ -899,18 +900,34 @@ meds_lst <- lapply(names(meds_lst), function(x) meds_lst[[x]] %>%
   mutate(value = 1, id = x, Medication=factor(Medication)))
 meds_lst <- bind_rows(meds_lst)
 
+prop_meds <- data.frame(table(meds_lst$Medication))
+prop_meds <- subset(prop_meds, Freq>3)
+colnames(prop_meds) <- c("Medication","Freq")
 
 one_hot_encoded <- meds_lst %>%
   pivot_wider(names_from = Medication, values_from = value, values_fill = 0)
 
-one_hot_encoded$id == rownames(df_norm_lab4)
+one_hot_encoded <- one_hot_encoded[,colnames(one_hot_encoded)%in%c("id",as.character(prop_meds$Medication))]
 
-df_norm_meds <- df_norm_lab
-df_norm_meds <- rownames_to_column(df_norm_meds,var = "ID")
+df_norm_meds <- df_norm_lab[,-1]
+df_norm_meds <- rownames_to_column(df_norm_meds,var = "id")
+df_norm_meds$id <- make.names(df_norm_meds$id)
 
+med.test <- list()
+for (i in prop_meds$Medication) {
+  df_norm_meds_i <- merge(one_hot_encoded[,c("id",i)],df_norm_meds)
+  long_med <- melt(df_norm_meds_i, id.vars=c("id",i))
+  colnames(long_med) <- c("id",make.names(i),"variable","value")
+  med.test[[i]] <-
+    long_med %>%
+    group_by(variable) %>%
+    wilcox_test(as.formula(paste0("value ~ ",make.names(i)))) %>%
+    adjust_pvalue(method="fdr") %>%
+    add_significance("p.adj")
+}
 
-
-pat_contrl <-  pat_char[,-7]
+# Checking effect of age
+pat_contrl <-  pat_char
 pat_contrl <-  pat_contrl[order(pat_contrl$ID),]
 # pat_contrl <-  subset(pat_contrl,!(pat_contrl$Disease=="Control"))
 df_norm_age <- df_norm_lab
@@ -926,14 +943,11 @@ cor_age <- log_df_age %>%
   cor_test(Label, value, method= "spearman")  %>%
   adjust_pvalue(method = "fdr") %>%
   add_significance("p.adj")
-
-write.csv(cor_age,file=here("paper/Tables/correlation_age.csv")) 
   
-
+# Checking effect of sex
 pat_contrl <-  read.csv(here("metadata/patient_characteristics.csv"),sep=";")
 pat_contrl <-  pat_contrl[,-7]
 pat_contrl <-  pat_contrl[order(pat_contrl$ID),]
-pat_contrl <-  subset(pat_contrl,!(pat_contrl$Disease=="Control"))
 df_norm_sex <- df_norm_lab
 df_norm_sex <- rownames_to_column(df_norm_sex,var = "ID")
 df_norm_sex <- subset(df_norm_sex, make.names(df_norm_sex$ID)%in%pat_contrl$ID)
@@ -944,14 +958,46 @@ log_df_sex <- melt(df_norm_sex, id.vars = c("ID","Label"))
 
 comp_sex <- log_df_sex %>%
   group_by(variable) %>%
-  wilcox_test(value ~ Label) %>%
+  wilcox_test(as.formula(value ~ Label), p.adjust.method = NULL) %>%
   adjust_pvalue(method = "fdr") %>%
   add_significance("p.adj")
 
-write.csv(comp_sex,file=here("paper/Tables/comparing_sex.csv")) 
 
+rownames(df_norm_sex) <- df_norm_sex$ID
 oplsda_sex <- opls(df_norm_sex[,-c(1,2)],as.factor(df_norm_sex$Label),orthoI = 1,predI=1,scaleC = "center", permI = 1000)
+sx <- factor(df_norm_sex$Label)
 
+opsx <- data.frame("lab"=sx,"x"=oplsda_sex@scoreMN,"y"=oplsda_sex@orthoScoreMN)
+
+opsxplot <- opsx %>%
+  ggplot(aes(x=p1,y=o1,color=lab)) +
+  geom_point(size=3) +
+  stat_ellipse(geom = "polygon",
+               aes(fill = lab), 
+               alpha = 0.25,
+               level = 0.8) +
+  coord_fixed(xlim = c(-10,10),ylim=c(-5,5)) +
+  theme_bw(base_size = 15) +
+  scale_color_manual(values=c("pink","lightblue"),labels=c("F","M"),drop = FALSE) +
+  scale_fill_manual(values=c("pink","lightblue"),labels=c("F","M"),drop = FALSE) +
+  theme(legend.title = element_blank()) +
+  geom_vline(xintercept=0) +
+  geom_hline(yintercept = 0)
+
+ggsave(file=here("paper/Figures/OPLSDA_sex.png"),opsxplot, dpi = 500, width = 8, height = 4)
+
+library(writexl)
+
+write_xlsx(
+med.test,
+path = here("paper/Tables/comparing_medications.xlsx"),
+col_names = TRUE,
+format_headers = TRUE,
+use_zip64 = FALSE
+)
+
+write_xlsx(cor_age,path = here("paper/Tables/correlation_age.xlsx"))
+write_xlsx(comp_sex,path = here("paper/Tables/comparing_sex.xlsx"))
 ```
 
 ```{r}
