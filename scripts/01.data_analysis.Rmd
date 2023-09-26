@@ -297,13 +297,12 @@ log_df1$Label <- factor(log_df1$Label)
 stat.test <-
     log_df1 %>%
     group_by(variable) %>%
-    wilcox_test(value ~ Label, p.adjust.method = NULL) %>%
+    wilcox_test(value ~ Label, p.adjust.method = NULL, detailed = TRUE) %>%
     adjust_pvalue(method="fdr") %>%
     add_significance("p.adj")
 
 
 sta_lst_sig <- stat.test
-
 
 medians <- log_df1 %>%
   group_by(variable, Label) %>%
@@ -393,158 +392,158 @@ sels_g <- vip_p$Hypoglutamatergic$Metabolite[vip_p$Hypoglutamatergic$p.adj < 0.0
 # Affected pathways
 
 ```{r, results='asis'}
-# library(httr)
-# library(KEGGREST)
-# 
-# 
-# background <- read.csv(here("metadata/background.csv"))
-# rows_to_remove <- grep("carnitine", background$Query)
-# background <- background[-rows_to_remove, ]
-# background$Query <- colnames(df_norm_lab[,-1])
-# 
-# # List of compound IDs
-# compound_ids <- na.omit(background$KEGG)
-# 
-# # Base URL for KEGG API
-# base_url <- "http://rest.kegg.jp"
-# response <- GET("http://rest.kegg.jp/link/pathway/C00327")
-# # Function to retrieve pathways for a compound
-# get_pathways <- function(compound_id) {
-#   request_url <- paste0(base_url, "/link/pathway/", compound_id)
-#   response <- GET(request_url)
-#   if (status_code(response) == 200) {
-#     pathway_lines <- strsplit(content(response, "text"), "\n")[[1]]
-#     pathways <- sapply(strsplit(pathway_lines, "\t"), `[`, 2)
-#     return(pathways)
-#   } else {
-#     return(NULL)
-#   }
-# }
-# print(content(response, "text"))
-# 
-# # Retrieve pathways for each compound
-# all_pathways <- lapply(compound_ids, get_pathways)
-# all_pathways <- lapply(all_pathways,function(x) gsub("path:","",x))
-# names(all_pathways) <- compound_ids
-# freq <- table(unlist(all_pathways))
-# 
-# # Flatten the list of pathways
-# pathways <- na.omit(unique(unlist(all_pathways)))
-# 
-# 
-# path_names <- lapply(pathways, function(x) keggFind("pathway",x))
-# names(path_names) <- pathways
-# 
-# freq <- freq[pathways]
-# names(freq) <- path_names
-# freq <- data.frame(freq)
-# colnames(freq) <- c("Pathway","Total Hits")
-# 
-# 
-#   gen_paths <- c("Metabolic pathways",
-#   "Biosynthesis of secondary metabolites",
-#   "Microbial metabolism in diverse environments",
-#   "Carbon metabolism",
-#   "2-Oxocarboxylic acid metabolism",
-#   "Fatty acid metabolism",
-#   "Biosynthesis of amino acids",
-#   "Nucleotide metabolism",
-#   "Biosynthesis of nucleotide sugars",
-#   "Biosynthesis of cofactors",
-#   "Degradation of aromatic compounds")
-# 
-#   cancer_paths <- c( "Pathways in cancer", "Transcriptional misregulation in cancer"," MicroRNAs in cancer", "Proteoglycans in cancer", "Chemical carcinogenesis - DNA adducts", "Chemical carcinogenesis - receptor activation", "Chemical carcinogenesis - reactive oxygen species", "Viral carcinogenesis", "Central carbon metabolism in cancer", "Choline metabolism in cancer", "PD-L1 expression and PD-1 checkpoint pathway in cancer")
-# 
-#   dig_sys <- c("Salivary secretion","Gastric acid secretion","Pancreatic secretion","Bile secretion","Carbohydrate digestion and absorption","Protein digestion and absorption","Fat digestion and absorption", "Cholesterol metabolism","Vitamin digestion and absorption","Mineral absorption")
-# 
-#   exc_sys <- c("Vasopressin-regulated water reabsorption","Aldosterone-regulated sodium reabsorption","Endocrine and other factor-regulated calcium reabsorption","Proximal tubule bicarbonate reclamation","Collecting duct acid secretion")
-# 
-# p <- list()
-# 
+library(httr)
+library(KEGGREST)
+
+
+background <- read.csv(here("metadata/background.csv"))
+rows_to_remove <- grep("carnitine", background$Query)
+background <- background[-rows_to_remove, ]
+background$Query <- colnames(df_norm_lab[,-1])
+
+# List of compound IDs
+compound_ids <- na.omit(background$KEGG)
+
+# Base URL for KEGG API
+base_url <- "http://rest.kegg.jp"
+response <- GET("http://rest.kegg.jp/link/pathway/C00327")
+# Function to retrieve pathways for a compound
+get_pathways <- function(compound_id) {
+  request_url <- paste0(base_url, "/link/pathway/", compound_id)
+  response <- GET(request_url)
+  if (status_code(response) == 200) {
+    pathway_lines <- strsplit(content(response, "text"), "\n")[[1]]
+    pathways <- sapply(strsplit(pathway_lines, "\t"), `[`, 2)
+    return(pathways)
+  } else {
+    return(NULL)
+  }
+}
+print(content(response, "text"))
+
+# Retrieve pathways for each compound
+all_pathways <- lapply(compound_ids, get_pathways)
+all_pathways <- lapply(all_pathways,function(x) gsub("path:","",x))
+names(all_pathways) <- compound_ids
+freq <- table(unlist(all_pathways))
+
+# Flatten the list of pathways
+pathways <- na.omit(unique(unlist(all_pathways)))
+
+
+path_names <- lapply(pathways, function(x) keggFind("pathway",x))
+names(path_names) <- pathways
+
+freq <- freq[pathways]
+names(freq) <- path_names
+freq <- data.frame(freq)
+colnames(freq) <- c("Pathway","Total Hits")
+
+
+  gen_paths <- c("Metabolic pathways",
+  "Biosynthesis of secondary metabolites",
+  "Microbial metabolism in diverse environments",
+  "Carbon metabolism",
+  "2-Oxocarboxylic acid metabolism",
+  "Fatty acid metabolism",
+  "Biosynthesis of amino acids",
+  "Nucleotide metabolism",
+  "Biosynthesis of nucleotide sugars",
+  "Biosynthesis of cofactors",
+  "Degradation of aromatic compounds")
+
+  cancer_paths <- c( "Pathways in cancer", "Transcriptional misregulation in cancer"," MicroRNAs in cancer", "Proteoglycans in cancer", "Chemical carcinogenesis - DNA adducts", "Chemical carcinogenesis - receptor activation", "Chemical carcinogenesis - reactive oxygen species", "Viral carcinogenesis", "Central carbon metabolism in cancer", "Choline metabolism in cancer", "PD-L1 expression and PD-1 checkpoint pathway in cancer")
+
+  dig_sys <- c("Salivary secretion","Gastric acid secretion","Pancreatic secretion","Bile secretion","Carbohydrate digestion and absorption","Protein digestion and absorption","Fat digestion and absorption", "Cholesterol metabolism","Vitamin digestion and absorption","Mineral absorption")
+
+  exc_sys <- c("Vasopressin-regulated water reabsorption","Aldosterone-regulated sodium reabsorption","Endocrine and other factor-regulated calcium reabsorption","Proximal tubule bicarbonate reclamation","Collecting duct acid secretion")
+
+p <- list()
+
 sels <- list("Hyperglutamatergic"=sels_r,"Hypoglutamatergic"=sels_g)
-# 
-# for (s in names(sels)) {
-#   sels_kegg <- subset(background, Query%in%sels[[s]])
-#   names_sel <- sels_kegg$Query
-#   sels_kegg <- sels_kegg$KEGG #now we need to select these metabolites in all_pathways to make the graph we want
-#   names(sels_kegg) <- names_sel
-# 
-#   paths_sel <- all_pathways[na.omit(sels_kegg)]
-#   names(paths_sel) <- names(na.omit(sels_kegg))
-# 
-#   paths_list <- lapply(paths_sel, function(x) data.frame(path_names[x]))
-# 
-#   for (i in seq_along(paths_list)) {
-#     rownames(paths_list[[i]]) <- names(paths_list)[[i]]
-#   }
-# 
-#   for (i in seq_along(paths_list)) {
-#     colnames(paths_list[[i]]) <- paths_list[[i]][1,]
-#   }
-# 
-#   paths_df <- bind_rows(paths_list)
-#   paths_df <- data.frame(ifelse(is.na(paths_df),0,1), check.names = FALSE)
-#   sel_sreq <- data.frame(colSums(paths_df))
-#   colnames(sel_sreq) <- "Hits"
-#   sel_sreq <- subset(sel_sreq, Hits>1)
-#   sel_sreq <- sel_sreq %>%
-#     arrange(-Hits)
-# 
-# 
-#   sel_sreq <- subset(sel_sreq, !(rownames(sel_sreq) %in% c(gen_paths, cancer_paths, dig_sys, exc_sys)))
-# 
-# 
-#   human <- keggList("pathway", "hsa")
-# 
-#   human <- sapply(human, function(x) gsub(" - Homo sapiens \\(human)","",x))
-#   sel_sreq <- subset(sel_sreq, rownames(sel_sreq)%in%human)
-# 
-# 
-#   all_freq <- subset(freq, Pathway%in%rownames(sel_sreq))
-# 
-# 
-#   proptn <- data.frame(sel_sreq[order(as.character(rownames(sel_sreq))),]/all_freq[order(as.character(all_freq$Pathway)),]$`Total Hits`)
-#   colnames(proptn) <- "Proportion"
-#   proptn$Pathway <- all_freq[order(as.character(all_freq$Pathway)),]$Pathway
-#   rownames(proptn) <-   proptn$Pathway
-#   sel_sreq$Proportion <- proptn[rownames(sel_sreq),]$Proportion
-#   sel_sreq$Pathway <- rownames(sel_sreq)
-# 
-# 
-#   g <- sel_sreq %>%
-#       arrange(Hits) %>%
-#       mutate(Pathway = factor(Pathway, Pathway)) %>%
-#       ggplot(aes(x = Pathway, y = Hits, fill=Proportion)) +
-#       ylim(0,7) +
-#       geom_col() +
-#       coord_flip() +
-#       theme(
-#         panel.grid.minor.y = element_blank(),
-#         panel.grid.major.y = element_blank(),
-#         legend.position = "right",
-#         legend.spacing = unit(1, 'cm')
-#       ) +
-#       theme_light(base_size = 15) +
-#       xlab("") +
-#       ylab("Hits") +
-#       scale_fill_gradient2(low="#F4E3C7",mid = "#ff7f75",high =  "#aa1a00", limits=c(0,1), midpoint = 0.4) +
-#       guides(size = "none") 
-# 
-#   p[[s]] <- g
-# 
-# }
-# 
-# 
-# # p$Hypoglutamatergic <- p$Hypoglutamatergic + scale_x_discrete(position = "top")
-# 
-# patchpath <- p$Hyperglutamatergic / p$Hypoglutamatergic + plot_annotation(tag_levels = "A") +plot_layout(guides = "collect") & theme(legend.position = 'right')
-# 
-# #
-# # ggsave(file=here("paper/Figures/paths.jpeg"),plot=patchpath,       width = 300,
-# #        height = 200,
-# #        units = "mm", dpi = 300, scale = 0.8)
-# 
-# ggsave(file=here("paper/Figures/paths.png"),patchpath,dpi = 2000, width = 8, height = 7, units = "in")
+
+for (s in names(sels)) {
+  sels_kegg <- subset(background, Query%in%sels[[s]])
+  names_sel <- sels_kegg$Query
+  sels_kegg <- sels_kegg$KEGG #now we need to select these metabolites in all_pathways to make the graph we want
+  names(sels_kegg) <- names_sel
+
+  paths_sel <- all_pathways[na.omit(sels_kegg)]
+  names(paths_sel) <- names(na.omit(sels_kegg))
+
+  paths_list <- lapply(paths_sel, function(x) data.frame(path_names[x]))
+
+  for (i in seq_along(paths_list)) {
+    rownames(paths_list[[i]]) <- names(paths_list)[[i]]
+  }
+
+  for (i in seq_along(paths_list)) {
+    colnames(paths_list[[i]]) <- paths_list[[i]][1,]
+  }
+
+  paths_df <- bind_rows(paths_list)
+  paths_df <- data.frame(ifelse(is.na(paths_df),0,1), check.names = FALSE)
+  sel_sreq <- data.frame(colSums(paths_df))
+  colnames(sel_sreq) <- "Hits"
+  sel_sreq <- subset(sel_sreq, Hits>1)
+  sel_sreq <- sel_sreq %>%
+    arrange(-Hits)
+
+
+  sel_sreq <- subset(sel_sreq, !(rownames(sel_sreq) %in% c(gen_paths, cancer_paths, dig_sys, exc_sys)))
+
+
+  human <- keggList("pathway", "hsa")
+
+  human <- sapply(human, function(x) gsub(" - Homo sapiens \\(human)","",x))
+  sel_sreq <- subset(sel_sreq, rownames(sel_sreq)%in%human)
+
+
+  all_freq <- subset(freq, Pathway%in%rownames(sel_sreq))
+
+
+  proptn <- data.frame(sel_sreq[order(as.character(rownames(sel_sreq))),]/all_freq[order(as.character(all_freq$Pathway)),]$`Total Hits`)
+  colnames(proptn) <- "Proportion"
+  proptn$Pathway <- all_freq[order(as.character(all_freq$Pathway)),]$Pathway
+  rownames(proptn) <-   proptn$Pathway
+  sel_sreq$Proportion <- proptn[rownames(sel_sreq),]$Proportion
+  sel_sreq$Pathway <- rownames(sel_sreq)
+
+
+  g <- sel_sreq %>%
+      arrange(Hits) %>%
+      mutate(Pathway = factor(Pathway, Pathway)) %>%
+      ggplot(aes(x = Pathway, y = Hits, fill=Proportion)) +
+      ylim(0,7) +
+      geom_col() +
+      coord_flip() +
+      theme(
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_blank(),
+        legend.position = "right",
+        legend.spacing = unit(1, 'cm')
+      ) +
+      theme_light(base_size = 15) +
+      xlab("") +
+      ylab("Hits") +
+      scale_fill_gradient2(low="#F4E3C7",mid = "#ff7f75",high =  "#aa1a00", limits=c(0,1), midpoint = 0.4) +
+      guides(size = "none")
+
+  p[[s]] <- g
+
+}
+
+
+# p$Hypoglutamatergic <- p$Hypoglutamatergic + scale_x_discrete(position = "top")
+
+patchpath <- p$Hyperglutamatergic / p$Hypoglutamatergic + plot_annotation(tag_levels = "A") +plot_layout(guides = "collect") & theme(legend.position = 'right')
+
+#
+# ggsave(file=here("paper/Figures/paths.jpeg"),plot=patchpath,       width = 300,
+#        height = 200,
+#        units = "mm", dpi = 300, scale = 0.8)
+
+ggsave(file=here("paper/Figures/paths.png"),patchpath,dpi = 2000, width = 8, height = 7, units = "in")
 ```
 
 # Alterations in tryptophan metabolism
@@ -943,7 +942,33 @@ cor_age <- log_df_age %>%
   cor_test(Label, value, method= "spearman")  %>%
   adjust_pvalue(method = "fdr") %>%
   add_significance("p.adj")
-  
+
+
+View(cor_age)
+
+# cor.plot <- function(df,i) {
+#   p = ggplot(data=df,aes(x=df$Label, y=df[[i]])) +
+#     # geom_text(aes(label=ID)) +
+#     geom_point() +
+#     geom_line() +
+#     ylab(paste0("log2 uM ",i)) +
+#     xlab("Age (years)")
+#   return(p)
+# }
+
+#trying with corelation package
+
+library(correlation)
+plot(correlation::cor_test(df_norm_age, "Label", "Malic acid"))
+
+cor_plot_lst <- lapply(colnames(df_norm_age)[-c(1,2)], function(x) cor.plot(df_norm_age, x))
+names(cor_plot_lst) <- colnames(df_norm_age)[-c(1,2)]
+
+ggarrange(plotlist=cor_plot_lst[1:10])
+ggarrange(plotlist=cor_plot_lst[11:20])
+ggarrange(plotlist=cor_plot_lst[21:29])
+
+
 # Checking effect of sex
 pat_contrl <-  read.csv(here("metadata/patient_characteristics.csv"),sep=";")
 pat_contrl <-  pat_contrl[,-7]
@@ -998,10 +1023,12 @@ use_zip64 = FALSE
 
 write_xlsx(cor_age,path = here("paper/Tables/correlation_age.xlsx"))
 write_xlsx(comp_sex,path = here("paper/Tables/comparing_sex.xlsx"))
+
 ```
 
 ```{r}
 cat(sels$Hypoglutamatergic, sep = "\n")
+View(paths_df)
 ```
 
 
