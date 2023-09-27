@@ -374,7 +374,7 @@ for (i in 1:length(vip_g)) {
     guides(size = "none") +
     scale_color_manual(values = col_op[i], labels=NULL)
   
-  plot(p) 
+  # plot(p) 
 }
 
 
@@ -886,9 +886,10 @@ ggsave(file=here("paper/Figures/fig_2G_H.png"),patchhc2,dpi = 1000,scale=1.5,wid
 ```{r, warning=FALSE}
 
 pat_char <-  read.csv(here("metadata/patient_characteristics.csv"),sep=";")
-
+mets_int <- c("Leucine","Phenylalanine", "Tryptophan","5-Hydroxyindole-3-acetic acid", "Kynurenine", "Kynurenic acid", "Glutamic acid")
 # Checking for effect medications
-# pat_contrl <-  subset(pat_char,!(pat_char$Disease=="Control"))
+pat_contrl <-  subset(pat_char,!(pat_char$Disease=="Control"))
+pat_contrl <- subset(pat_contrl,!(pat_contrl$Medications=="Unknown"))
 pat_ctrl_meds <- pat_char[,c("ID","Medications")]
 meds_lst <- strsplit(pat_ctrl_meds$Medications,",")
 names(meds_lst) <- pat_ctrl_meds$ID
@@ -908,9 +909,12 @@ one_hot_encoded <- meds_lst %>%
 
 one_hot_encoded <- one_hot_encoded[,colnames(one_hot_encoded)%in%c("id",as.character(prop_meds$Medication))]
 
-df_norm_meds <- df_norm_lab[,-1]
+df_norm_meds <- df_norm_lab[,mets_int]
 df_norm_meds <- rownames_to_column(df_norm_meds,var = "id")
 df_norm_meds$id <- make.names(df_norm_meds$id)
+df_norm_meds <- subset(df_norm_meds, make.names(df_norm_meds$id)%in%pat_contrl$ID)
+
+
 
 med.test <- list()
 for (i in prop_meds$Medication) {
@@ -926,71 +930,98 @@ for (i in prop_meds$Medication) {
 }
 
 # Checking effect of age
+
 pat_contrl <-  pat_char
 pat_contrl <-  pat_contrl[order(pat_contrl$ID),]
-# pat_contrl <-  subset(pat_contrl,!(pat_contrl$Disease=="Control"))
-df_norm_age <- df_norm_lab
+pat_contrl <-  subset(pat_contrl,!(pat_contrl$Disease=="Control"))
+df_norm_age <- df_norm_lab[,c("Label",mets_int)]
 df_norm_age <- rownames_to_column(df_norm_age,var = "ID")
 df_norm_age <- subset(df_norm_age, make.names(df_norm_age$ID)%in%pat_contrl$ID)
 df_norm_age$Label <- pat_contrl$Age
 df_norm_age <- df_norm_age[complete.cases(df_norm_age),]
 log_df_age <- melt(df_norm_age, id.vars = c("ID","Label"))
-
+colnames(df_norm_age) <- c(
+  "ID",
+  "Age",
+  "Leucine",
+  "Phenylalanine",
+  "Tryptophan",
+  "5-Hydroxyindole-3-acetic acid",
+  "Kynurenine",
+  "Kynurenic acid",
+  "Glutamic acid"
+  )
+colnames(log_df_age) <- c(
+  "ID",
+  "Age",
+  "Metabolite",
+  "Concentration" 
+)
 
 cor_age <- log_df_age %>%
-  group_by(variable) %>%
-  cor_test(Label, value, method= "spearman")  %>%
+  dplyr::group_by(Metabolite) %>%
+  rstatix::cor_test(Age, Concentration, method= "pearson")  %>%
   adjust_pvalue(method = "fdr") %>%
   add_significance("p.adj")
 
 
-View(cor_age)
+cor.plot <- function(df,i) {
+  p = ggplot(data=df,aes(x=df$Age, y=df[[i]])) +
+    geom_point() +
+    stat_cor(method="pearson",aes(label = ..r.label..)) +
+    geom_smooth(method = "lm") +
+    ylab(i) +
+    xlab("Age (years)") 
+  return(p)
+}
 
-# cor.plot <- function(df,i) {
-#   p = ggplot(data=df,aes(x=df$Label, y=df[[i]])) +
-#     # geom_text(aes(label=ID)) +
-#     geom_point() +
-#     geom_line() +
-#     ylab(paste0("log2 uM ",i)) +
-#     xlab("Age (years)")
-#   return(p)
-# }
-
-#trying with corelation package
-
-library(correlation)
-plot(correlation::cor_test(df_norm_age, "Label", "Malic acid"))
-
-cor_plot_lst <- lapply(colnames(df_norm_age)[-c(1,2)], function(x) cor.plot(df_norm_age, x))
-names(cor_plot_lst) <- colnames(df_norm_age)[-c(1,2)]
-
-ggarrange(plotlist=cor_plot_lst[1:10])
-ggarrange(plotlist=cor_plot_lst[11:20])
-ggarrange(plotlist=cor_plot_lst[21:29])
+cor_plot_lst <- lapply(mets_int, function(x) cor.plot(df_norm_age, x))
+names(cor_plot_lst) <- mets_int
+cor_fig <- ggarrange(plotlist=cor_plot_lst)
+cor_fig <- annotate_figure(p=cor_fig,left = "log2 Concentration")
+ggsave(here("paper/Figures/correlation_sel_mets.png"),cor_fig, bg = "white", width = 8, height = 6, units = "in", scale = 1.5)
 
 
 # Checking effect of sex
 pat_contrl <-  read.csv(here("metadata/patient_characteristics.csv"),sep=";")
 pat_contrl <-  pat_contrl[,-7]
 pat_contrl <-  pat_contrl[order(pat_contrl$ID),]
-df_norm_sex <- df_norm_lab
+pat_contrl <-  subset(pat_contrl,!(pat_contrl$Disease=="Control"))
+df_norm_sex <- df_norm_lab[,c("Label",mets_int)]
 df_norm_sex <- rownames_to_column(df_norm_sex,var = "ID")
 df_norm_sex <- subset(df_norm_sex, make.names(df_norm_sex$ID)%in%pat_contrl$ID)
 df_norm_sex$Label <- factor(pat_contrl$Sex)
 df_norm_sex <- df_norm_sex[complete.cases(df_norm_sex),]
 log_df_sex <- melt(df_norm_sex, id.vars = c("ID","Label"))
 
+colnames(df_norm_sex) <- c(
+  "ID",
+  "Sex",
+  "Leucine",
+  "Phenylalanine",
+  "Tryptophan",
+  "5-Hydroxyindole-3-acetic acid",
+  "Kynurenine",
+  "Kynurenic acid",
+  "Glutamic acid"
+  )
+colnames(log_df_sex) <- c(
+  "ID",
+  "Sex",
+  "Metabolite",
+  "Concentration" 
+)
 
 comp_sex <- log_df_sex %>%
-  group_by(variable) %>%
-  wilcox_test(as.formula(value ~ Label), p.adjust.method = NULL) %>%
+  group_by(Metabolite) %>%
+  wilcox_test(as.formula(Concentration ~ Sex), p.adjust.method = NULL) %>%
   adjust_pvalue(method = "fdr") %>%
   add_significance("p.adj")
 
 
 rownames(df_norm_sex) <- df_norm_sex$ID
-oplsda_sex <- opls(df_norm_sex[,-c(1,2)],as.factor(df_norm_sex$Label),orthoI = 1,predI=1,scaleC = "center", permI = 1000)
-sx <- factor(df_norm_sex$Label)
+oplsda_sex <- opls(df_norm_sex[,-c(1,2)],as.factor(df_norm_sex$Sex),orthoI = 1,predI=1,scaleC = "center", permI = 1000)
+sx <- factor(df_norm_sex$Sex)
 
 opsx <- data.frame("lab"=sx,"x"=oplsda_sex@scoreMN,"y"=oplsda_sex@orthoScoreMN)
 
@@ -1026,9 +1057,64 @@ write_xlsx(comp_sex,path = here("paper/Tables/comparing_sex.xlsx"))
 
 ```
 
+
+```{r}
+joined_df <- comp_sex
+joined_df <- subset(joined_df, Metabolite%in%mets_int)
+vg <- log_df_sex
+colnames(vg) <- c("ID","Sex","Metabolite","log2 Concentration")
+vg$Sex <- factor(vg$Sex, levels=c("F","M"))
+maxim_val <- apply(df_norm_sex[, which(colnames(df_norm_sex)%in%mets_int)], 2, max)
+maxim_val <- maxim_val 
+joined_df$y.position <- maxim_val 
+
+
+sex_fig <- ggboxplot(vg, x = "Sex", y = "log2 Concentration", color = "Sex", facet.by = "Metabolite", fill = "Sex", alpha=0.4) + geom_point(aes(color = vg$Sex)) +
+  facet_wrap(~ Metabolite, scales = "free", ncol = 3) +
+  stat_pvalue_manual(joined_df, label = "p.adj.signif", y.position = "y.position",hide.ns = FALSE,bracket.nudge.y = -0.1) +
+  theme(
+axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),plot.background = element_rect(fill = "transparent",colour = NA),legend.position = "bottom"
+) +
+   scale_color_manual(values = c("pink","lightblue"), labels = c("Female", "Male")) +
+  scale_fill_manual(values = c("pink","lightblue"), labels = c("Female", "Male"))
+print(sex_fig) 
+
+sup1A <- wrap_elements((as.grob(cor_fig)))
+sup1B <- wrap_elements((as.grob(sex_fig)))
+ggsave(file=here("paper/Figures/S1.png"),plot=(sup1A / sup1B)+plot_annotation(tag_levels = "A"), dpi = 1000,bg="white" ,width = 8, height = 12, units = "in")
+```
+
+```{r}
+joined_df <- med.test$NONE
+colnames(joined_df)[1] <- "Metabolite"
+joined_df <- subset(joined_df, Metabolite%in%mets_int)
+vg <- merge(one_hot_encoded[,c("id","NONE")],df_norm_meds)
+vg <- melt(vg, id.vars = c("id","NONE"))
+colnames(vg) <- c("ID","Medications","Metabolite","log2 Concentration")
+vg$Medications <- factor(vg$Medications)
+maxim_val <- apply(df_norm_meds[, which(colnames(df_norm_meds)%in%mets_int)], 2, max)
+maxim_val <- maxim_val 
+joined_df$y.position <- maxim_val 
+
+
+med_fig <- ggboxplot(vg, x = "Medications", y = "log2 Concentration", color = "Medications", facet.by = "Metabolite", fill = "Medications", alpha=0.4) + geom_point(aes(color = vg$Medications)) +
+  facet_wrap(~ Metabolite, scales = "free", ncol = 3) +
+  stat_pvalue_manual(joined_df, label = "p.adj.signif", y.position = "y.position",hide.ns = FALSE,bracket.nudge.y = -0.1) +
+  theme(
+axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),plot.background = element_rect(fill = "transparent",colour = NA),legend.position = "bottom"
+) +
+   scale_color_manual(values = c("#095256","#F6BD60"), labels = c("Medications", "No medications")) +
+  scale_fill_manual(values = c("#095256","#F6BD60"), labels = c("Medications", "No medications"))
+print(med_fig) 
+
+sup2 <- wrap_elements((as.grob(med_fig)))
+ggsave(file=here("paper/Figures/S1.png"),plot=sup2+plot_annotation(tag_levels = "A"), dpi = 1000,bg="white" ,width = 8, height = 6, units = "in")
+```
+
 ```{r}
 cat(sels$Hypoglutamatergic, sep = "\n")
 View(paths_df)
+?stat_pvalue_manual
 ```
 
 
