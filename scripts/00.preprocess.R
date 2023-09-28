@@ -5,6 +5,7 @@ library(janitor)
 library(imputeTS)
 library(reshape2)
 library(writexl)
+library(qwraps2)
 library(tidyverse)
 library(here)
 
@@ -44,8 +45,25 @@ df_all <- data.frame(na_replace(df_all_num))
 df_all <- df_all+mins
 colnames(df_all) <- gsub("\\."," ",colnames(df_all))
 metdat <- subset(metdat, COS.Code != "CSF.18")
-df_all_log <- log2(df_all)
 
+df_all_2 <- data.frame(cbind(metdat$Label,t(df_all)),check.names = FALSE)
+colnames(df_all_2)[1] <- "Label" 
+# colnames(df_all_2) <- c("Label",rownames(df_all_2))
+df_all_2 <- subset(df_all_2,Label%in%c(3,8,10,12,2))
+df_all_2$Label <- gsub(12,8, df_all_2$Label)
+df_all_2$Label <- gsub(2,10, df_all_2$Label)
+df_all_2 <- rownames_to_column(df_all_2 ,var = "ID")
+ 
+
+# Print or access the summary tables as needed
+
+
+lapply(median_iqr(df_all_2, ))
+mean_ci(subset(df_all_2, Label==3)$Kynurenine)
+
+print(colnames(df_all_2))
+
+df_all_log <- log2(df_all)
 metdat <- metdat[order(metdat$ID),]
 df_all_log <- df_all_log[,order(colnames(df_all_log))]
 df_norm_lab <- data.frame(t(df_all_log))
