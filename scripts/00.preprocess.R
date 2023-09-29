@@ -46,23 +46,6 @@ df_all <- df_all+mins
 colnames(df_all) <- gsub("\\."," ",colnames(df_all))
 metdat <- subset(metdat, COS.Code != "CSF.18")
 
-df_all_2 <- data.frame(cbind(metdat$Label,t(df_all)),check.names = FALSE)
-colnames(df_all_2)[1] <- "Label" 
-# colnames(df_all_2) <- c("Label",rownames(df_all_2))
-df_all_2 <- subset(df_all_2,Label%in%c(3,8,10,12,2))
-df_all_2$Label <- gsub(12,8, df_all_2$Label)
-df_all_2$Label <- gsub(2,10, df_all_2$Label)
-df_all_2 <- rownames_to_column(df_all_2 ,var = "ID")
- 
-
-# Print or access the summary tables as needed
-
-
-lapply(median_iqr(df_all_2, ))
-mean_ci(subset(df_all_2, Label==3)$Kynurenine)
-
-print(colnames(df_all_2))
-
 df_all_log <- log2(df_all)
 metdat <- metdat[order(metdat$ID),]
 df_all_log <- df_all_log[,order(colnames(df_all_log))]
@@ -84,3 +67,41 @@ colnames(all_mets) <- "Detected metabolites"
 write_xlsx(all_mets, path=here("data_processed/supplementary_1.xlsx"))
 saveRDS(log_df, here("data_processed/long_format_df.rds"))
 saveRDS(df_norm_lab, here("data_processed/wide_format_df.rds"))
+
+df_all_2 <- data.frame(cbind(metdat$Label,t(df_all)),check.names = FALSE)
+colnames(df_all_2)[1] <- "Label" 
+# colnames(df_all_2) <- c("Label",rownames(df_all_2))
+df_all_2 <- subset(df_all_2,Label%in%c(3,8,10,12,2))
+df_all_2$Label <- gsub(12,8, df_all_2$Label)
+df_all_2$Label <- gsub(2,10, df_all_2$Label)
+df_all_2 <- rownames_to_column(df_all_2 ,var = "ID")
+
+
+
+library(qwraps2)
+
+# For continuous variables raw
+
+vars <- colnames(df_all_2)[-c(1,2)]
+data <- df_all_2
+
+summary_list <- list()
+
+# Iterate over the variable names
+for (l in vars) {
+  summary_list[[l]] <- 
+    list("min" = as.formula(paste0("~ min(`", l, "`)")),
+         "median (iqr)" = as.formula(paste0("~ median_iqr(`", l, "`)")),
+         "max" = as.formula(paste0("~ max(`", l, "`)")),
+         "mean (CI)" = as.formula(paste0("~ qwraps2::frmtci(mean_ci(`", l, "`,show_level=TRUE))")),
+         "SD" = as.formula(paste0("~ sd(`", l, "`)")))
+  
+}
+
+st_lst <- summary_table(dplyr::group_by(data,Label),summary_list)
+rnms <- rownames(st_lst)
+st_lst <- data.frame(cbind(rep(vars,each=5),st_lst), check.names = FALSE)
+colnames(st_lst)[1] <- "Metabolite"
+st_lst <- rownames_to_column(st_lst, var="Statistic")
+st_lst$Statistic <- rnms
+pivoted_data <- pivot_wider(st_lst, names_from = Metabolite, values_from = colnames(st_lst)[-c(1,2)])
